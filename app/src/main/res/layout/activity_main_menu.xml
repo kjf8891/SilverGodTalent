@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+
+            <Button
+                android:id="@+id/gotoMyPageMenuBtn"
+                android:onClick="gotoMyPageMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/mypage"/>
+            <Button
+                android:id="@+id/gotoWantedMenuBtn"
+                android:onClick="gotoWantedMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/wanted"/>
+            <Button
+                android:id="@+id/gotoMentoringMenuBtn"
+                android:onClick="gotoMentoringMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/mentoring"/>
+            <Button
+                android:id="@+id/gotoClubMenuBtn"
+                android:onClick="gotoClubMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/club"/>
+            <Button
+                android:onClick="nothing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/sgt"/>
+        </LinearLayout>
+
+
+
+
+    </FrameLayout>
+
+</LinearLayout>

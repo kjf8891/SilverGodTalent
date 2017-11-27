@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "904205865931",
+    "firebase_url": "https://android-chat-184608.firebaseio.com",
+    "project_id": "android-chat-184608",
+    "storage_bucket": "android-chat-184608.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:904205865931:android:94b95ecdbb1dd45c",
+        "android_client_info": {
+          "package_name": "com.example.testremote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "904205865931-i59f7b9ulqu0bjdo2t6dc3ii0ifoema8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj-O76Rtef8X6_0KVndiBHsMiLNNXpN4s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
