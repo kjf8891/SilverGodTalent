@@ -22,9 +22,9 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_height="50dp"
-                android:background="@color/pink">
+                android:background="@color/ibory">
                 <ImageButton
-                    android:background="@color/pink"
+                    android:background="@color/ibory"
                     android:id="@+id/homeBtn"
                     android:onClick="homeBtn"
                     android:layout_width="50dp"
@@ -32,26 +32,26 @@
                     android:scaleType="fitXY"
                     android:layout_weight="1"
                     android:layout_gravity="center"
-                    android:src="@drawable/home"/>
+                    android:src="@drawable/home_btn_gray"/>
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="10"
                     android:layout_gravity="center"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/gray"
                     android:gravity="center"
                     android:text="[ MENTORING LIST ]"
                     android:textSize="30dp" />
                 <ImageButton
-                    android:background="@color/pink"
+                    android:background="@color/ibory"
                     android:onClick="addMGroupBtn"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
                     android:layout_weight="1"
                     android:layout_gravity="center"
-                    android:src="@drawable/add"/>
+                    android:src="@drawable/add_btn_gray"/>
             </LinearLayout>
             <ListView
                 android:id="@+id/listview"

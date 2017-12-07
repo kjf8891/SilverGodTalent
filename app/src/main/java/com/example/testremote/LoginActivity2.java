@@ -783,7 +783,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
             phoneNumber= PhoneNumberUtils.formatNumberToE164(phoneNumber,t.getNetworkCountryIso().toUpperCase());
             Toast.makeText(getApplicationContext(),phoneNumber,Toast.LENGTH_SHORT).show();
             eid.setText(phoneNumber);
-            eid.setEnabled(false);
+            eid.setEnabled(true);
         }
 
 

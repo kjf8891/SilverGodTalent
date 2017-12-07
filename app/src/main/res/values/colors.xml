@@ -15,5 +15,10 @@
     <color name="white">#ffffff</color>
     <color name="bg_gradient_start">#31244e</color>
     <color name="bg_gradient_end">#6b394c</color>
+    <color name="whitePink">#FFEFEB</color>
+    <color name="whiteRed">#FAC1BE</color>
+    <color name="whiteGray">#EBEDED</color>
+    <color name="whiteIbory">#FFFAF3</color>
+    <color name="whiteINavy">#D7DEE9</color>
 
 </resources>

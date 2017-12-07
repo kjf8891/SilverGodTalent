@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:orientation="horizontal"
+    android:layout_gravity="center"
+    android:padding="0dp"
+    android:layout_margin="0dp"
+    android:gravity="center">
+    <LinearLayout
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        android:background="@drawable/border_white_ibory"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:id="@+id/lec_num"
+            android:textSize="25dp"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="글번호"
+            android:textColor="@android:color/black" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/lec_title"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="글 제목"/>
+            <TextView
+                android:id="@+id/lec_date"
+                android:textSize="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="시도/구"/>
+            <TextView
+                android:id="@+id/lec_city"
+                android:textSize="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="강의날짜"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

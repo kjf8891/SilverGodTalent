@@ -19,29 +19,31 @@ import org.json.JSONObject;
  * Created by seyeon on 2017-11-17.
  */
 
-public class DetailClubFragment extends Fragment {
+public class DetailRecruitFragment extends Fragment {
     View syView;
     Button btn_move_W;
     Button applyBtn;
+
     //TextView textView;
-    //String num;
-    TextView Cnum;
-    TextView Ctitle;
-    TextView Ccontent;
-    TextView Ccity;
-    TextView Clocation;
+    TextView Rnum;
+    TextView Rtitle;
+    TextView Rcontent;
+    TextView Rcity;
+    TextView Rlocation;
     TextView textView;
+
     String Bundle_num;
     JSONArray retJson;
+    //String num;
 
     String title;
-    //int num;
+    String num;
     String date;
     String city;
-    String location;
+    //String location;
     String content;
-    String leader;
-
+    //String leader;
+    String institution;
 
     DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
         @Override
@@ -49,29 +51,29 @@ public class DetailClubFragment extends Fragment {
 
             Log.e("err","processFinish");
             retJson = ret;
-
             for(int i = 0 ; i< retJson.length(); i++){
                 JSONObject json = retJson.getJSONObject(i);
-                title = json.getString("CTitle");
-                //num = json.get("CNum");
-                //date = json.getString("date");
+                title = json.getString("RTitle");
+                num = json.getString("RNum");
+                date = json.getString("date");
                 city = json.getString("city");
-                location = json.getString("location");
+                //location = json.getString("location");
                 content = json.getString("content");
-                leader = json.getString("leader");
+                institution = json.getString("institution");
+                //leader = json.getString("leader");
                 Log.d("gffgggggg",title);
                 Toast.makeText(getActivity(),"되나:"+title,Toast.LENGTH_SHORT).show();
 
-                Cnum.setText(Bundle_num);
-                Ctitle.setText(title);
-                Ccontent.setText(content);
+                Rnum.setText(Bundle_num);
+                Rtitle.setText(title);
+                Rcontent.setText(content);
             }
             //MGroupAdapter.notifyDataSetChanged();
         }
     });
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        syView = inflater.inflate(R.layout.layout_detail_club,container,false);
+        syView = inflater.inflate(R.layout.layout_detail_recruit,container,false);
         init();
         return syView;
     }
@@ -80,7 +82,7 @@ public class DetailClubFragment extends Fragment {
         Bundle arguments = this.getArguments();
         Bundle_num = arguments.getString("num");//글번호!!!!
 
-        String url = "http://13.124.85.122:52273/findClubInfo";
+        String url = "http://13.124.85.122:52273/findRInfo";
         //초기화
 
         int tmptmp = Integer.parseInt(Bundle_num);
@@ -94,22 +96,20 @@ public class DetailClubFragment extends Fragment {
         }
 
         textView = (TextView) syView.findViewById(R.id.textView);
-        Cnum = (TextView) syView.findViewById(R.id.Cnum);;
-        Ctitle = (TextView) syView.findViewById(R.id.Ctitle);
-        Ccontent = (TextView) syView.findViewById(R.id.Ccontent);
 
-        textView = (TextView) syView.findViewById(R.id.textView);
+        Rnum = (TextView) syView.findViewById(R.id.Rnum);;
+        Rtitle = (TextView) syView.findViewById(R.id.Rtitle);
+        Rcontent = (TextView) syView.findViewById(R.id.Rcontent);
         //textView.setText(num);
         btn_move_W = (Button)syView.findViewById(R.id.btn_move_W);
         applyBtn = (Button)syView.findViewById(R.id.applyBtn);
         btn_move_W.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ClubActivity.class);
+                Intent intent = new Intent(getActivity(), RecruitActivity.class);
                 startActivity(intent);
             }
         });
-
     }
     public void applyBtn(View v){
 //        Intent intent = new Intent(getActivity(), MentoringActivity.class);

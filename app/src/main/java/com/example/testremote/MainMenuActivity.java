@@ -9,7 +9,7 @@ import android.widget.Button;
 public class MainMenuActivity extends AppCompatActivity {
 
 
-    Button gotoMyPageMenuBtn,gotoWantedMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn;
+    Button gotoMyPageMenuBtn, gotoRecruitMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn;
 
     //FrameLayout frameLayout;
     @Override
@@ -18,18 +18,21 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         init();
     }
-    public void init(){
-
+    public void init() {
+        //gotoHelpBtn = (Button) findViewById(R.id.gotoHelpBtn);
         gotoMyPageMenuBtn = (Button) findViewById(R.id.gotoMyPageMenuBtn);
-        gotoWantedMenuBtn = (Button)findViewById(R.id.gotoWantedMenuBtn);
-        gotoMentoringMenuBtn = (Button)findViewById(R.id.gotoMentoringMenuBtn);
-        gotoClubMenuBtn = (Button)findViewById(R.id.gotoClubMenuBtn);
-
+        gotoRecruitMenuBtn = (Button) findViewById(R.id.gotoRecruitMenuBtn);
+        gotoMentoringMenuBtn = (Button) findViewById(R.id.gotoMentoringMenuBtn);
+        gotoClubMenuBtn = (Button) findViewById(R.id.gotoClubMenuBtn);
 
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 
     public void gotoMyPageMenu(View v){
 //        FragmentManager fragmentManager = getFragmentManager();
@@ -41,12 +44,12 @@ public class MainMenuActivity extends AppCompatActivity {
 
     }
 
-    public void gotoWantedMenu(View v){
+    public void gotoRecruitMenu(View v){
 //        FragmentManager fragmentManager = getFragmentManager();
 //        fragmentManager.beginTransaction()
 //                .replace(R.id.frameLayout,new Fragment_lecture())
 //                .commit();
-        Intent intent = new Intent(getApplicationContext(), WantedActivity.class);
+        Intent intent = new Intent(getApplicationContext(), RecruitActivity.class);
         startActivity(intent);
     }
     public void gotoMentoringMenu(View v){

@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -25,6 +30,33 @@ public class MentoringActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView textView;
     TextView title;
+    JSONArray retJson;
+
+
+    DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
+        @Override
+        public void processFinish(JSONArray ret) throws JSONException {
+
+            Log.e("err","processFinish");
+            //Toast.makeText(getApplicationContext(),"processFinish:",Toast.LENGTH_SHORT).show();
+            retJson = ret;
+
+            for(int i = 0 ; i< retJson.length(); i++){
+                JSONObject json = retJson.getJSONObject(i);
+                String title = json.getString("MTitle");
+                String num = json.getString("MNum");
+                String date = json.getString("date");
+                String city = json.getString("city");
+                //String date = json.getString("date");
+                //String location = json.getString("location");
+                //items.add(new MGroup(title,date,location));
+                items.add(new MGroup(num,title,date,city));
+                //   Toast.makeText(getApplicationContext(),"되나:"+area,Toast.LENGTH_SHORT).show();
+            }
+            MGroupAdapter.notifyDataSetChanged();
+        }
+    });
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +79,7 @@ public class MentoringActivity extends AppCompatActivity {
         //getSupportActionBar().setTitle("test5");
         listView = (ListView)findViewById(R.id.listview);
         items = new ArrayList<MGroup>();
-        items.add(new MGroup("1","Let's study KOREAN","2017-11-30","Rotterdaam"));
-        items.add(new MGroup("2","Special Dancing Practice","2017-12-02","Amsterdam"));
-        items.add(new MGroup("3","한자를 공부합시다","2017-10-23","금천구"));
-        items.add(new MGroup("4","노래! 어렵지 않아요~","2017-08-31","강남구"));
-        items.add(new MGroup("5","다함께 배드민턴","2017-09-03","광진구"));
-        items.add(new MGroup("6","빠르게 배우는 바둑교실","2017-11-22","성북구"));
-        MGroupAdapter = new MGroupAdapter(getApplicationContext(),R.layout.row_lec,items);
+        MGroupAdapter = new MGroupAdapter(getApplicationContext(),R.layout.row_mentoring,items);
         listView.setAdapter(MGroupAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,11 +94,18 @@ public class MentoringActivity extends AppCompatActivity {
                 DetailMentoringFragment fragment = new DetailMentoringFragment();
                 fragment.setArguments(bundle);
                 fragmentManager.beginTransaction()
+                        .addToBackStack(null)
                         .replace(R.id.frameLayout,fragment)
                         .commit();
 
             }
         });
+        String url = "http://13.124.85.122:52273/getMList";
+        //초기화
+
+        JSONObject tmp =new JSONObject();
+        RequestForm req = new RequestForm(url);
+        dwTask.execute(req);
     }
 
     public void addMGroupBtn(View v){
@@ -80,12 +113,24 @@ public class MentoringActivity extends AppCompatActivity {
         //startActivity(intent);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.frameLayout,new AddMentoringFragment())
                 .commit();
     }
 
     public void homeBtn(View v){
         Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
-        startActivity(intent);
+        //startActivity(intent);
+        finish();
+    }
+    public void onBackPressed() {
+        //super.onBackPressed();
+        int count = getFragmentManager().getBackStackEntryCount();
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 }

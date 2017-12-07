@@ -101,7 +101,6 @@ public class StartActivity extends AppCompatActivity {
 //                Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
 //                startActivity(intent);
 
-
                 startActivity(intent);
 
             }

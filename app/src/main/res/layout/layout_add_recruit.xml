@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/navy"
+    android:background="@color/whitePink"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,10 +17,10 @@
             android:layout_height="match_parent"
             android:layout_weight="10"
             android:layout_gravity="center"
-            android:background="@color/red"
+            android:background="@color/pink"
             android:textColor="@android:color/white"
             android:gravity="center"
-            android:text="[ WANTED ADD ]"
+            android:text="[ RECRUIT ADD ]"
             android:textSize="30dp" />
         <!--<ImageButton-->
             <!--android:onClick="addClubBtn"-->
@@ -39,10 +39,9 @@
         android:layout_height="wrap_content" />
     <LinearLayout
         android:orientation="vertical"
-        android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/ibory">
+        android:background="@color/whitePink">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -51,7 +50,7 @@
                 android:paddingTop="25dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="Wanted Notice Num"
+                android:text="Recruit Notice Num"
                 android:textColor="@android:color/black"
                 android:gravity="left"
                 android:textStyle="bold"
@@ -59,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:id="@+id/wanted_num"
+                android:id="@+id/recruit_num"
                 android:textColor="@android:color/black"
                 android:text="000"
                 android:textSize="20dp"
@@ -71,17 +70,15 @@
             android:paddingLeft="15dp"
             android:textStyle="bold"
             android:textSize="25dp"
-            android:text="Wanted Notice Title"
+            android:text="Recruit Notice Title"
             android:textColor="@android:color/black"
             android:gravity="left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <EditText
-            android:backgroundTint="@android:color/transparent"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/border_white"
+            android:padding="15dp"
             android:textColor="@android:color/black"
             android:id="@+id/edit_title"
             android:layout_width="match_parent"
@@ -89,6 +86,27 @@
             android:textSize="20dp"
             android:text="Enter"/>
         <TextView
+            android:paddingTop="25dp"
+            android:paddingLeft="15dp"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:text="Working Date"
+            android:textColor="@android:color/black"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:layout_margin="10dp"
+            android:background="@drawable/border_white"
+            android:padding="15dp"
+            android:textColor="@android:color/black"
+            android:id="@+id/edit_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Enter"/>
+        <TextView
+            android:id="@+id/uId"
             android:textStyle="bold"
             android:textSize="25dp"
             android:paddingTop="25dp"
@@ -104,32 +122,35 @@
             android:textSize="20dp"
             android:textColor="@android:color/black"
             android:gravity="center"
-            android:id="@+id/wanted_writer_id"
+            android:id="@+id/recruit_writer_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="writerID_test"/>
-    <TextView
-        android:textStyle="bold"
-        android:textSize="25dp"
-        android:paddingTop="25dp"
-        android:paddingLeft="15dp"
-        android:text="Content"
-        android:textColor="@android:color/black"
-        android:gravity="left"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:backgroundTint="@android:color/transparent"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
-        android:id="@+id/edit_content"
-        android:textColor="@android:color/black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="Enter\n\n\n\n"/>
+        <!--<TextView-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="25dp"-->
+            <!--android:paddingTop="25dp"-->
+            <!--android:paddingLeft="15dp"-->
+            <!--android:text="Content"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:gravity="left"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+        <!--<EditText-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:background="@drawable/border_white"-->
+            <!--android:paddingLeft="15dp"-->
+            <!--android:paddingRight="15dp"-->
+            <!--android:paddingTop="0dp"-->
+            <!--android:paddingBottom="0dp"-->
+            <!--android:id="@+id/edit_content"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="20dp"-->
+            <!--android:inputType="textMultiLine"-->
+            <!--android:lines="6"-->
+            <!--android:text="Enter"/>-->
     </LinearLayout>
     <Button
         android:id="@+id/btn_move_W"
@@ -143,4 +164,5 @@
         android:textColor="@android:color/white"
         android:background="@color/red"
         android:text="Complete"/>
+
 </LinearLayout>
