@@ -2,6 +2,7 @@ package com.example.testremote;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +40,13 @@ public class DetailMentoringFragment extends Fragment {
     String location;
     String content;
     String leader;
+
+
+
+    JSONObject jsonObject;
+
+    //사용자 아이디 불러오기
+    SharedPreferences prefs;
 
     DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
         @Override
@@ -116,7 +124,25 @@ public class DetailMentoringFragment extends Fragment {
     public void applyBtn(View v){
 //        Intent intent = new Intent(getActivity(), MentoringActivity.class);
 //        startActivity(intent);
+        applyM();
         Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
 
+    }
+
+    public void applyM(){
+        InsertDataTask isTask;
+        try {
+            String tmp_id = prefs.getString("REG_FROM","");//ID(mobno), 아직안됨 왜안들어가지
+            //String tmp_pw = prefs.getString("REG_NAME","");//PW(name)
+            jsonObject = new JSONObject();
+            jsonObject.put("id",tmp_id);
+            jsonObject.put("MNum",Bundle_num);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url = "http://13.124.85.122:52273/applyM";
+        isTask = new InsertDataTask(jsonObject);
+        RequestForm req = new RequestForm(url);
+        isTask.execute(req);
     }
 }

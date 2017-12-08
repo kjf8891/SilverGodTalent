@@ -4,16 +4,23 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by seyeon on 2017-11-17.
@@ -26,14 +33,39 @@ public class AddRecruitFragment extends Fragment {
     EditText content;
     EditText date;
     EditText total_num;
-    EditText area;
+    //EditText area;
     //TextView date;
     TextView uId;
     TextView textView;
+    String selectedArea;
+
     JSONObject jsonObject;
+    JSONArray retJson;
+
+    //스피너
+    Spinner spinner;
+    ArrayAdapter<String> dataAdapter;
+    ArrayList<String> list;
 
     //사용자 아이디 불러오기
     SharedPreferences prefs;
+
+    DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
+        @Override
+        public void processFinish(JSONArray ret) throws JSONException {
+            Log.e("err","processFinish");
+            //Toast.makeText(getApplicationContext(),"processFinish:",Toast.LENGTH_SHORT).show();
+            retJson = ret;
+            for(int i = 0 ; i< retJson.length(); i++){
+                JSONObject json = retJson.getJSONObject(i);
+                String area = json.getString("area");
+                list.add(area);
+                Toast.makeText(getActivity(),"되나:"+area,Toast.LENGTH_SHORT).show();
+            }
+            dataAdapter.notifyDataSetChanged();
+        }
+    });
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         syView = inflater.inflate(R.layout.layout_add_recruit,container,false);
@@ -58,10 +90,37 @@ public class AddRecruitFragment extends Fragment {
         content = (EditText)syView.findViewById(R.id.edit_content);
         date = (EditText)syView.findViewById(R.id.edit_date);
         total_num = (EditText)syView.findViewById(R.id.RTotalNum);
-        area = (EditText)syView.findViewById(R.id.RArea);
+        //area = (EditText)syView.findViewById(R.id.RArea);
         //textView.setText(date.getText().toString());
-
         //TextView date = (TextView)syView.findViewById(R.id.date);//날짜는 자동으로 받아오기.... 어떻게?
+
+        String url = "http://13.124.85.122:52273/getIList";
+        //초기화
+
+        JSONObject tmp1 =new JSONObject();
+        RequestForm req = new RequestForm(url);
+        dwTask.execute(req);
+
+        spinner = (Spinner)syView.findViewById(R.id.spinner);
+        list = new ArrayList<String>();
+        //dataAdapter = new ArrayAdapter<String>(getActivity(),
+        //        android.R.layout.simple_spinner_item, list);
+        dataAdapter = new ArrayAdapter<String>(getActivity(),R.layout.row_spinner, list);
+        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(), "aaaaa"+position, Toast.LENGTH_SHORT).show();
+                selectedArea = list.get(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
     //add함수
     public void add(){
@@ -74,7 +133,8 @@ public class AddRecruitFragment extends Fragment {
             jsonObject.put("title",title.getText().toString());
             jsonObject.put("content",content.getText().toString());
             jsonObject.put("date",date.getText().toString());
-            jsonObject.put("area",area.getText().toString());
+            //jsonObject.put("area",area.getText().toString());
+            jsonObject.put("area",selectedArea);
             jsonObject.put("total_num",total_num.getText().toString());
             //Toast.makeText(getActivity(), "date" + date, Toast.LENGTH_SHORT).show();
             //jsonObject.put("id",tmp_id);

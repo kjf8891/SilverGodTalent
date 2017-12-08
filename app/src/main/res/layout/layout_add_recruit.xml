@@ -89,16 +89,23 @@
             android:textSize="25dp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/RArea"
+        <!--<EditText-->
+            <!--android:id="@+id/RArea"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:background="@drawable/border_white"-->
+            <!--android:padding="15dp"-->
+            <!--android:text="Enter"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:textSize="20dp" />-->
+        <Spinner
+            android:background="@drawable/border_white"
+            android:layout_margin="5dp"
+            android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/border_white"
-            android:padding="15dp"
-            android:text="Enter"
-            android:textColor="@android:color/black"
-            android:textSize="20dp" />
+            ></Spinner>
 
         <TextView
             android:layout_width="match_parent"

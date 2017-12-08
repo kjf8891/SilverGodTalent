@@ -2,6 +2,7 @@ package com.example.testremote;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +45,12 @@ public class DetailRecruitFragment extends Fragment {
     String content;
     //String leader;
     String institution;
+
+
+    JSONObject jsonObject;
+
+    //사용자 아이디 불러오기
+    SharedPreferences prefs;
 
     DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
         @Override
@@ -112,9 +119,25 @@ public class DetailRecruitFragment extends Fragment {
         });
     }
     public void applyBtn(View v){
-//        Intent intent = new Intent(getActivity(), MentoringActivity.class);
-//        startActivity(intent);
+        applyR();
         Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
-
+        //Intent intent = new Intent(getActivity(), RecruitActivity.class);
+        //finish();
+    }
+    public void applyR(){
+        InsertDataTask isTask;
+        try {
+            String tmp_id = prefs.getString("REG_FROM","");//ID(mobno), 아직안됨 왜안들어가지
+            //String tmp_pw = prefs.getString("REG_NAME","");//PW(name)
+            jsonObject = new JSONObject();
+            jsonObject.put("id",tmp_id);
+            jsonObject.put("RNum",Bundle_num);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url = "http://13.124.85.122:52273/applyR";
+        isTask = new InsertDataTask(jsonObject);
+        RequestForm req = new RequestForm(url);
+        isTask.execute(req);
     }
 }
