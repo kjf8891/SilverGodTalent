@@ -49,10 +49,13 @@ public class RecruitActivity extends AppCompatActivity {
                 String num = json.getString("RNum");
                 String date = json.getString("date");
                 String city = json.getString("city");
+                //위도 경도 여기 있음
+                String latitude = json.getString("latitude");
+                String longitude = json.getString("longitude");
                 //String date = json.getString("date");
                 //String location = json.getString("location");
                 //items.add(new MGroup(title,date,location));
-                items.add(new Recruit(num,title,date,city));
+                items.add(new Recruit(num,title,date,city,latitude,longitude));
                 //   Toast.makeText(getApplicationContext(),"되나:"+area,Toast.LENGTH_SHORT).show();
             }
             RecruitAdapter.notifyDataSetChanged();

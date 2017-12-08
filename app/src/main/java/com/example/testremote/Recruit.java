@@ -10,6 +10,8 @@ public class Recruit {
     private String _noticeRecruitTitle;
     private String _noticeRecruitWritingDate;
     private String _noticeRecruitWriter;
+    private String _Rlatitude;
+    private String _Rlongitude;
     private String _noticeRecruitCity;
 
 
@@ -22,11 +24,13 @@ public class Recruit {
 
     }
 
-    public Recruit(String noticeRecruitNum, String title, String date, String city){
+    public Recruit(String noticeRecruitNum, String title, String date, String city,String lati, String longi){
         this._noticeRecruitNum = noticeRecruitNum;
         this._noticeRecruitCity = city;
         this._noticeRecruitTitle = title;
         this._noticeRecruitWritingDate = date;
+        this._Rlatitude = lati;
+        this._Rlongitude = longi;
 
     }
 
