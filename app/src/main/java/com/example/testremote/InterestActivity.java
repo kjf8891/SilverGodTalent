@@ -217,10 +217,10 @@ public class InterestActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                InsertDataTask insertTask = new InsertDataTask(userinfo);
+                InsertDataTask insertTask = new InsertDataTask();
 
                 url = "http://13.124.85.122:52273/pushData";
-                req = new RequestForm(url);
+                req = new RequestForm(url,userinfo);
 
 
 //                for ( int i = 0; i <interests.length(); i++){

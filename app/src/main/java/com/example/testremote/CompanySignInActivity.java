@@ -15,12 +15,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SignInActivity extends AppCompatActivity {
+public class CompanySignInActivity extends AppCompatActivity {
 
     Button btn_STT;
     Button btn_next;
@@ -29,18 +35,32 @@ public class SignInActivity extends AppCompatActivity {
     EditText name;
     EditText pw;
     EditText id;
+    TextView location;
+
     SharedPreferences prefs;
+
+    final int PLACE_PICKER_REQUEST = 333;
+    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signin);
+        setContentView(R.layout.activity_companysignin);
         prefs = getApplicationContext().getSharedPreferences("Chat", 0);
 
         nickname = (EditText)findViewById(R.id.signin_nickname);
         name = (EditText)findViewById(R.id.signin_name);
         pw = (EditText)findViewById(R.id.signin_pw);
         id = (EditText)findViewById(R.id.signin_id);
+        location = (TextView) findViewById(R.id.signin_location);
+
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                location.setSelected(true);
+            }
+        });
 
         btn_next = (Button)findViewById(R.id.btn_next);
 
@@ -127,6 +147,18 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "실패왜뜨냐", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case PLACE_PICKER_REQUEST:
+                if (resultCode == RESULT_OK) {
+                    Place place = null;
+                    place = PlacePicker.getPlace(this, data);
+
+                    String toastMsg = String.format("Place: %s", place.getName());
+                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+
+                    location.setText(place.getAddress());
+
+                }
+                break;
 
         }
 
@@ -191,4 +223,17 @@ public class SignInActivity extends AppCompatActivity {
 
 
     }
+
+    public void searchLocation(View view) {
+
+
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

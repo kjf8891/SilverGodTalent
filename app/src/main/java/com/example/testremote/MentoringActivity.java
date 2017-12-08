@@ -5,13 +5,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
+
+import static android.view.MotionEvent.ACTION_UP;
 
 /**
  * Created by seyeon on 2017-10-30.
@@ -25,6 +36,19 @@ public class MentoringActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView textView;
     TextView title;
+
+    static PopupWindow popupWindow;
+    TextView tvPop;
+    TextView tvOrigin;
+    boolean isLongclicked = false;
+
+    DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
+        @Override
+        public void processFinish(JSONArray ret) throws JSONException {
+
+        }
+    });
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +80,47 @@ public class MentoringActivity extends AppCompatActivity {
         MGroupAdapter = new MGroupAdapter(getApplicationContext(),R.layout.row_lec,items);
         listView.setAdapter(MGroupAdapter);
 
+
+
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                isLongclicked = true;
+
+                if(view.getClass() == ZoomText.class) {
+
+
+                }
+
+                return false;
+            }
+        });
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MGroup item = (MGroup) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(), item.getMentoringNum().toString(), Toast.LENGTH_LONG).show();
-                FragmentManager fragmentManager = getFragmentManager();
-                Bundle bundle = new Bundle(1);
-                bundle.putString("num",item.getMentoringNum().toString());
 
-                DetailMentoringFragment fragment = new DetailMentoringFragment();
-                fragment.setArguments(bundle);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.frameLayout,fragment)
-                        .commit();
+                    MGroup item = (MGroup) parent.getItemAtPosition(position);
 
-            }
+                    Log.e("onclick", "click");
+
+
+                    Toast.makeText(getApplicationContext(), item.getMentoringNum().toString(), Toast.LENGTH_LONG).show();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    Bundle bundle = new Bundle(1);
+                    bundle.putString("num", item.getMentoringNum().toString());
+
+                    DetailMentoringFragment fragment = new DetailMentoringFragment();
+                    fragment.setArguments(bundle);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frameLayout, fragment)
+                            .commit();
+
+                }
+
         });
     }
 
@@ -87,5 +136,10 @@ public class MentoringActivity extends AppCompatActivity {
     public void homeBtn(View v){
         Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
         startActivity(intent);
+    }
+
+    public void activateMagGlass(View view) {
+
+
     }
 }
