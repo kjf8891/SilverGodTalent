@@ -1,5 +1,7 @@
 package com.example.testremote;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by user on 2016-06-06.
  */
@@ -46,4 +48,10 @@ public class Recruit {
     public String getnoticeRecruitWritingDate(){return _noticeRecruitWritingDate;}
     public String getnoticeRecruitContent(){return _noticeRecruitContent;}
     public String getnoticeRecruitTitle(){return _noticeRecruitTitle;}
+    public LatLng getLatLng(){
+
+        LatLng position = new LatLng(Double.parseDouble(_Rlatitude),Double.parseDouble(_Rlongitude));
+
+        return position;
+    }
 }

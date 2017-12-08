@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,9 +47,11 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     Toolbar toolbar;
     TextView textView;
     TextView title;
+    LatLng cur_loc;
 
     //ArrayList<MGroup> items;
     ArrayList<Recruit> items;
+    ArrayList<Recruit> sortedItems;
     //MGroupAdapter MGroupAdapter;
     RecruitAdapter RecruitAdapter;
     JSONArray retJson;
@@ -199,6 +203,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
             List<Address> addresses;
             geocoder = new Geocoder(this, Locale.getDefault());
 
+
             Location location = locationManager.getLastKnownLocation(NETWORK_PROVIDER);
 
             try {
@@ -211,8 +216,12 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
                 String postalCode = addresses.get(0).getPostalCode();
                 String knownName = addresses.get(0).getFeatureName();
 
+                cur_loc = new LatLng(location.getLatitude(),location.getLongitude());
+
                 //Toast.makeText(this, location.toString(), Toast.LENGTH_SHORT).show();
                 tv_location.setText(address);
+
+                sortByDistance();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -220,4 +229,135 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 
         }
     }
+
+    void sortByDistance(){
+
+       sortedItems = items;
+
+        double[] distances = new double[items.size()];
+
+        double[] tmp;
+
+        Location startPoint = new Location("start");
+        startPoint.setLatitude(cur_loc.latitude);
+        startPoint.setLongitude(cur_loc.longitude);
+
+        Location endPoint = new Location("end");
+
+
+        for(int i = 0 ; i <items.size() ; i++){
+
+            endPoint.setLatitude(items.get(i).getLatLng().latitude);
+            endPoint.setLongitude(items.get(i).getLatLng().longitude);
+
+            distances[i] = startPoint.distanceTo(endPoint);
+            Log.e("distances",i+" : "+distances[i]);
+
+        }
+
+
+//        quickSort(distances,0,it
+
+        quicksort(distances, 0, distances.length-1);
+
+        for(int i = 0 ; i <items.size() ; i++){
+
+            Log.e("distances",i+" : "+distances[i]);
+
+        }
+        items = sortedItems;
+
+        RecruitAdapter.notifyDataSetChanged();
+
+    }
+
+   void quicksort(double[]a, int lo, int hi) {
+        if (lo < hi) {
+            int q = hoare_partition(a, lo, hi);
+            quicksort(a, lo, q);
+            quicksort(a, q + 1, hi);
+        }
+    }
+
+    int hoare_partition(double[] a, int lo, int hi) {
+
+        double pivot = a[lo];
+        int i = lo;
+        int j = hi;
+
+        while (true) {
+
+            while (a[i] < pivot) i++;
+
+            while (a[j] > pivot) j--;
+
+            if (i >= j) {
+                return j;
+            }
+            swap(a, i, j);
+            i++;
+            j--;
+
+        }
+    }
+
+    void swap(double[] a, int i, int j) {
+        double temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+
+        Recruit rTmp = sortedItems.get(i);
+                sortedItems.set(i,sortedItems.get(j));
+                sortedItems.set(j,rTmp);
+    }
+
+
+//    public int partition(double arr[], int left, int right) {
+//
+//        double pivot = arr[(left + right) / 2];
+//
+//        while (left <= right) {
+//            Log.e("while","dd");
+//
+//            while ((arr[left] <= pivot) && (left < right)) {
+//                left++;
+//                Log.e("left","dd");
+//
+//            }
+//            while ((arr[right] > pivot) && (left < right)) {
+//                right--;
+//                Log.e("right","dd");
+//
+//            }
+//            if (left < right) {
+//                double temp = arr[left];
+//                arr[left] = arr[right];
+//                arr[right] = temp;
+//
+////                Recruit rTmp = sortedItems.get(left);
+////                sortedItems.set(left,sortedItems.get(right));
+////                sortedItems.set(right,rTmp);
+//            }
+//        }
+//
+//        return left;
+//    }
+//
+//    public void quickSort(double arr[], int left, int right) {
+//
+//        if (left < right) {
+//            int pivotNewIndex = partition(arr, left, right);
+//
+//            Log.e("pre","dd");
+//            quickSort(arr, left, pivotNewIndex - 1);
+//            Log.e("middle","dd");
+//
+//            quickSort(arr, pivotNewIndex + 1, right);
+//            Log.e("end","dd");
+//
+//        }
+//
+//
+//    }
+
 }

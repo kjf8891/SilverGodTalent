@@ -100,7 +100,7 @@ public class ZoomText extends TextView {
         tvPop.setText(this.getText().toString());
         tvPop.setSelected(true);
         //popupWindow.showAtLocation(popupView, Gravity.CENTER,(int)getX(),(int)getY());
-        popupWindow.showAsDropDown(this, 0, 0);
+        popupWindow.showAsDropDown(this,0, 0 -  (int)((3.5)*this.getHeight()));
         popupWindow.setOutsideTouchable(false);
         popupWindow.setFocusable(true);
         popupWindow.update();
