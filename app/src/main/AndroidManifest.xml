@@ -61,7 +61,7 @@
         <activity
             android:name=".ClubActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".WantedActivity"></activity>
+        <activity android:name=".RecruitActivity"></activity>
         <activity
             android:name=".MyPageActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>

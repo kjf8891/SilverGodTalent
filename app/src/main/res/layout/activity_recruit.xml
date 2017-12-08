@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/navy"
+    android:background="@color/whitePink"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,9 +22,9 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_height="50dp"
-                android:background="@color/red">
+                android:background="@color/pink">
                 <ImageButton
-                    android:background="@color/red"
+                    android:background="@color/pink"
                     android:id="@+id/homeBtn"
                     android:onClick="homeBtn"
                     android:layout_width="50dp"
@@ -41,11 +41,11 @@
                     android:layout_gravity="center"
                     android:textColor="@android:color/white"
                     android:gravity="center"
-                    android:text="[ WANTED LIST ]"
+                    android:text="[ RECRUIT LIST ]"
                     android:textSize="30dp" />
                 <ImageButton
-                    android:background="@color/red"
-                    android:onClick="addWantedNoticeBtn"
+                    android:background="@color/pink"
+                    android:onClick="addRecruitNoticeBtn"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"

@@ -42,7 +42,7 @@
             <ImageButton
                 android:visibility="invisible"
                 android:background="@color/red"
-                android:onClick="addWantedNoticeBtn"
+                android:onClick="addRecruitNoticeBtn"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"

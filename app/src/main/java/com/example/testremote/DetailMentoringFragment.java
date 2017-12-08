@@ -40,8 +40,6 @@ public class DetailMentoringFragment extends Fragment {
     String content;
     String leader;
 
-
-
     DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
         @Override
         public void processFinish(JSONArray ret) throws JSONException {
@@ -58,7 +56,12 @@ public class DetailMentoringFragment extends Fragment {
                 location = json.getString("location");
                 content = json.getString("content");
                 leader = json.getString("leader");
-                //   Toast.makeText(getApplicationContext(),"되나:"+area,Toast.LENGTH_SHORT).show();
+                Log.d("gffgggggg",title);
+                Toast.makeText(getActivity(),"되나:"+title,Toast.LENGTH_SHORT).show();
+
+                Mnum.setText(Bundle_num);
+                Mtitle.setText(title);
+                Mcontent.setText(content);
             }
             //MGroupAdapter.notifyDataSetChanged();
         }
@@ -88,13 +91,13 @@ public class DetailMentoringFragment extends Fragment {
         }
 
         textView = (TextView) syView.findViewById(R.id.textView);
-//        Mnum = (TextView) syView.findViewById(R.id.Mnum);;
-//        Mtitle = (TextView) syView.findViewById(R.id.Mtitle);
-//        Mcontent = (TextView) syView.findViewById(R.id.Mcontent);
-//        //Mcity = (TextView) syView.findViewById(R.id.Mcity);
-//        //Mlocation = (TextView) syView.findViewById(R.id.Mlocation);
-//        //Mdate = (TextView) syView.findViewById(R.id.Mdate);
-//        //textView.setText(num);
+        Mnum = (TextView) syView.findViewById(R.id.Mnum);;
+        Mtitle = (TextView) syView.findViewById(R.id.Mtitle);
+        Mcontent = (TextView) syView.findViewById(R.id.Mcontent);
+        //Mcity = (TextView) syView.findViewById(R.id.Mcity);
+        //Mlocation = (TextView) syView.findViewById(R.id.Mlocation);
+        //Mdate = (TextView) syView.findViewById(R.id.Mdate);
+        //textView.setText(num);
 //        Mnum.setText(Bundle_num);
 //        Mtitle.setText(title);
 //        Mcontent.setText(content);
@@ -109,44 +112,11 @@ public class DetailMentoringFragment extends Fragment {
             }
         });
 
-
-
-
-        //findInfo();
-//        String url = "http://13.124.85.122:52273/findMentoringInfo";
-//        //초기화
-//
-//        JSONObject tmp =new JSONObject();
-//        RequestForm req = new RequestForm(url);
-//        dwTask.execute(req);
-
     }
     public void applyBtn(View v){
 //        Intent intent = new Intent(getActivity(), MentoringActivity.class);
 //        startActivity(intent);
         Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
 
-    }
-
-    public void findInfo(){
-        //실행하기 위한 객체
-        InsertDataTask isTask;
-
-        try {
-            String url = "http://13.124.85.122:52273/findMentoringInfo";
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("num",Bundle_num);
-
-            RequestForm req = new RequestForm(url,jsonObject);
-            dwTask.execute(req);
-//            //초기화
-//            isTask = new InsertDataTask(jsonObject);// 이렇게 json넣어줘야함
-//            RequestForm req = new RequestForm(url); // 여기선url만 넣기
-//            isTask.execute(req); // 이렇게실행하면 웹서버에 보내져
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        //
     }
 }

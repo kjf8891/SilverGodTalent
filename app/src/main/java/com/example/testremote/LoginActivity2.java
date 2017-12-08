@@ -166,7 +166,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                 if(prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")){
                     new LoginActivity2.ActivityChangeSend().execute("signin");
                 }else{
-                    startActivity(new Intent(getApplicationContext(),SignInTypeActivity.class));
+                    startActivity(new Intent(getApplicationContext(),SignInActivity.class));
                 }
             }
         });
@@ -783,7 +783,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
             phoneNumber= PhoneNumberUtils.formatNumberToE164(phoneNumber,t.getNetworkCountryIso().toUpperCase());
             Toast.makeText(getApplicationContext(),phoneNumber,Toast.LENGTH_SHORT).show();
             eid.setText(phoneNumber);
-           // eid.setEnabled(false);
+            eid.setEnabled(true);
         }
 
 

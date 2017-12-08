@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/navy"
+    android:background="@color/whitePink"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,10 +17,10 @@
             android:layout_height="match_parent"
             android:layout_weight="10"
             android:layout_gravity="center"
-            android:background="@color/red"
+            android:background="@color/pink"
             android:textColor="@android:color/white"
             android:gravity="center"
-            android:text="[ WANTED DETAIL INFO ]"
+            android:text="[ RECRUIT DETAIL INFO ]"
             android:textSize="30dp" />
 
     </LinearLayout>
@@ -34,7 +34,7 @@
         android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/ibory">
+        android:background="@color/white">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                 android:paddingTop="25dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="Wanted Notice Num"
+                android:text="Recruit Notice Num"
                 android:textColor="@android:color/black"
                 android:gravity="left"
                 android:textStyle="bold"
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:id="@+id/wanted_num"
+                android:id="@+id/Rnum"
                 android:textColor="@android:color/black"
                 android:text="000"
                 android:textSize="20dp"
@@ -63,19 +63,19 @@
             android:paddingLeft="15dp"
             android:textStyle="bold"
             android:textSize="25dp"
-            android:text="Wanted Notice Title"
+            android:text="Recruit Notice Title"
             android:textColor="@android:color/black"
             android:gravity="left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <EditText
+        <TextView
             android:backgroundTint="@android:color/transparent"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
             android:textColor="@android:color/black"
-            android:id="@+id/edit_title"
+            android:id="@+id/Rtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
@@ -91,12 +91,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/recruit_writer_id"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:textSize="20dp"
             android:textColor="@android:color/black"
             android:gravity="center"
-            android:id="@+id/wanted_writer_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="writerID_test"/>
@@ -110,13 +110,13 @@
         android:gravity="left"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <EditText
+    <TextView
         android:backgroundTint="@android:color/transparent"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
-        android:id="@+id/edit_content"
+        android:id="@+id/Rcontent"
         android:textColor="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

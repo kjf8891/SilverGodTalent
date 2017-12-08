@@ -16,6 +16,14 @@ public class MGroup {
         this.MentoringDate = date;
         this.MentoringCity = city;
     }
+    public MGroup(String title, String date, String city){
+        this.MentoringTitle = title;
+        this.MentoringDate = date;
+        this.MentoringCity = city;
+    }
+    public MGroup(String title){
+        this.MentoringTitle = title;
+    }
 
     public void setMentoringNum(String num){this.MentoringNum = num;}
     public void setMentoringTitle(String title){this.MentoringTitle = title;}
