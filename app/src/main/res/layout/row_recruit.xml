@@ -36,13 +36,21 @@
                 android:textColor="@android:color/black"
                 android:text="글 제목"/>
             <TextView
-                android:id="@+id/recruit_writer"
+                android:id="@+id/workingDate"
                 android:textSize="30dp"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:text="기관"/>
+                android:text="일하는 날짜"/>
+            <!--<TextView-->
+                <!--android:id="@+id/recruit_writer"-->
+                <!--android:textSize="30dp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="기관"/>-->
             <TextView
                 android:id="@+id/recruit_date"
                 android:textSize="25dp"
@@ -50,13 +58,13 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:text="시도/구"/>
-            <TextView
-                android:id="@+id/recruit_city"
-                android:textSize="25dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:text="강의날짜"/>
+            <!--<TextView-->
+                <!--android:id="@+id/recruit_city"-->
+                <!--android:textSize="25dp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:text="강의날짜"/>-->
         </LinearLayout>
 
 

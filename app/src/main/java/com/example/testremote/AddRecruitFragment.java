@@ -23,8 +23,10 @@ public class AddRecruitFragment extends Fragment {
     View syView;
     Button completeBtn;
     EditText title;
-    //EditText content;
+    EditText content;
     EditText date;
+    EditText total_num;
+    EditText area;
     //TextView date;
     TextView uId;
     TextView textView;
@@ -53,8 +55,10 @@ public class AddRecruitFragment extends Fragment {
             }
         });
         title = (EditText)syView.findViewById(R.id.edit_title);
-        //content = (EditText)syView.findViewById(R.id.edit_content);
+        content = (EditText)syView.findViewById(R.id.edit_content);
         date = (EditText)syView.findViewById(R.id.edit_date);
+        total_num = (EditText)syView.findViewById(R.id.RTotalNum);
+        area = (EditText)syView.findViewById(R.id.RArea);
         //textView.setText(date.getText().toString());
 
         //TextView date = (TextView)syView.findViewById(R.id.date);//날짜는 자동으로 받아오기.... 어떻게?
@@ -68,8 +72,10 @@ public class AddRecruitFragment extends Fragment {
             //String tmp_pw = prefs.getString("REG_NAME","");//PW(name)
             jsonObject = new JSONObject();
             jsonObject.put("title",title.getText().toString());
-            //jsonObject.put("content",content.getText().toString());
+            jsonObject.put("content",content.getText().toString());
             jsonObject.put("date",date.getText().toString());
+            jsonObject.put("area",area.getText().toString());
+            jsonObject.put("total_num",total_num.getText().toString());
             //Toast.makeText(getActivity(), "date" + date, Toast.LENGTH_SHORT).show();
             //jsonObject.put("id",tmp_id);
             //도시(무슨구,무슨주인지), 위도, 경도, 건물이름(자치센터,주민회관)는 어떻게 넣지?

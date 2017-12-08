@@ -22,6 +22,9 @@ public class AddClubFragment extends Fragment {
 
     EditText title;
     EditText content;
+    EditText area;
+    EditText date;
+    EditText total_num;
     Button completeBtn;
     //사용자 아이디 불러오기
     SharedPreferences prefs;
@@ -46,6 +49,9 @@ public class AddClubFragment extends Fragment {
         });
         title = (EditText)syView.findViewById(R.id.edit_title);
         content = (EditText)syView.findViewById(R.id.edit_content);
+        total_num = (EditText)syView.findViewById(R.id.CTotalNum);
+        area = (EditText)syView.findViewById(R.id.CArea);
+        date = (EditText) syView.findViewById(R.id.CDate);
     }
 
     public void add(){
@@ -60,6 +66,9 @@ public class AddClubFragment extends Fragment {
 
             jsonObject.put("title",title.getText().toString());
             jsonObject.put("content",content.getText().toString());
+            jsonObject.put("area",area.getText().toString());
+            jsonObject.put("total_num",total_num.getText().toString());
+            jsonObject.put("date",date.getText().toString());
             jsonObject.put("id",tmp_id);
             //도시(무슨구,무슨주인지), 위도, 경도, 건물이름(자치센터,주민회관)는 어떻게 넣지?
 
