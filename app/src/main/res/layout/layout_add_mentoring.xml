@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -135,6 +141,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+
+
+        <TextView
+            android:paddingTop="25dp"
+            android:paddingLeft="15dp"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:text="Mentoring Group Area"
+            android:textColor="@android:color/black"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/MArea"
+            android:layout_margin="10dp"
+            android:background="@drawable/border_white"
+            android:padding="15dp"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Enter"/>
+
         <TextView
             android:paddingTop="25dp"
             android:paddingLeft="15dp"
@@ -147,6 +176,46 @@
             android:layout_height="wrap_content"/>
         <EditText
             android:id="@+id/edit_title"
+            android:layout_margin="10dp"
+            android:background="@drawable/border_white"
+            android:padding="15dp"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Enter"/>
+        <TextView
+            android:paddingTop="25dp"
+            android:paddingLeft="15dp"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:text="Mentoring Date"
+            android:textColor="@android:color/black"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/date"
+            android:layout_margin="10dp"
+            android:background="@drawable/border_white"
+            android:padding="15dp"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Enter"/>
+        <TextView
+            android:paddingTop="25dp"
+            android:paddingLeft="15dp"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:text="Student Total num"
+            android:textColor="@android:color/black"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/MTotalNum"
             android:layout_margin="10dp"
             android:background="@drawable/border_white"
             android:padding="15dp"
@@ -198,7 +267,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:text="Enter\n\n\n\n"/>
+        android:text="Enter"/>
     </LinearLayout>
     <Button
         android:id="@+id/btn_move_M"
@@ -213,3 +282,5 @@
         android:background="@color/pink"
         android:text="Complete"/>
 </LinearLayout>
+    </ScrollView>
+

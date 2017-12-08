@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -37,121 +43,180 @@
         android:text="test_here is addWANTED_NOTICEpage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/whitePink">
+        android:background="@color/whitePink"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
             <TextView
-                android:paddingTop="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:paddingTop="5dp"
                 android:text="Recruit Notice Num"
                 android:textColor="@android:color/black"
-                android:gravity="left"
-                android:textStyle="bold"
                 android:textSize="25dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/recruit_num"
-                android:textColor="@android:color/black"
-                android:text="000"
-                android:textSize="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="000"
+                android:textColor="@android:color/black"
+                android:textSize="20dp" />
+
+
         </LinearLayout>
         <TextView
-            android:paddingTop="25dp"
-            android:paddingLeft="15dp"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:text="Recruit Notice Title"
-            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="left"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:text="Recruit Area"
+            android:textColor="@android:color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
         <EditText
-            android:layout_margin="10dp"
+            android:id="@+id/RArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:background="@drawable/border_white"
             android:padding="15dp"
+            android:text="Enter"
             android:textColor="@android:color/black"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:text="Recruit Notice Title"
+            android:textColor="@android:color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <EditText
             android:id="@+id/edit_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Enter"/>
-        <TextView
-            android:paddingTop="25dp"
-            android:paddingLeft="15dp"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:text="Working Date"
-            android:textColor="@android:color/black"
-            android:gravity="left"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <EditText
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/border_white"
             android:padding="15dp"
+            android:text="Enter"
             android:textColor="@android:color/black"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:text="Working Date"
+            android:textColor="@android:color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <EditText
             android:id="@+id/edit_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Enter"/>
+            android:layout_margin="5dp"
+            android:background="@drawable/border_white"
+            android:padding="15dp"
+            android:text="Enter"
+            android:textColor="@android:color/black"
+            android:textSize="20dp" />
+
         <TextView
             android:id="@+id/uId"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:paddingTop="25dp"
-            android:paddingLeft="15dp"
-            android:text="ID/Writer(institution)"
-            android:gravity="left"
-            android:textColor="@android:color/black"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
+            android:layout_height="wrap_content"
+            android:gravity="left"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:textSize="20dp"
+            android:paddingTop="5dp"
+            android:text="ID/Writer(institution)"
             android:textColor="@android:color/black"
-            android:gravity="center"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/recruit_writer_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="writerID_test"/>
-        <!--<TextView-->
-            <!--android:textStyle="bold"-->
-            <!--android:textSize="25dp"-->
-            <!--android:paddingTop="25dp"-->
-            <!--android:paddingLeft="15dp"-->
-            <!--android:text="Content"-->
-            <!--android:textColor="@android:color/black"-->
-            <!--android:gravity="left"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"/>-->
-        <!--<EditText-->
-            <!--android:layout_margin="10dp"-->
-            <!--android:background="@drawable/border_white"-->
-            <!--android:paddingLeft="15dp"-->
-            <!--android:paddingRight="15dp"-->
-            <!--android:paddingTop="0dp"-->
-            <!--android:paddingBottom="0dp"-->
-            <!--android:id="@+id/edit_content"-->
-            <!--android:textColor="@android:color/black"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textSize="20dp"-->
-            <!--android:inputType="textMultiLine"-->
-            <!--android:lines="6"-->
-            <!--android:text="Enter"/>-->
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="writerID_test"
+            android:textColor="@android:color/black"
+            android:textSize="20dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:text="Recruit Total Member Num"
+            android:textColor="@android:color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/RTotalNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/border_white"
+            android:padding="15dp"
+            android:text="Enter"
+            android:textColor="@android:color/black"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:text="Content"
+            android:textColor="@android:color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edit_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/border_white"
+            android:inputType="textMultiLine"
+            android:lines="6"
+            android:paddingBottom="0dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="0dp"
+            android:text="Enter"
+            android:textColor="@android:color/black"
+            android:textSize="20dp" />
     </LinearLayout>
+
     <Button
         android:id="@+id/btn_move_W"
         android:onClick="move_Back"
@@ -166,3 +231,4 @@
         android:text="Complete"/>
 
 </LinearLayout>
+    </ScrollView>
