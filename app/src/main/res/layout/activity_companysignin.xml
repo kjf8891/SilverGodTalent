@@ -161,7 +161,7 @@
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:id="@+id/btn_next"
-            android:text="next"
+            android:text="done"
             />
         <Button
             android:background="@color/pink"

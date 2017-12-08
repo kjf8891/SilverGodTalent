@@ -59,7 +59,7 @@ public class SignInTypeActivity extends AppCompatActivity {
 
                 Intent mIntent = new Intent(getApplicationContext(), CompanySignInActivity.class);
 
-                startActivity(mIntent);
+                startActivityForResult(mIntent,4);
 
             }
         });
@@ -111,6 +111,10 @@ public class SignInTypeActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "실패왜뜨냐", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case 4:
+                if(resultCode == RESULT_OK) {
+                    finish();
+                }
 
         }
 

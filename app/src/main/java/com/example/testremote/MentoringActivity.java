@@ -93,7 +93,7 @@ public class MentoringActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                isLongclicked = true;
+               // isLongclicked = true;
 
                 if(view.getClass() == ZoomText.class) {
 

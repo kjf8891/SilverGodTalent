@@ -139,9 +139,9 @@ public class InterestActivity extends AppCompatActivity {
 //            edit.putString("FROM_NAME", pw.getText().toString());
 //            edit.commit();
 
-            params.add(new BasicNameValuePair("name", prefs.getString("FROM_NAME","")));
-            params.add(new BasicNameValuePair("mobno", prefs.getString("REG_FROM","")));
-            params.add((new BasicNameValuePair("reg_id",prefs.getString("REG_ID",""))));
+            params.add(new BasicNameValuePair("name", prefs.getString("FROM_NAME","")));//pw
+            params.add(new BasicNameValuePair("mobno", prefs.getString("REG_FROM","")));//아이디
+            params.add((new BasicNameValuePair("reg_id",prefs.getString("REG_ID",""))));//토큰
 
             JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/login",params);
             return jObj;
@@ -221,21 +221,6 @@ public class InterestActivity extends AppCompatActivity {
 
                 url = "http://13.124.85.122:52273/pushData";
                 req = new RequestForm(url,userinfo);
-
-
-//                for ( int i = 0; i <interests.length(); i++){
-//                    JSONObject json = interests.getJSONObject(i);
-//
-//                    if(json.has("ID"))
-//                        id = json.getString("ID");
-//                    if(json.has("PW"))
-//                        name = json.getString("PW");
-//                    if(json.has("Name"))
-//                        quantity = json.getString("Name");
-//                    if(json.has("no"))
-//                        no = json.getInt("no");
-//                    if(json.has("area"))
-//                        area = json.getString("area");
 
 
                 insertTask.execute(req);

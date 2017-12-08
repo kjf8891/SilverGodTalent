@@ -166,7 +166,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                 if(prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")){
                     new LoginActivity2.ActivityChangeSend().execute("signin");
                 }else{
-                    startActivity(new Intent(getApplicationContext(),SignInActivity.class));
+                    startActivity(new Intent(getApplicationContext(),SignInTypeActivity.class));
                 }
             }
         });

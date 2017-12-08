@@ -1,10 +1,12 @@
 package com.example.testremote;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -23,8 +25,13 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompanySignInActivity extends AppCompatActivity {
 
@@ -36,8 +43,11 @@ public class CompanySignInActivity extends AppCompatActivity {
     EditText pw;
     EditText id;
     TextView location;
+    double lng;
+    double lat;
 
     SharedPreferences prefs;
+    List<NameValuePair> params;
 
     final int PLACE_PICKER_REQUEST = 333;
     PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
@@ -85,15 +95,30 @@ public class CompanySignInActivity extends AppCompatActivity {
                     tmp.put("Name",name.getText());
                     tmp.put("PW",pw.getText());
                     tmp.put("ID",id.getText());
+                    tmp.put("lng",lng);
+                    tmp.put("lat",lat);
                     //tmp.put("reg_id",prefs.getString("REG_ID",""));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                Intent mIntent = new Intent(getApplicationContext(), InterestActivity.class);
-                mIntent.putExtra("userinfo", tmp.toString());
-                startActivity(mIntent);
+
+
+                InsertDataTask insertTask = new InsertDataTask(tmp);
+
+                String url = "http://13.124.85.122:52273/pushCompanyData";
+                RequestForm req = new RequestForm(url);
+
+
+                insertTask.execute(req);
+
+                new CompanySignInActivity.Login().execute();
+
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
+
 
             }
         });
@@ -154,6 +179,9 @@ public class CompanySignInActivity extends AppCompatActivity {
 
                     String toastMsg = String.format("Place: %s", place.getName());
                     Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+
+                    lng = place.getLatLng().longitude;
+                    lat = place.getLatLng().latitude;
 
                     location.setText(place.getAddress());
 
@@ -233,6 +261,51 @@ public class CompanySignInActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class Login extends AsyncTask<String, String, JSONObject> {
+        @Override
+        protected JSONObject doInBackground(String... args) {
+            JSONParser json = new JSONParser();
+            params = new ArrayList<NameValuePair>();
+            // Log.d("loglogloglog",args[0]);
+
+//            SharedPreferences.Editor edit = prefs.edit();
+//            edit.putString("REG_FROM", id.getText().toString());
+//            edit.putString("FROM_NAME", pw.getText().toString());
+//            edit.commit();
+
+            params.add(new BasicNameValuePair("name", prefs.getString("FROM_NAME","")));//pw
+            params.add(new BasicNameValuePair("mobno", prefs.getString("REG_FROM","")));//아이디
+            params.add((new BasicNameValuePair("reg_id",prefs.getString("REG_ID",""))));//토큰
+
+            JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/login",params);
+            return jObj;
+
+
+        }
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            // progress.dismiss();
+            try {
+                String res = json.getString("response");
+                if(res.equals("Sucessfully Registered")) {
+//                    Fragment reg = new UserFragment();
+//                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                    ft.replace(R.id.content_frame, reg);
+//                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//                    ft.addToBackStack(null);
+//                    ft.commit();
+                    startActivity(new Intent(getApplicationContext(),UserActivity.class));
+                }else{
+                    Toast.makeText(getApplicationContext(),res,Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

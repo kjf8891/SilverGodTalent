@@ -13,6 +13,7 @@
         android:layout_margin="0dp"
         android:background="@drawable/border_white_ibory"
         android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:layout_width="match_parent">
 
         <TextView
@@ -22,10 +23,12 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="글번호"
+
             android:textColor="@android:color/black" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:gravity="left">
             <com.example.testremote.ZoomText
