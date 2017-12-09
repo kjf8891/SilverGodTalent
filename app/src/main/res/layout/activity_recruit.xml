@@ -8,77 +8,96 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     >
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="50dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
                 android:background="@color/pink">
-                <ImageButton
-                    android:background="@color/pink"
-                    android:id="@+id/homeBtn"
-                    android:onClick="homeBtn"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:src="@drawable/home"/>
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="10"
-                    android:layout_gravity="center"
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
-                    android:text="[ RECRUIT LIST ]"
-                    android:textSize="30dp" />
-                <ImageButton
-                    android:background="@color/pink"
-                    android:onClick="addRecruitNoticeBtn"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
+                    android:orientation="horizontal"
+                    >
+                    <ImageButton
+                        android:background="@color/pink"
+                        android:id="@+id/homeBtn"
+                        android:onClick="homeBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:src="@drawable/home"/>
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
+                        android:layout_gravity="center"
+                        android:textColor="@android:color/white"
+                        android:gravity="center"
+                        android:text="[ RECRUIT LIST ]"
+                        android:textSize="30dp" />
+                    <ImageButton
+                        android:background="@color/pink"
+                        android:onClick="addRecruitNoticeBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:src="@drawable/add"/>
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:src="@drawable/add"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="50dp"
-                android:background="@color/red">
-                <ImageButton
-                    android:background="@color/red"
-                    android:id="@+id/btn_location"
-                    android:onClick="getLocation"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:src="@drawable/home"/>
-                <TextView
-                    android:id="@+id/tv_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="10"
-                    android:layout_gravity="center"
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
-                    android:text=""
-                    android:textSize="15dp" />
+                    android:background="@color/red">
+                    <ImageButton
+                        android:background="@color/red"
+                        android:id="@+id/btn_location"
+                        android:onClick="getLocation"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:src="@drawable/home"/>
+                    <com.example.testremote.ZoomText
+                        android:id="@+id/tv_location"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:layout_gravity="center"
+                        android:ellipsize="marquee"
+                        android:singleLine="true"
+                        android:textColor="@android:color/white"
+                        android:gravity="center"
+                        android:text=""
+                        android:textSize="15dp" />
+
+                    <Spinner
+                        android:background="@drawable/border_white"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:id="@+id/spinner"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
 
             </LinearLayout>
+
             <ListView
                 android:id="@+id/listview"
                 android:layout_width="match_parent"
@@ -87,17 +106,9 @@
                 android:gravity="left"
                 >
             </ListView>
-            <!--<Button-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:id="@+id/createbtn"-->
-            <!--android:background="@color/red"-->
-            <!--android:padding="10dp"-->
-            <!--android:text="Create Club"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
-        </LinearLayout>
 
-    </FrameLayout>
+
+
     <!--<include-->
         <!--layout="@layout/app_bar"-->
         <!--android:id="@+id/app_bar"-->

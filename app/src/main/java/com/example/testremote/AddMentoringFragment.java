@@ -103,10 +103,10 @@ public class AddMentoringFragment extends Fragment {
 
         //스피너 코드
         spinner = (Spinner)syView.findViewById(R.id.spinner);
-        list = new ArrayList<String>();
+        list = new ArrayList<>();
         //dataAdapter = new ArrayAdapter<String>(getActivity(),
         //        android.R.layout.simple_spinner_item, list);
-        dataAdapter = new ArrayAdapter<String>(getActivity(),R.layout.row_spinner, list);
+        dataAdapter = new ArrayAdapter<>(getActivity(),R.layout.row_spinner, list);
         //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(dataAdapter);

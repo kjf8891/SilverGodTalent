@@ -15,7 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,12 +51,19 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     TextView title;
     LatLng cur_loc;
 
+    String selectedArea;
+
+
     //ArrayList<MGroup> items;
     ArrayList<Recruit> items;
     ArrayList<Recruit> sortedItems;
     //MGroupAdapter MGroupAdapter;
     RecruitAdapter RecruitAdapter;
     JSONArray retJson;
+
+    Spinner spinner;
+    ArrayAdapter<String> dataAdapter;
+    ArrayList<String> list;
 
 
     //디비에서 데이터 불러오기, 구인 공고 목록
@@ -64,22 +73,40 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
             Log.e("err","processFinish");
             //Toast.makeText(getApplicationContext(),"processFinish:",Toast.LENGTH_SHORT).show();
             retJson = ret;
-            for(int i = 0 ; i< retJson.length(); i++){
-                JSONObject json = retJson.getJSONObject(i);
-                String title = json.getString("RTitle");
-                String num = json.getString("RNum");
-                String date = json.getString("date");
-                String city = json.getString("city");
-                //위도 경도 여기 있음
-                String latitude = json.getString("latitude");
-                String longitude = json.getString("longitude");
-                //String date = json.getString("date");
-                //String location = json.getString("location");
-                //items.add(new MGroup(title,date,location));
-                items.add(new Recruit(num,title,date,city,latitude,longitude));
-                //   Toast.makeText(getApplicationContext(),"되나:"+area,Toast.LENGTH_SHORT).show();
+            for(int i = 0 ; i< retJson.length(); i++) {
+
+                JSONArray jsonarray = retJson.getJSONArray(i);
+
+                for (int j = 0; j < jsonarray.length(); j++) {
+
+                    JSONObject json = jsonarray.getJSONObject(j);
+
+                    if (json.has("RTitle")) {
+
+                        String title = json.getString("RTitle");
+                        String num = json.getString("RNum");
+                        String date = json.getString("date");
+                        String city = json.getString("city");
+                        //위도 경도 여기 있음
+                        String latitude = json.getString("latitude");
+                        String longitude = json.getString("longitude");
+                        //String date = json.getString("date");
+                        //String location = json.getString("location");
+                        //items.add(new MGroup(title,date,location));
+
+                        items.add(new Recruit(num, title, date, city, latitude, longitude));
+
+                    } else {
+                        String area = json.getString("area");
+
+
+                        list.add(area);
+                    }
+                    //   Toast.makeText(getApplicationContext(),"되나:"+area,Toast.LENGTH_SHORT).show();
+                }
             }
             RecruitAdapter.notifyDataSetChanged();
+            dataAdapter.notifyDataSetChanged();
         }
     });
 
@@ -131,6 +158,29 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         JSONObject tmp =new JSONObject();
         RequestForm req = new RequestForm(url);
         dwTask.execute(req);
+
+
+        spinner = (Spinner)findViewById(R.id.spinner);
+        list = new ArrayList<String>();
+        //dataAdapter = new ArrayAdapter<String>(getActivity(),
+        //        android.R.layout.simple_spinner_item, list);
+        dataAdapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.row_spinner, list);
+        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), "aaaaa"+position, Toast.LENGTH_SHORT).show();
+                selectedArea = list.get(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     public void addRecruitNoticeBtn(View v){
