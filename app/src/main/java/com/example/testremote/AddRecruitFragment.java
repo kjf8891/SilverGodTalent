@@ -33,10 +33,13 @@ public class AddRecruitFragment extends Fragment {
     EditText content;
     EditText date;
     EditText total_num;
+    EditText city;
+    EditText ins_name;
     //EditText area;
     //TextView date;
-    TextView uId;
+    TextView id;
     TextView textView;
+
     String selectedArea;
 
     JSONObject jsonObject;
@@ -74,10 +77,10 @@ public class AddRecruitFragment extends Fragment {
     }
     public void init(){
         //사용자 아이디 불러오기
+        prefs = getActivity().getSharedPreferences("Chat", 0);
 
         textView = (TextView)syView.findViewById(R.id.textView);
-        prefs = getActivity().getSharedPreferences("Chat", 0);
-        completeBtn = (Button)syView.findViewById(R.id.btn_move_W);
+        completeBtn = (Button)syView.findViewById(R.id.completeBtn);
         completeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +93,11 @@ public class AddRecruitFragment extends Fragment {
         content = (EditText)syView.findViewById(R.id.edit_content);
         date = (EditText)syView.findViewById(R.id.edit_date);
         total_num = (EditText)syView.findViewById(R.id.RTotalNum);
+        city = (EditText)syView.findViewById(R.id.RCity);
+        ins_name = (EditText)syView.findViewById(R.id.RInstitution);
+        id = (TextView)syView.findViewById(R.id.recruit_writer_id);
+        String tmp_id11 = prefs.getString("REG_FROM","");
+        id.setText(tmp_id11);
         //area = (EditText)syView.findViewById(R.id.RArea);
         //textView.setText(date.getText().toString());
         //TextView date = (TextView)syView.findViewById(R.id.date);//날짜는 자동으로 받아오기.... 어떻게?
@@ -101,6 +109,7 @@ public class AddRecruitFragment extends Fragment {
         RequestForm req = new RequestForm(url);
         dwTask.execute(req);
 
+        //스피너 코드
         spinner = (Spinner)syView.findViewById(R.id.spinner);
         list = new ArrayList<String>();
         //dataAdapter = new ArrayAdapter<String>(getActivity(),
@@ -136,6 +145,8 @@ public class AddRecruitFragment extends Fragment {
             //jsonObject.put("area",area.getText().toString());
             jsonObject.put("area",selectedArea);
             jsonObject.put("total_num",total_num.getText().toString());
+            jsonObject.put("city",city.getText().toString());
+            jsonObject.put("ins_name",ins_name.getText().toString());
             //Toast.makeText(getActivity(), "date" + date, Toast.LENGTH_SHORT).show();
             //jsonObject.put("id",tmp_id);
             //도시(무슨구,무슨주인지), 위도, 경도, 건물이름(자치센터,주민회관)는 어떻게 넣지?

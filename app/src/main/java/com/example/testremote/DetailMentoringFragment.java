@@ -22,24 +22,32 @@ import org.json.JSONObject;
 
 public class DetailMentoringFragment extends Fragment {
     View syView;
-    Button btn_move_W;
+    //Button btn_move_W;
     Button applyBtn;
     TextView Mnum;
     TextView Mtitle;
     TextView Mcontent;
+    TextView Mleader;
+    TextView Marea;
     TextView Mcity;
-    TextView Mlocation;
+    TextView MttNum;
+    TextView Mdate;
+    //TextView Mlocation;
     TextView textView;
     String Bundle_num;
     JSONArray retJson;
 
-    String title;
     String num;
-    String date;
+    String area;
+    String title;
     String city;
-    String location;
+    String date;
+    String ttNum;
+    //String id;
     String content;
+    //String location;
     String leader;
+    //String institution;
 
 
 
@@ -57,18 +65,25 @@ public class DetailMentoringFragment extends Fragment {
 
             for(int i = 0 ; i< retJson.length(); i++){
                 JSONObject json = retJson.getJSONObject(i);
-                title = json.getString("MTitle");
                 num = json.getString("MNum");
+                area = json.getString("interest");
+                title = json.getString("MTitle");
                 date = json.getString("date");
                 city = json.getString("city");
-                location = json.getString("location");
+                ttNum = json.getString("total_num");
+                //location = json.getString("location");
                 content = json.getString("content");
                 leader = json.getString("leader");
-                Log.d("gffgggggg",title);
-                Toast.makeText(getActivity(),"되나:"+title,Toast.LENGTH_SHORT).show();
+                //Log.d("gffgggggg",title);
+                //Toast.makeText(getActivity(),"되나:"+title,Toast.LENGTH_SHORT).show();
 
                 Mnum.setText(Bundle_num);
+                Marea.setText(area);
                 Mtitle.setText(title);
+                Mcity.setText(city);
+                Mdate.setText(date);
+                MttNum.setText(ttNum);
+                Mleader.setText(leader);
                 Mcontent.setText(content);
             }
             //MGroupAdapter.notifyDataSetChanged();
@@ -81,6 +96,9 @@ public class DetailMentoringFragment extends Fragment {
         return syView;
     }
     public void init(){
+
+        //사용자 아이디 불러오기
+        prefs = getActivity().getSharedPreferences("Chat", 0);
 
         Bundle arguments = this.getArguments();
         Bundle_num = arguments.getString("num");//글번호!!!!
@@ -100,33 +118,49 @@ public class DetailMentoringFragment extends Fragment {
 
         textView = (TextView) syView.findViewById(R.id.textView);
         Mnum = (TextView) syView.findViewById(R.id.Mnum);;
+        Marea = (TextView) syView.findViewById(R.id.MArea);
         Mtitle = (TextView) syView.findViewById(R.id.Mtitle);
+        Mcity = (TextView) syView.findViewById(R.id.Mcity);
+        Mdate = (TextView) syView.findViewById(R.id.Mdate);
+        MttNum = (TextView) syView.findViewById(R.id.MTotalNum);
+        Mleader = (TextView) syView.findViewById(R.id.Mid);
         Mcontent = (TextView) syView.findViewById(R.id.Mcontent);
-        //Mcity = (TextView) syView.findViewById(R.id.Mcity);
-        //Mlocation = (TextView) syView.findViewById(R.id.Mlocation);
-        //Mdate = (TextView) syView.findViewById(R.id.Mdate);
+
         //textView.setText(num);
 //        Mnum.setText(Bundle_num);
 //        Mtitle.setText(title);
 //        Mcontent.setText(content);
 
-        btn_move_W = (Button)syView.findViewById(R.id.btn_move_W);
+        //btn_move_W = (Button)syView.findViewById(R.id.btn_move_W);
         applyBtn = (Button)syView.findViewById(R.id.applyBtn);
-        btn_move_W.setOnClickListener(new View.OnClickListener() {
+        applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                applyM();
+                Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), MentoringActivity.class);
                 startActivity(intent);
+                //finish();
+                //뒤로가기 어케해
             }
         });
-    }
-    public void applyBtn(View v){
-//        Intent intent = new Intent(getActivity(), MentoringActivity.class);
-//        startActivity(intent);
-        applyM();
-        Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
 
+//        btn_move_W.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), MentoringActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
+    //왜안돼
+//    public void applyBtn(View v){
+////        Intent intent = new Intent(getActivity(), MentoringActivity.class);
+////        startActivity(intent);
+//        applyM();
+//        Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
+//
+//    }
 
     public void applyM(){
         InsertDataTask isTask;

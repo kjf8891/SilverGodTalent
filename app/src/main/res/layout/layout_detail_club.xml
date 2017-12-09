@@ -1,160 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/navy"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="50dp">
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:layout_gravity="center"
-            android:background="@color/gray"
-            android:textColor="@android:color/white"
-            android:gravity="center"
-            android:text="[ CLUB DETAIL INFO ]"
-            android:textSize="30dp" />
+    android:fillViewport="true">
 
-    </LinearLayout>
-    <TextView
-        android:id="@+id/test"
-        android:text="test_here is detailWanted//"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/whiteGray"
         android:orientation="vertical"
-        android:layout_margin="15dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/ibory">
+        android:layout_height="match_parent"
+        >
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:orientation="horizontal"
+            android:layout_height="50dp">
             <TextView
-                android:paddingTop="25dp"
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:layout_gravity="center"
+                android:background="@color/gray"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:text="[ CLUB DETAIL INFO ]"
+                android:textSize="30dp" />
+
+        </LinearLayout>
+        <!--<TextView-->
+        <!--android:id="@+id/test"-->
+        <!--android:text="test_here is detailWanted//"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="Club Notice Num"
+                    android:textColor="@android:color/black"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/Cnum"
+                    android:textColor="@android:color/black"
+                    android:text="000"
+                    android:textSize="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <TextView
+                android:text="Club Area"
+                android:paddingTop="10dp"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="Club Num"
-                android:textColor="@android:color/black"
-                android:gravity="left"
                 android:textStyle="bold"
                 android:textSize="25dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/Cnum"
                 android:textColor="@android:color/black"
-                android:text="000"
-                android:textSize="20dp"
+                android:gravity="left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <TextView
-            android:paddingTop="25dp"
-            android:paddingLeft="15dp"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:text="Club Title"
-            android:textColor="@android:color/black"
-            android:gravity="left"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:backgroundTint="@android:color/transparent"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:textColor="@android:color/black"
-            android:id="@+id/Ctitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Enter"/>
-        <TextView
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:paddingTop="25dp"
-            android:paddingLeft="15dp"
-            android:text="ID/Writer(institution)"
-            android:gravity="left"
-            android:textColor="@android:color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:textSize="20dp"
-            android:textColor="@android:color/black"
-            android:gravity="center"
-            android:id="@+id/recruit_writer_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="writerID_test"/>
-    <TextView
-        android:textStyle="bold"
-        android:textSize="25dp"
-        android:paddingTop="25dp"
-        android:paddingLeft="15dp"
-        android:text="Content"
-        android:textColor="@android:color/black"
-        android:gravity="left"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:backgroundTint="@android:color/transparent"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
-        android:id="@+id/Ccontent"
-        android:textColor="@android:color/black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="Enter\n\n\n\n"/>
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/Carea"
+                android:backgroundTint="@android:color/transparent"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="Enter"/>
 
-        <Button
-            android:id="@+id/applyBtn"
-            android:layout_marginRight="10dp"
-            android:onClick="applyBtn"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <TextView
+                android:text="Club Notice Title"
+                android:paddingTop="10dp"
+                android:paddingLeft="15dp"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:textColor="@android:color/black"
+                android:gravity="left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/Ctitle"
+                android:backgroundTint="@android:color/transparent"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="Enter"/>
+
+            <TextView
+                android:text="City"
+                android:paddingTop="10dp"
+                android:paddingLeft="15dp"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:textColor="@android:color/black"
+                android:gravity="left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/Ccity"
+                android:text="city"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:text="Club Date"
+                android:paddingTop="10dp"
+                android:paddingLeft="15dp"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:textColor="@android:color/black"
+                android:gravity="left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/Cdate"
+                android:backgroundTint="@android:color/transparent"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="Enter"/>
+
+            <TextView
+                android:text="Club Total Num"
+                android:paddingTop="10dp"
+                android:paddingLeft="15dp"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:textColor="@android:color/black"
+                android:gravity="left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/CTotalNum"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="Enter"/>
+
+            <TextView
+                android:text="ID/Writer(institution)"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="15dp"
+                android:gravity="left"
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/Cid"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textSize="20dp"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="writerID_test"/>
+            <TextView
+                android:text="Content"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="15dp"
+                android:textColor="@android:color/black"
+                android:gravity="left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/Ccontent"
+                android:backgroundTint="@android:color/transparent"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="Enter\n\n\n\n"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:background="@color/gray"
-            android:text="APPLY"/>
-        <Button
-            android:id="@+id/btn_move_W"
-            android:layout_marginLeft="10dp"
-            android:onClick="applyBtn"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:background="@color/gray"
-            android:text="LIST"/>
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/applyBtn"
+                android:onClick="applyBtn"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="20dp"
+                android:textColor="@android:color/white"
+                android:background="@color/gray"
+                android:text="APPLY"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

@@ -22,7 +22,6 @@ import org.json.JSONObject;
 
 public class DetailRecruitFragment extends Fragment {
     View syView;
-    Button btn_move_W;
     Button applyBtn;
 
     //TextView textView;
@@ -32,19 +31,28 @@ public class DetailRecruitFragment extends Fragment {
     TextView Rcity;
     TextView Rlocation;
     TextView textView;
+    TextView RArea;
+    TextView RWorkingCity;
+    TextView RWorkingDate;
+    TextView RTotalNum;
+    TextView RWriter;
 
     String Bundle_num;
     JSONArray retJson;
     //String num;
 
-    String title;
     String num;
-    String date;
+    String area;
+    String title;
     String city;
-    //String location;
+    String date;
+    String ttNum;
+    //String id;
     String content;
+    //String location;
     //String leader;
     String institution;
+
 
 
     JSONObject jsonObject;
@@ -60,19 +68,26 @@ public class DetailRecruitFragment extends Fragment {
             retJson = ret;
             for(int i = 0 ; i< retJson.length(); i++){
                 JSONObject json = retJson.getJSONObject(i);
-                title = json.getString("RTitle");
                 num = json.getString("RNum");
-                date = json.getString("date");
+                area = json.getString("interest");
+                title = json.getString("RTitle");
                 city = json.getString("city");
-                //location = json.getString("location");
+                date = json.getString("date");
+                ttNum = json.getString("total_num");
                 content = json.getString("content");
+                //location = json.getString("location");
                 institution = json.getString("institution");
                 //leader = json.getString("leader");
-                Log.d("gffgggggg",title);
+                //Log.d("gffgggggg",title);
                 Toast.makeText(getActivity(),"되나:"+title,Toast.LENGTH_SHORT).show();
 
-                Rnum.setText(Bundle_num);
+                Rnum.setText(num);
+                RArea.setText(area);
                 Rtitle.setText(title);
+                RWorkingCity.setText(city);
+                RWorkingDate.setText(date);
+                RTotalNum.setText(ttNum);
+                RWriter.setText(institution);
                 Rcontent.setText(content);
             }
             //MGroupAdapter.notifyDataSetChanged();
@@ -85,9 +100,14 @@ public class DetailRecruitFragment extends Fragment {
         return syView;
     }
     public void init(){
+        //사용자 아이디 불러오기
+        prefs = getActivity().getSharedPreferences("Chat", 0);
 
         Bundle arguments = this.getArguments();
         Bundle_num = arguments.getString("num");//글번호!!!!
+
+        textView = (TextView) syView.findViewById(R.id.textView);
+
 
         String url = "http://13.124.85.122:52273/findRInfo";
         //초기화
@@ -102,28 +122,39 @@ public class DetailRecruitFragment extends Fragment {
             e.printStackTrace();
         }
 
-        textView = (TextView) syView.findViewById(R.id.textView);
-
-        Rnum = (TextView) syView.findViewById(R.id.Rnum);;
+        Rnum = (TextView) syView.findViewById(R.id.Rnum);
+        RArea = (TextView) syView.findViewById(R.id.RArea);
         Rtitle = (TextView) syView.findViewById(R.id.Rtitle);
+        RWorkingCity = (TextView) syView.findViewById(R.id.RWorkingCity);
+        RWorkingDate = (TextView) syView.findViewById(R.id.RWorkingDate);
+        RTotalNum = (TextView) syView.findViewById(R.id.RTotalNum);
+        RWriter = (TextView) syView.findViewById(R.id.recruit_writer_id);
         Rcontent = (TextView) syView.findViewById(R.id.Rcontent);
+        //현재 로그인정보 =! 글쓴이 정보 여기 조심하기
+        //String tmp_id11 = prefs.getString("REG_FROM","");
+        //RWriter.setText(tmp_id11);
+
         //textView.setText(num);
-        btn_move_W = (Button)syView.findViewById(R.id.btn_move_W);
         applyBtn = (Button)syView.findViewById(R.id.applyBtn);
-        btn_move_W.setOnClickListener(new View.OnClickListener() {
+        applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                applyR();
+                Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), RecruitActivity.class);
                 startActivity(intent);
+                //finish();
+                //뒤로가기 어케해
             }
         });
     }
-    public void applyBtn(View v){
-        applyR();
-        Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
-        //Intent intent = new Intent(getActivity(), RecruitActivity.class);
-        //finish();
-    }
+    //왜 안먹지ㅠㅠㅠ
+//    public void applyBtn(View v){
+//        //applyR();
+//        Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
+//        //Intent intent = new Intent(getActivity(), RecruitActivity.class);
+//        //finish();
+//    }
     public void applyR(){
         InsertDataTask isTask;
         try {

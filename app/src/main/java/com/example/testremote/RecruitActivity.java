@@ -75,7 +75,7 @@ public class RecruitActivity extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.listview);
 
         items = new ArrayList<Recruit>();
-//        items.add(new Recruit("1","userID1","Content1","Title1","2017-03-03"));
+        //items.add(new Recruit("1","userID1","Content1","Title1","2017-03-03"));
 //        items.add(new Recruit("2","userID2","content2","Special Dancing Practice","2017-12-02"));
 //        items.add(new Recruit("3","한자를 공부합시다","2017-10-23","금천구","2017-12-02"));
 //        items.add(new Recruit("4","노래! 어렵지 않아요~","2017-08-31","강남구","2017-12-02"));

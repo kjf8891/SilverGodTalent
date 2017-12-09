@@ -15,6 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -30,7 +32,6 @@ public class ClubActivity extends AppCompatActivity {
     Button createbtn;
     JSONArray retJson;
 
-
     DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
         @Override
         public void processFinish(JSONArray ret) throws JSONException {
@@ -43,22 +44,20 @@ public class ClubActivity extends AppCompatActivity {
                 JSONObject json = retJson.getJSONObject(i);
                 String title = json.getString("CTitle");
                 String num = json.getString("CNum");
-                //String date = json.getString("date");
-                //될까?
-                //Date date = (Date) json.get("date");
+                String dateString = json.getString("date");
+                //club 테이블에 날짜가 date type이라서 필요한 코드
+                String[] separated = dateString.split("T");
                 String city = json.getString("city");
                 //String date = json.getString("date");
                 //String location = json.getString("location");
                 //items.add(new MGroup(title,date,location));
-                //items.add(new Club(num,title,date.toString(),city));
-                items.add(new Club(num,title,city));
-                //   Toast.makeText(getApplicationContext(),"되나:"+area,Toast.LENGTH_SHORT).show();
+                items.add(new Club(num,title,separated[0],city));
+                //items.add(new Club(num,title,city));
+                //Toast.makeText(getApplicationContext(),"되나:"+dateString+separated[0],Toast.LENGTH_SHORT).show();
             }
             ClubAdapter.notifyDataSetChanged();
         }
     });
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +73,6 @@ public class ClubActivity extends AppCompatActivity {
         //items.add(new MGroup("1","test study","2017-11-20","test"));
 //        items2.add(new MGroup("2","Funny tennis Practicing","2017-02-02","Amsterdam"));
 //        items2.add(new MGroup("3","Let's study mathmatics","2018-11-23","Rotterdam"));
-//        items2.add(new MGroup("4","노래! 어렵지 않아요~","2017-08-31","강남구"));
-//        items2.add(new MGroup("5","다함께 배드민턴","2017-09-03","광진구"));
-//        items2.add(new MGroup("6","빠르게 배우는 바둑교실","2017-11-22","성북구"));
         ClubAdapter = new ClubAdapter(getApplicationContext(),R.layout.row_club,items);
         listView.setAdapter(ClubAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
