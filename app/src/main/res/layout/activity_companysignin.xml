@@ -1,0 +1,176 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    tools:context="com.example.testremote.CompanySignInActivity">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="50dp"
+            android:background="@color/red">
+            <ImageButton
+                android:background="@color/red"
+                android:id="@+id/homeBtn"
+                android:onClick="homeBtn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:src="@drawable/home"/>
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:layout_gravity="center"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:text="[ SIGN IN ]"
+                android:textSize="30dp" />
+
+            <ImageButton
+                android:visibility="invisible"
+                android:background="@color/red"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:src="@drawable/add"/>
+        </LinearLayout>
+
+
+    <TableLayout
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/signin_id"
+                />
+
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/signin_nickname"
+                android:hint="nickname"
+                />
+            <ImageButton
+                android:layout_weight="1"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:id="@+id/btn_nickname"
+                android:onClick="callSTT"
+                android:scaleType="fitCenter"
+                android:background="@drawable/mic_btn"
+
+                />
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/signin_pw"
+                android:hint="password"
+                />
+            <ImageButton
+                android:layout_weight="1"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:id="@+id/btn_pw"
+                android:onClick="callSTT"
+                android:background="@drawable/mic_btn"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/signin_name"
+                android:hint="name"
+                />
+            <ImageButton
+                android:layout_weight="1"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:id="@+id/btn_name"
+                android:onClick="callSTT"
+                android:background="@drawable/mic_btn"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp">
+
+            <com.example.testremote.ZoomText
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="1"
+                android:clickable="true"
+                android:id="@+id/signin_location"
+                android:hint="Location"
+                android:focusable="true"
+
+
+                />
+            <ImageButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:id="@+id/btn_location"
+                android:onClick="searchLocation"
+                android:background="@drawable/mic_btn"
+                />
+        </TableRow>
+
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/pink"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_next"
+            android:text="done"
+            />
+        <Button
+            android:background="@color/pink"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_cancel"
+            android:text="cancel"
+            />
+
+    </TableLayout>
+</LinearLayout>

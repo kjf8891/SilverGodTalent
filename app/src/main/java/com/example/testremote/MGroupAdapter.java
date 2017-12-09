@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,12 +33,27 @@ public class MGroupAdapter extends ArrayAdapter<MGroup>{
             LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v=layoutInflater.inflate(R.layout.row_lec,parent,false);
         }
+
+        final View tmpView = v;
+
         MGroup getItem = items.get(position);
-        if(getItem!=null){
-            TextView lec_num = (TextView)v.findViewById(R.id.lec_num);
-            TextView lec_title = (TextView)v.findViewById(R.id.lec_title);
-            TextView lec_city = (TextView)v.findViewById(R.id.lec_city);
-            TextView lec_date = (TextView)v.findViewById(R.id.lec_date);
+        if (getItem != null) {
+            TextView lec_num = (TextView) v.findViewById(R.id.lec_num);
+            ZoomText lec_title = (ZoomText) v.findViewById(R.id.lec_title);
+            ZoomText lec_city = (ZoomText) v.findViewById(R.id.lec_city);
+            ZoomText lec_date = (ZoomText) v.findViewById(R.id.lec_date);
+            ImageView lec_btn = (ImageView)v.findViewById(R.id.lec_btn);
+//            final View finalV = v;
+//            lec_title.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    TextView t = (TextView) view;
+//
+//                    Log.e("view",t.getText().toString());
+//                    finalV.performClick();
+//                }
+//            });
+            // ImageView lec_img = (ImageView)v.findViewById(R.id.lec_img);
 
             lec_num.setText(getItem.getMentoringNum());
             lec_title.setText(getItem.getMentoringTitle());

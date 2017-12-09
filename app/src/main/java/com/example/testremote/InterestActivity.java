@@ -59,16 +59,24 @@ public class InterestActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(),"processFinish:",Toast.LENGTH_SHORT).show();
             retJson = ret;
 
+
+
+
+
             for(int i = 0 ; i< retJson.length(); i++){
 
                 JSONObject json = retJson.getJSONObject(i);
+
                 String area = json.getString("area");
 
                 isChecked.add(false);
                 myDataset.add(new InterestData(area));
+
                 //   Toast.makeText(getApplicationContext(),"되나:"+area,Toast.LENGTH_SHORT).show();
             }
+
             mAdapter.notifyDataSetChanged();
+
         }
     });
 
@@ -90,10 +98,13 @@ public class InterestActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         init();
 
         mRecyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
+
         mRecyclerView.setHasFixedSize(true);
+
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -126,6 +137,8 @@ public class InterestActivity extends AppCompatActivity {
 
 
         mRecyclerView.setAdapter(mAdapter);
+
+
     }
 
     private class Login extends AsyncTask<String, String, JSONObject> {
@@ -148,6 +161,8 @@ public class InterestActivity extends AppCompatActivity {
 
             JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/login",params);
             return jObj;
+
+
         }
         @Override
         protected void onPostExecute(JSONObject json) {
@@ -204,7 +219,9 @@ public class InterestActivity extends AppCompatActivity {
 
 
         dwTask.execute(req);
+
         complete = (Button)findViewById(R.id.complete);
+
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,24 +265,10 @@ public class InterestActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        InsertDataTask insertTask = new InsertDataTask(userinfo);
+                InsertDataTask insertTask = new InsertDataTask();
 
-        url = "http://13.124.85.122:52273/pushData";
-        req = new RequestForm(url);
-
-//                for ( int i = 0; i <interests.length(); i++){
-//                    JSONObject json = interests.getJSONObject(i);
-//
-//                    if(json.has("ID"))
-//                        id = json.getString("ID");
-//                    if(json.has("PW"))
-//                        name = json.getString("PW");
-//                    if(json.has("Name"))
-//                        quantity = json.getString("Name");
-//                    if(json.has("no"))
-//                        no = json.getInt("no");
-//                    if(json.has("area"))
-//                        area = json.getString("area");
+                url = "http://13.124.85.122:52273/pushData";
+                req = new RequestForm(url,userinfo);
 
 
         insertTask.execute(req);
@@ -279,6 +282,7 @@ public class InterestActivity extends AppCompatActivity {
         finish();
 
     }
+
 
     public void selInterest(View v){
 

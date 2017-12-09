@@ -382,7 +382,7 @@ public class SignInActivity extends AppCompatActivity {
             phoneNumber= PhoneNumberUtils.formatNumberToE164(phoneNumber,t.getNetworkCountryIso().toUpperCase());
             Toast.makeText(getApplicationContext(),phoneNumber,Toast.LENGTH_SHORT).show();
             id.setText(phoneNumber);
-            id.setEnabled(false);
+            //id.setEnabled(false);
         }
     }
 

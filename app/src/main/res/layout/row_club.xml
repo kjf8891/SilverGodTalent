@@ -1,59 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="130dp"
     android:orientation="horizontal"
-    android:background="@color/navy"
     android:layout_gravity="center"
-    android:gravity="center"
-    >
-    <TableRow
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:background="@color/ibory"
+    android:padding="0dp"
+    android:layout_margin="0dp"
+    android:gravity="center">
+    <LinearLayout
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        android:background="@drawable/border_white_gray"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
-
         <TextView
-            android:id="@+id/wanted_num"
+            android:id="@+id/club_num"
             android:textSize="25dp"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="글번호"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_gravity="left"
-            android:gravity="left">
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
             <TextView
-                android:id="@+id/wanted_title"
-                android:textSize="29dp"
+                android:id="@+id/club_title"
+                android:textSize="30dp"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:text="글 제목"/>
             <TextView
-                android:id="@+id/wanted_writer"
+                android:id="@+id/club_date"
                 android:textSize="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:text="글쓴이"/>
+                android:text="날짜"/>
             <TextView
-                android:id="@+id/wanted_date"
+                android:id="@+id/club_city"
                 android:textSize="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:text="작성일자"/>
+                android:text="시도/구"/>
         </LinearLayout>
 
 
-    </TableRow>
-</TableLayout>
+    </LinearLayout>
+
+</LinearLayout>

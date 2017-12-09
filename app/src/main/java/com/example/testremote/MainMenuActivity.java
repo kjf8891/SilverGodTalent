@@ -25,6 +25,7 @@ import java.util.List;
 public class MainMenuActivity extends AppCompatActivity {
 
 
+    Button gotoMyPageMenuBtn, gotoRecruitMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn;
     SharedPreferences prefs;
     List<NameValuePair> params;
 
@@ -53,9 +54,10 @@ public class MainMenuActivity extends AppCompatActivity {
     public void init(){
 
         gotoMyPageMenuBtn = (Button) findViewById(R.id.gotoMyPageMenuBtn);
-        gotoWantedMenuBtn = (Button)findViewById(R.id.gotoWantedMenuBtn);
-        gotoMentoringMenuBtn = (Button)findViewById(R.id.gotoMentoringMenuBtn);
-        gotoClubMenuBtn = (Button)findViewById(R.id.gotoClubMenuBtn);
+        gotoRecruitMenuBtn = (Button) findViewById(R.id.gotoRecruitMenuBtn);
+        gotoMentoringMenuBtn = (Button) findViewById(R.id.gotoMentoringMenuBtn);
+        gotoClubMenuBtn = (Button) findViewById(R.id.gotoClubMenuBtn);
+
 
         prefs = getApplicationContext().getSharedPreferences("Chat", 0);
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
@@ -149,7 +151,7 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
-    public void gotoWantedMenu(View v){
+    public void gotoRecruitMenu(View v){
 //        FragmentManager fragmentManager = getFragmentManager();
 //        fragmentManager.beginTransaction()
 //                .replace(R.id.frameLayout,new Fragment_lecture())

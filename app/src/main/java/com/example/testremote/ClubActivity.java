@@ -4,13 +4,21 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by seyeon on 2017-10-30.
@@ -18,10 +26,38 @@ import java.util.ArrayList;
 
 public class ClubActivity extends AppCompatActivity {
 
-    ArrayList<MGroup> items;
+    ArrayList<Club> items;
     ListView listView;
-    MGroupAdapter MGroupAdapter;
+    ClubAdapter ClubAdapter;
     Button createbtn;
+    JSONArray retJson;
+
+    DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
+        @Override
+        public void processFinish(JSONArray ret) throws JSONException {
+
+            Log.e("err","processFinish");
+            //Toast.makeText(getApplicationContext(),"processFinish:",Toast.LENGTH_SHORT).show();
+            retJson = ret;
+
+            for(int i = 0 ; i< retJson.length(); i++){
+                JSONObject json = retJson.getJSONObject(i);
+                String title = json.getString("CTitle");
+                String num = json.getString("CNum");
+                String dateString = json.getString("date");
+                //club 테이블에 날짜가 date type이라서 필요한 코드
+                String[] separated = dateString.split("T");
+                String city = json.getString("city");
+                //String date = json.getString("date");
+                //String location = json.getString("location");
+                //items.add(new MGroup(title,date,location));
+                items.add(new Club(num,title,separated[0],city));
+                //items.add(new Club(num,title,city));
+                //Toast.makeText(getApplicationContext(),"되나:"+dateString+separated[0],Toast.LENGTH_SHORT).show();
+            }
+            ClubAdapter.notifyDataSetChanged();
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,35 +67,38 @@ public class ClubActivity extends AppCompatActivity {
     }
 
     void init(){
-        items = new ArrayList<MGroup>();
-        listView = (ListView)findViewById(R.id.listview);
+        items = new ArrayList<Club>();
+        listView = (ListView)findViewById(R.id.listview_club);
         //createbtn = (Button)findViewById(R.id.createbtn);
-        items.add(new MGroup("1","English Chocolate study","2017-11-20","Rotterdam"));
-        items.add(new MGroup("2","Funny tennis Practicing","2017-02-02","Amsterdam"));
-        items.add(new MGroup("3","Let's study mathmatics","2018-11-23","Rotterdam"));
-        items.add(new MGroup("4","노래! 어렵지 않아요~","2017-08-31","강남구"));
-        items.add(new MGroup("5","다함께 배드민턴","2017-09-03","광진구"));
-        items.add(new MGroup("6","빠르게 배우는 바둑교실","2017-11-22","성북구"));
-        MGroupAdapter = new MGroupAdapter(getApplicationContext(),R.layout.row_lec,items);
-        listView.setAdapter(MGroupAdapter);
-
+        //items.add(new MGroup("1","test study","2017-11-20","test"));
+//        items2.add(new MGroup("2","Funny tennis Practicing","2017-02-02","Amsterdam"));
+//        items2.add(new MGroup("3","Let's study mathmatics","2018-11-23","Rotterdam"));
+        ClubAdapter = new ClubAdapter(getApplicationContext(),R.layout.row_club,items);
+        listView.setAdapter(ClubAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MGroup item = (MGroup) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(), item.getMentoringNum().toString(), Toast.LENGTH_LONG).show();
+                Club item = (Club) parent.getItemAtPosition(position);
+                Toast.makeText(getApplicationContext(), item.getClubNum().toString(), Toast.LENGTH_LONG).show();
                 FragmentManager fragmentManager = getFragmentManager();
                 Bundle bundle = new Bundle(1);
-                bundle.putString("num",item.getMentoringNum().toString());
+                bundle.putString("num",item.getClubNum().toString());
 
                 DetailClubFragment fragment = new DetailClubFragment();
                 fragment.setArguments(bundle);
                 fragmentManager.beginTransaction()
+                        .addToBackStack(null)
                         .replace(R.id.frameLayout,fragment)
                         .commit();
 
             }
         });
+        String url = "http://13.124.85.122:52273/getCList";
+        //초기화
+
+        JSONObject tmp =new JSONObject();
+        RequestForm req = new RequestForm(url);
+        dwTask.execute(req);
     }
 
     public void addClubBtn(View v){
@@ -67,11 +106,23 @@ public class ClubActivity extends AppCompatActivity {
         //startActivity(intent);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.frameLayout,new AddClubFragment())
                 .commit();
     }
     public void homeBtn(View v){
         Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
-        startActivity(intent);
+        //startActivity(intent);
+        finish();
+    }
+    public void onBackPressed() {
+        //super.onBackPressed();
+        int count = getFragmentManager().getBackStackEntryCount();
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 }

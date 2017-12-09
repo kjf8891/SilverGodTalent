@@ -14,23 +14,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-
-
             <Button
-                android:id="@+id/gotoMyPageMenuBtn"
-                android:onClick="gotoMyPageMenu"
+                android:id="@+id/gotoHelpMenuBtn"
+                android:onClick="gotoHelpMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/mypage"/>
+                android:background="@drawable/help"/>
             <Button
-                android:id="@+id/gotoWantedMenuBtn"
-                android:onClick="gotoWantedMenu"
+                android:id="@+id/gotoRecruitMenuBtn"
+                android:onClick="gotoRecruitMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/wanted"/>
+                android:background="@drawable/recruit"/>
             <Button
                 android:id="@+id/gotoMentoringMenuBtn"
                 android:onClick="gotoMentoringMenu"
@@ -46,11 +43,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/club"/>
             <Button
-                android:onClick="nothing"
+                android:id="@+id/gotoMyPageMenuBtn"
+                android:onClick="gotoMyPageMenuBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/sgt"/>
+                android:background="@drawable/mypage"/>
         </LinearLayout>
 
 
