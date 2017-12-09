@@ -57,6 +57,8 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     //ArrayList<MGroup> items;
     ArrayList<Recruit> items;
     ArrayList<Recruit> sortedItems;
+    ArrayList<Recruit> originItems;
+
     //MGroupAdapter MGroupAdapter;
     RecruitAdapter RecruitAdapter;
     JSONArray retJson;
@@ -173,6 +175,8 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getApplicationContext(), "aaaaa"+position, Toast.LENGTH_SHORT).show();
                 selectedArea = list.get(position).toString();
+
+                showInterestedItems();
             }
 
             @Override
@@ -180,8 +184,10 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 
             }
         });
-
+        originItems = items;
     }
+
+
 
     public void addRecruitNoticeBtn(View v){
         FragmentManager fragmentManager = getFragmentManager();
@@ -315,6 +321,8 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
             Log.e("distances",i+" : "+distances[i]);
 
         }
+
+
         items = sortedItems;
 
         RecruitAdapter.notifyDataSetChanged();
@@ -362,52 +370,17 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     }
 
 
-//    public int partition(double arr[], int left, int right) {
-//
-//        double pivot = arr[(left + right) / 2];
-//
-//        while (left <= right) {
-//            Log.e("while","dd");
-//
-//            while ((arr[left] <= pivot) && (left < right)) {
-//                left++;
-//                Log.e("left","dd");
-//
-//            }
-//            while ((arr[right] > pivot) && (left < right)) {
-//                right--;
-//                Log.e("right","dd");
-//
-//            }
-//            if (left < right) {
-//                double temp = arr[left];
-//                arr[left] = arr[right];
-//                arr[right] = temp;
-//
-////                Recruit rTmp = sortedItems.get(left);
-////                sortedItems.set(left,sortedItems.get(right));
-////                sortedItems.set(right,rTmp);
-//            }
-//        }
-//
-//        return left;
-//    }
-//
-//    public void quickSort(double arr[], int left, int right) {
-//
-//        if (left < right) {
-//            int pivotNewIndex = partition(arr, left, right);
-//
-//            Log.e("pre","dd");
-//            quickSort(arr, left, pivotNewIndex - 1);
-//            Log.e("middle","dd");
-//
-//            quickSort(arr, pivotNewIndex + 1, right);
-//            Log.e("end","dd");
-//
-//        }
-//
-//
-//    }
+    void showInterestedItems(){
 
+        for(int i = 0 ; i < originItems.size() ; i ++){
+
+          //  if(items.get(i))
+
+        }
+
+        items = sortedItems;
+
+        RecruitAdapter.notifyDataSetChanged();
+
+    }
 }
