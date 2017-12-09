@@ -99,7 +99,6 @@ public class UserActivity extends Activity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
             ListAdapter adapter = new SimpleAdapter(getApplicationContext(), users,
                     R.layout.user_list_single,

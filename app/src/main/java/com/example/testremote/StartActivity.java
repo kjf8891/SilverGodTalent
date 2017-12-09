@@ -102,7 +102,7 @@ public class StartActivity extends AppCompatActivity {
 //                startActivity(intent);
 
                 startActivity(intent);
-
+                finish();
             }
         }, 2000);
     }

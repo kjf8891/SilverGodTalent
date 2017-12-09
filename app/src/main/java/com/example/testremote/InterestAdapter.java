@@ -18,15 +18,15 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
    // private View.OnClickListener mClickListener = new MyOnClickListener;
    // private final View.OnClickListener mOnClickListener = new InterestActivity.RecyclerOnClickListener();
 
+
+
     public interface OnItemClickListener{
         public void OnItemClick(View view, int position);
     }
 
     private OnItemClickListener mItemClickListener;
 
-
     public InterestAdapter(ArrayList<InterestData> myDataset,OnItemClickListener ItemClickListener){
-
         mDataset = myDataset;
         this.mItemClickListener = ItemClickListener;
     }
@@ -34,8 +34,6 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         View view;
-
-
         public ToggleButton mBtn1;
       //  public ToggleButton mBtn2;
 
@@ -46,15 +44,8 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
            mBtn1 = (ToggleButton)view.findViewById(R.id.toggle1);
         //    mBtn2 = (ToggleButton)view.findViewById(R.id.toggle2);
 
-
-
         }
-
     }
-
-
-
-
 
     @Override
     public InterestAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,11 +53,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.interest_view,parent,false);
 
         ViewHolder vh = new ViewHolder(v);
-
-
-
         return vh;
-
     }
 
     @Override
@@ -86,6 +73,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
             }
         });
 
+
 //        holder.mBtn2.setText(mDataset.get(position).area);
 //        holder.mBtn2.setTextOn(mDataset.get(position).area);
 //        holder.mBtn2.setTextOff(mDataset.get(position).area);
@@ -95,8 +83,6 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
     public int getItemCount() {
         return mDataset.size();
     }
-
-
 }
 
 interface MyOnClickListener{

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
@@ -6,7 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/navy"
+    android:background="@color/white"
     tools:context="com.example.testremote.MainActivity">
 
     <LinearLayout
@@ -51,21 +53,84 @@
                 android:src="@drawable/add"/>
         </LinearLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+
         <LinearLayout
-            android:onClick="myclass"
+            android:nestedScrollingEnabled="true"
             android:id="@+id/lay_mypagelist"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ListView
-                android:id="@+id/list_mypagelistclass"
+            <TextView
+                android:id="@+id/mypagelist_club_txt"
+                android:text="Club Activity"
+                android:textSize="30sp"
+                android:gravity="center"
+                android:textColor="#000000"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" />
+
+            <ListView
+                android:id="@+id/mypagelistclass_club"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
             </ListView>
+
+            <TextView
+                android:id="@+id/mypagelist_mentoring_txt"
+                android:text="Mentoring Page"
+                android:textSize="30sp"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ListView
+
+                android:id="@+id/mypagelistclass_mentoring"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+            </ListView>
+
+            <TextView
+                android:id="@+id/mypagelist_lec_txt"
+                android:text="Recruit Page"
+                android:textSize="30sp"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ListView
+                android:id="@+id/mypagelistclass_lec"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+            </ListView>
+
+            <TextView
+                android:id="@+id/mypagelist_wait_txt"
+                android:text="Waitting Recruitng"
+                android:textSize="30sp"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ListView
+                android:id="@+id/mypagelistclass_wait"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+            </ListView>
+
+
 
         </LinearLayout>
 
+        </ScrollView>
         <!--<Button-->
         <!--android:textColor="@android:color/white"-->
         <!--android:id="@+id/createbtn"-->
@@ -75,6 +140,7 @@
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content" />-->
     </LinearLayout>
+
 
 
 

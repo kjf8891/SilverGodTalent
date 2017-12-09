@@ -51,6 +51,8 @@
         <activity android:name=".SecondActivity"></activity>
         <activity android:name=".SignInTypeActivity"></activity>
         <activity android:name=".CompanySignInActivity"></activity>
+        <activity android:name=".BulletinWriteActivity"></activity>
+
         <activity
             android:name=".MainMenuActivity"
             android:theme="@style/AppTheme.NoActionBar">

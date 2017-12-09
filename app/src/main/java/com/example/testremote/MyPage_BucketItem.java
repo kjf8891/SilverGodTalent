@@ -7,10 +7,12 @@ package com.example.testremote;
 public class MyPage_BucketItem {
     String title;
     String date;
+    String content;
 
-    public MyPage_BucketItem(String title, String date){
+    public MyPage_BucketItem(String title, String date, String content){
         this.title = title;
         this.date = date;
+        this.content = content;
     }
 
     public String getTitle(){
@@ -28,4 +30,5 @@ public class MyPage_BucketItem {
     public void setDate(String date){
         this.date = date;
     }
+
 }
