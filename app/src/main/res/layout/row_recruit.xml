@@ -14,14 +14,14 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-        <TextView
-            android:id="@+id/recruit_num"
-            android:textSize="25dp"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="글번호"
-            android:textColor="@android:color/black" />
+        <!--<TextView-->
+            <!--android:id="@+id/recruit_num"-->
+            <!--android:textSize="25dp"-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="center"-->
+            <!--android:text="글번호"-->
+            <!--android:textColor="@android:color/black" />-->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                 android:textColor="@android:color/black"
                 android:text="글 제목"/>
             <TextView
-                android:id="@+id/workingDate"
+                android:id="@+id/recruit_date"
                 android:textSize="30dp"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
                 <!--android:textColor="@android:color/black"-->
                 <!--android:text="기관"/>-->
             <TextView
-                android:id="@+id/recruit_date"
+                android:id="@+id/recruit_city"
                 android:textSize="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

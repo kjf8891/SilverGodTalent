@@ -34,15 +34,15 @@ public class ClubAdapter extends ArrayAdapter<Club>{
         }
         Club getItem = items.get(position);
         if(getItem!=null){
-            TextView lec_num = (TextView)v.findViewById(R.id.lec_num);
-            TextView lec_title = (TextView)v.findViewById(R.id.lec_title);
-            TextView lec_city = (TextView)v.findViewById(R.id.lec_city);
-            TextView lec_date = (TextView)v.findViewById(R.id.lec_date);
+            TextView club_num = (TextView)v.findViewById(R.id.club_num);
+            TextView club_title = (TextView)v.findViewById(R.id.club_title);
+            TextView club_city = (TextView)v.findViewById(R.id.club_city);
+            TextView club_date = (TextView)v.findViewById(R.id.club_date);
 
-            lec_num.setText(getItem.getClubNum());
-            lec_title.setText(getItem.getClubTitle());
-            lec_city.setText(getItem.getClubCity());
-            lec_date.setText(getItem.getClubDate());
+            club_num.setText(getItem.getClubNum());
+            club_title.setText(getItem.getClubTitle());
+            club_city.setText(getItem.getClubCity());
+            club_date.setText(getItem.getClubDate());
         }
         return v;
     }

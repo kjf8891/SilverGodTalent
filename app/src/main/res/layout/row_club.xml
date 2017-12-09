@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
         <TextView
-            android:id="@+id/lec_num"
+            android:id="@+id/club_num"
             android:textSize="25dp"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical">
             <TextView
-                android:id="@+id/lec_title"
+                android:id="@+id/club_title"
                 android:textSize="30dp"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
@@ -35,19 +35,19 @@
                 android:textColor="@android:color/black"
                 android:text="글 제목"/>
             <TextView
-                android:id="@+id/lec_date"
+                android:id="@+id/club_date"
+                android:textSize="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="날짜"/>
+            <TextView
+                android:id="@+id/club_city"
                 android:textSize="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:text="시도/구"/>
-            <TextView
-                android:id="@+id/lec_city"
-                android:textSize="25dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:text="강의날짜"/>
         </LinearLayout>
 
 

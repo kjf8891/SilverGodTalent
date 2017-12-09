@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 public class DetailClubFragment extends Fragment {
     View syView;
-    Button btn_move_W;
+    //Button btn_move_W;
     Button applyBtn;
     //TextView textView;
     //String num;
@@ -30,18 +30,29 @@ public class DetailClubFragment extends Fragment {
     TextView Ctitle;
     TextView Ccontent;
     TextView Ccity;
-    TextView Clocation;
+    //TextView Clocation;
+    TextView Carea;
+    TextView Cdate;
+    TextView CttNum;
+    TextView Cleader;
+
+
     TextView textView;
     String Bundle_num;
     JSONArray retJson;
 
+
+    String num;
+    String area;
     String title;
-    //int num;
-    String date;
     String city;
-    String location;
+    String date;
+    String ttNum;
+    //String id;
     String content;
+    //String location;
     String leader;
+    //String institution;
 
 
 
@@ -62,17 +73,29 @@ public class DetailClubFragment extends Fragment {
                 JSONObject json = retJson.getJSONObject(i);
                 title = json.getString("CTitle");
                 //num = json.get("CNum");
-                //date = json.getString("date");
                 city = json.getString("city");
-                location = json.getString("location");
+                //location = json.getString("location");
                 content = json.getString("content");
                 leader = json.getString("leader");
+                area = json.getString("interest");
+                date = json.getString("date");
+                ttNum = json.getString("total_num");
+
+
+                //club 테이블에 날짜가 date type이라서 필요한 코드
+                String[] separated = date.split("T");
+
                 Log.d("gffgggggg",title);
                 Toast.makeText(getActivity(),"되나:"+title,Toast.LENGTH_SHORT).show();
 
                 Cnum.setText(Bundle_num);
                 Ctitle.setText(title);
                 Ccontent.setText(content);
+                Carea.setText(area);
+                Ccity.setText(city);
+                Cdate.setText(separated[0]);
+                CttNum.setText(ttNum);
+                Cleader.setText(leader);
             }
             //MGroupAdapter.notifyDataSetChanged();
         }
@@ -84,6 +107,8 @@ public class DetailClubFragment extends Fragment {
         return syView;
     }
     public void init(){
+        //사용자 아이디 불러오기
+        prefs = getActivity().getSharedPreferences("Chat", 0);
 
         Bundle arguments = this.getArguments();
         Bundle_num = arguments.getString("num");//글번호!!!!
@@ -102,30 +127,39 @@ public class DetailClubFragment extends Fragment {
         }
 
         textView = (TextView) syView.findViewById(R.id.textView);
-        Cnum = (TextView) syView.findViewById(R.id.Cnum);;
+        Cnum = (TextView) syView.findViewById(R.id.Cnum);
+        Carea = (TextView) syView.findViewById(R.id.Carea);
         Ctitle = (TextView) syView.findViewById(R.id.Ctitle);
+        Ccity = (TextView) syView.findViewById(R.id.Ccity);
+        Cdate = (TextView) syView.findViewById(R.id.Cdate);
+        CttNum = (TextView) syView.findViewById(R.id.CTotalNum);
+        Cleader = (TextView) syView.findViewById(R.id.Cid);
         Ccontent = (TextView) syView.findViewById(R.id.Ccontent);
 
         textView = (TextView) syView.findViewById(R.id.textView);
         //textView.setText(num);
-        btn_move_W = (Button)syView.findViewById(R.id.btn_move_W);
+        //btn_move_W = (Button)syView.findViewById(R.id.btn_move_W);
         applyBtn = (Button)syView.findViewById(R.id.applyBtn);
-        btn_move_W.setOnClickListener(new View.OnClickListener() {
+        applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                applyC();
+                Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), ClubActivity.class);
                 startActivity(intent);
+                //finish();
+                //뒤로가기 어케해
             }
         });
-
     }
-    public void applyBtn(View v){
-//        Intent intent = new Intent(getActivity(), MentoringActivity.class);
-//        startActivity(intent);
-        Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
-        applyC();
-
-    }
+    //왜안대
+//    public void applyBtn(View v){
+////        Intent intent = new Intent(getActivity(), MentoringActivity.class);
+////        startActivity(intent);
+//        Toast.makeText(getActivity(), "Apply Completed", Toast.LENGTH_LONG).show();
+//        applyC();
+//
+//    }
 
     public void applyC(){
         InsertDataTask isTask;
