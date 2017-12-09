@@ -296,7 +296,8 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     void sortByDistance(){
 
         sortedItems = new ArrayList<>();
-        sortedItems = OriginItems;
+        sortedItems.clear();
+        sortedItems.addAll(OriginItems);
 
 
         Log.e("size",items.size()+"");
@@ -311,10 +312,10 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         Location endPoint = new Location("end");
 
 
-        for(int i = 0 ; i <items.size() ; i++){
+        for(int i = 0 ; i <OriginItems.size() ; i++){
 
-            endPoint.setLatitude(items.get(i).getLatLng().latitude);
-            endPoint.setLongitude(items.get(i).getLatLng().longitude);
+            endPoint.setLatitude(OriginItems.get(i).getLatLng().latitude);
+            endPoint.setLongitude(OriginItems.get(i).getLatLng().longitude);
 
             distances[i] = startPoint.distanceTo(endPoint);
             Log.e("distances",i+" : "+distances[i]);
@@ -334,7 +335,8 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 
 
         //tmpItems = items;
-        items = sortedItems;
+        items.clear();
+        items.addAll(sortedItems);
 
 
 
