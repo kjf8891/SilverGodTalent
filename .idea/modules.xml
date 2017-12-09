@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SilverGodTalent_DH1209.iml" filepath="$PROJECT_DIR$/SilverGodTalent_DH1209.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SilverGodTalent.iml" filepath="$PROJECT_DIR$/SilverGodTalent.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestRemote.iml" filepath="$PROJECT_DIR$/TestRemote.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -32,13 +32,13 @@ public class RecruitAdapter extends ArrayAdapter<Recruit> {
         }
         Recruit getItem = items.get(position);
         if(getItem!=null){
-            //TextView recruit_num = (TextView)v.findViewById(R.id.recruit_num);
+            TextView recruit_num = (TextView)v.findViewById(R.id.recruit_num);
             TextView recruit_title = (TextView)v.findViewById(R.id.recruit_title);
             //TextView recruit_writer = (TextView)v.findViewById(R.id.recruit_writer);
             TextView recruit_date = (TextView)v.findViewById(R.id.recruit_date);
             TextView recruit_city = (TextView)v.findViewById(R.id.recruit_city);
 
-            //recruit_num.setText(getItem.getnoticeRecruitNum());
+            recruit_num.setText(getItem.getnoticeRecruitNum());
             recruit_title.setText(getItem.getnoticeRecruitTitle());
             //recruit_writer.setText(getItem.getnoticeRecruitWriter());
             recruit_date.setText(getItem.getnoticeRecruitWorkingDate());

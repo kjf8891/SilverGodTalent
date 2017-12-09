@@ -17,6 +17,7 @@ import android.view.View;
 import android.webkit.WebStorage;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 
     LocationManager locationManager;
 
+    ImageButton searchBtn;
     TextView tv_location;
 
     ListView listView;
@@ -67,6 +69,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 
     Spinner spinner;
     ArrayAdapter<String> dataAdapter;
+    //CustomAdapter dataAdapter;
     ArrayList<String> list;
 
 
@@ -167,11 +170,23 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         dwTask.execute(req);
 
 
+
+        //Image spinner
+//        searchBtn = (ImageButton)findViewById(R.id.searchBtn);
+//        searchBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                spinner.performClick();
+//            }
+//        });
         spinner = (Spinner)findViewById(R.id.spinner);
         list = new ArrayList<String>();
+        list.add("     ");
         list.add("All");
+        int hidingItemIndex = 0;
         //dataAdapter = new ArrayAdapter<String>(getActivity(),
         //        android.R.layout.simple_spinner_item, list);
+
         dataAdapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.row_spinner, list);
         //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -179,10 +194,12 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                view.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), "aaaaa"+position, Toast.LENGTH_SHORT).show();
                 selectedArea = list.get(position).toString();
 
-                Toast.makeText(getApplicationContext(),"fuck",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"fuck",Toast.LENGTH_SHORT).show();
                showInterestedItems();
             }
 
@@ -193,8 +210,6 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         });
 
     }
-
-
 
     public void addRecruitNoticeBtn(View v){
         FragmentManager fragmentManager = getFragmentManager();
@@ -388,6 +403,13 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     void showInterestedItems(){
 
 
+        items.addAll(OriginItems);
+        RecruitAdapter.notifyDataSetChanged();
+        if(selectedArea.equals("     ")){
+            items.clear();
+            items.addAll(OriginItems);
+            RecruitAdapter.notifyDataSetChanged();
+        }
         if(selectedArea.equals("All")){
 
             items.clear();
