@@ -25,11 +25,11 @@ import java.util.List;
 public class MainMenuActivity extends AppCompatActivity {
 
 
-    Button gotoMyPageMenuBtn, gotoRecruitMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn;
+    //Button gotoMyPageMenuBtn, gotoRecruitMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn;
     SharedPreferences prefs;
     List<NameValuePair> params;
 
-    Button gotoMyPageMenuBtn,gotoWantedMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn;
+    Button gotoMyPageMenuBtn,gotoRecruitMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn;
 
     //FrameLayout frameLayout;
     @Override
@@ -104,7 +104,7 @@ public class MainMenuActivity extends AppCompatActivity {
 //                        }
 
                     }else if(activity_change.equals("WantedActivity")){
-                        Intent mIntent = new Intent(getApplicationContext(), WantedActivity.class);
+                        Intent mIntent = new Intent(getApplicationContext(), RecruitActivity.class);
                         //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
 
                         //8번 받으면 로그인 완료. 종료시키면 된다.
@@ -137,7 +137,7 @@ public class MainMenuActivity extends AppCompatActivity {
     };
 
 
-    public void gotoMyPageMenu(View v){
+    public void gotoMyPageMenuBtn(View v){
 //        FragmentManager fragmentManager = getFragmentManager();
 //        fragmentManager.beginTransaction()
 //                .replace(R.id.frameLayout,new Fragment_mypage())
@@ -159,7 +159,7 @@ public class MainMenuActivity extends AppCompatActivity {
         if(prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")){
             new MainMenuActivity.ActivityChangeSend().execute("WantedActivity");
         }else {
-            Intent intent = new Intent(getApplicationContext(), WantedActivity.class);
+            Intent intent = new Intent(getApplicationContext(), RecruitActivity.class);
             startActivity(intent);
         }
     }
@@ -290,7 +290,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         Log.d("MainMenuPost",activity);
 
 
-                        Intent mIntent = new Intent(getApplicationContext(), WantedActivity.class);
+                        Intent mIntent = new Intent(getApplicationContext(), RecruitActivity.class);
                         //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
                         //8번 받으면 로그인 완료. 종료시키면 된다.
                         startActivityForResult(mIntent, 8);
