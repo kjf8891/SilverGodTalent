@@ -15,24 +15,27 @@ public class Recruit {
     private String _Rlatitude;
     private String _Rlongitude;
     private String _noticeRecruitCity;
+    private String _RInterest;
 
 
-    public Recruit(String noticeRecruitNum, String noticeRecruitWriter, String noticeRecruitContent, String noticeRecruitTitle, String noticeRecruitWorkingDate){
+    public Recruit(String noticeRecruitNum, String noticeRecruitWriter, String noticeRecruitContent, String noticeRecruitTitle, String noticeRecruitWorkingDate, String noticeInterest){
         this._noticeRecruitNum = noticeRecruitNum;
         this._noticeRecruitContent = noticeRecruitContent;
         this._noticeRecruitTitle = noticeRecruitTitle;
         this._noticeRecruitWorkingDate = noticeRecruitWorkingDate;
         this._noticeRecruitWriter = noticeRecruitWriter;
+        this._RInterest = noticeInterest;
 
     }
 
-    public Recruit(String noticeRecruitNum, String title, String date, String city,String lati, String longi){
+    public Recruit(String noticeRecruitNum, String title, String date, String city,String lati, String longi,String noticeInterest){
         this._noticeRecruitNum = noticeRecruitNum;
         this._noticeRecruitCity = city;
         this._noticeRecruitTitle = title;
         this._noticeRecruitWorkingDate = date;
         this._Rlatitude = lati;
         this._Rlongitude = longi;
+        this._RInterest = noticeInterest;
 
     }
 
@@ -55,4 +58,5 @@ public class Recruit {
         return position;
     }
     public String getnoticeRecruitCity(){return _noticeRecruitCity;}
+    public String getnoticeInterest(){return _RInterest;}
 }

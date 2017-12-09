@@ -15,7 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,12 +51,22 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     TextView title;
     LatLng cur_loc;
 
+    String selectedArea;
+
+
     //ArrayList<MGroup> items;
     ArrayList<Recruit> items;
     ArrayList<Recruit> sortedItems;
+    ArrayList<Recruit> tmpItems;
+    ArrayList<Recruit> OriginItems;
+
     //MGroupAdapter MGroupAdapter;
     RecruitAdapter RecruitAdapter;
     JSONArray retJson;
+
+    Spinner spinner;
+    ArrayAdapter<String> dataAdapter;
+    ArrayList<String> list;
 
 
     //디비에서 데이터 불러오기, 구인 공고 목록
@@ -64,22 +76,41 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
             Log.e("err","processFinish");
             //Toast.makeText(getApplicationContext(),"processFinish:",Toast.LENGTH_SHORT).show();
             retJson = ret;
-            for(int i = 0 ; i< retJson.length(); i++){
-                JSONObject json = retJson.getJSONObject(i);
-                String title = json.getString("RTitle");
-                String num = json.getString("RNum");
-                String date = json.getString("date");
-                String city = json.getString("city");
-                //위도 경도 여기 있음
-                String latitude = json.getString("latitude");
-                String longitude = json.getString("longitude");
-                //String date = json.getString("date");
-                //String location = json.getString("location");
-                //items.add(new MGroup(title,date,location));
-                items.add(new Recruit(num,title,date,city,latitude,longitude));
-                //   Toast.makeText(getApplicationContext(),"되나:"+area,Toast.LENGTH_SHORT).show();
+            for(int i = 0 ; i< retJson.length(); i++) {
+
+                JSONArray jsonarray = retJson.getJSONArray(i);
+
+                for (int j = 0; j < jsonarray.length(); j++) {
+
+                    JSONObject json = jsonarray.getJSONObject(j);
+
+                    if (json.has("RTitle")) {
+
+                        String title = json.getString("RTitle");
+                        String num = json.getString("RNum");
+                        String date = json.getString("date");
+                        String city = json.getString("city");
+                        //위도 경도 여기 있음
+                        String latitude = json.getString("latitude");
+                        String longitude = json.getString("longitude");
+                        String area = json.getString("interest");
+                        //String date = json.getString("date");
+                        //String location = json.getString("location");
+                        //items.add(new MGroup(title,date,location));
+
+                        items.add(new Recruit(num, title, date, city, latitude, longitude, area));
+
+                    } else {
+                        String area = json.getString("area");
+
+
+                        list.add(area);
+                    }
+                    //   Toast.makeText(getApplicationContext(),"되나:"+area,Toast.LENGTH_SHORT).show();
+                }
             }
             RecruitAdapter.notifyDataSetChanged();
+            dataAdapter.notifyDataSetChanged();
         }
     });
 
@@ -96,13 +127,8 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         listView = (ListView)findViewById(R.id.listview);
         tv_location = (TextView)findViewById(R.id.tv_location);
 
-        items = new ArrayList<Recruit>();
-        //items.add(new Recruit("1","userID1","Content1","Title1","2017-03-03"));
-//        items.add(new Recruit("2","userID2","content2","Special Dancing Practice","2017-12-02"));
-//        items.add(new Recruit("3","한자를 공부합시다","2017-10-23","금천구","2017-12-02"));
-//        items.add(new Recruit("4","노래! 어렵지 않아요~","2017-08-31","강남구","2017-12-02"));
-//        items.add(new Recruit("5","다함께 배드민턴","2017-09-03","광진구","2017-12-02"));
-//        items.add(new Recruit("6","빠르게 배우는 바둑교실","2017-11-22","성북구","2017-12-02"));
+        items = new ArrayList<>();
+
         RecruitAdapter = new RecruitAdapter(getApplicationContext(),R.layout.row_recruit,items);
         listView.setAdapter(RecruitAdapter);
 
@@ -131,7 +157,34 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         JSONObject tmp =new JSONObject();
         RequestForm req = new RequestForm(url);
         dwTask.execute(req);
+
+
+        spinner = (Spinner)findViewById(R.id.spinner);
+        list = new ArrayList<String>();
+        //dataAdapter = new ArrayAdapter<String>(getActivity(),
+        //        android.R.layout.simple_spinner_item, list);
+        dataAdapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.row_spinner, list);
+        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), "aaaaa"+position, Toast.LENGTH_SHORT).show();
+                selectedArea = list.get(position).toString();
+
+               // showInterestedItems();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
+
+
 
     public void addRecruitNoticeBtn(View v){
         FragmentManager fragmentManager = getFragmentManager();
@@ -232,8 +285,11 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 
     void sortByDistance(){
 
-       sortedItems = items;
+        sortedItems = new ArrayList<>();
+        sortedItems = items;
 
+
+        Log.e("size",items.size()+"");
         double[] distances = new double[items.size()];
 
         double[] tmp;
@@ -260,18 +316,23 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 
         quicksort(distances, 0, distances.length-1);
 
-        for(int i = 0 ; i <items.size() ; i++){
+        for(int i = 0 ; i <sortedItems.size() ; i++){
 
             Log.e("distances",i+" : "+distances[i]);
 
         }
+
+
+        tmpItems = items;
         items = sortedItems;
+
+
 
         RecruitAdapter.notifyDataSetChanged();
 
     }
 
-   void quicksort(double[]a, int lo, int hi) {
+    void quicksort(double[]a, int lo, int hi) {
         if (lo < hi) {
             int q = hoare_partition(a, lo, hi);
             quicksort(a, lo, q);
@@ -307,57 +368,28 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         a[j] = temp;
 
         Recruit rTmp = sortedItems.get(i);
-                sortedItems.set(i,sortedItems.get(j));
-                sortedItems.set(j,rTmp);
+        sortedItems.set(i,sortedItems.get(j));
+        sortedItems.set(j,rTmp);
     }
 
 
-//    public int partition(double arr[], int left, int right) {
-//
-//        double pivot = arr[(left + right) / 2];
-//
-//        while (left <= right) {
-//            Log.e("while","dd");
-//
-//            while ((arr[left] <= pivot) && (left < right)) {
-//                left++;
-//                Log.e("left","dd");
-//
-//            }
-//            while ((arr[right] > pivot) && (left < right)) {
-//                right--;
-//                Log.e("right","dd");
-//
-//            }
-//            if (left < right) {
-//                double temp = arr[left];
-//                arr[left] = arr[right];
-//                arr[right] = temp;
-//
-////                Recruit rTmp = sortedItems.get(left);
-////                sortedItems.set(left,sortedItems.get(right));
-////                sortedItems.set(right,rTmp);
-//            }
-//        }
-//
-//        return left;
-//    }
-//
-//    public void quickSort(double arr[], int left, int right) {
-//
-//        if (left < right) {
-//            int pivotNewIndex = partition(arr, left, right);
-//
-//            Log.e("pre","dd");
-//            quickSort(arr, left, pivotNewIndex - 1);
-//            Log.e("middle","dd");
-//
-//            quickSort(arr, pivotNewIndex + 1, right);
-//            Log.e("end","dd");
-//
-//        }
-//
-//
-//    }
+    void showInterestedItems(){
 
+        tmpItems = new ArrayList<>();
+
+        for(int i = 0 ; i < items.size() ; i ++){
+
+            if(items.get(i).getnoticeInterest().equals(selectedArea)){
+
+                tmpItems.add(items.get(i));
+
+            }
+
+        }
+        OriginItems = items;
+        items = tmpItems;
+
+        RecruitAdapter.notifyDataSetChanged();
+
+    }
 }

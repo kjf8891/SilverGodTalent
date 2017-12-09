@@ -110,52 +110,59 @@ public class DownloadWebPageTask extends AsyncTask<RequestForm, Integer, String>
 
         try {
             retObj = new JSONArray(file);
-            for ( int i = 0; i <retObj.length(); i++){
-                JSONObject json = retObj.getJSONObject(i);
+            for ( int i = 0; i <retObj.length(); i++) {
 
-                if(json.has("ID"))
-                    id = json.getString("ID");
-                if(json.has("PW"))
-                    name = json.getString("PW");
-                if(json.has("Name"))
-                    quantity = json.getString("Name");
-                if(json.has("no"))
-                    no = json.getInt("no");
-                if(json.has("area"))
-                    area = json.getString("area");
+                JSONArray jsonarray = retObj.getJSONArray(i);
 
-                //171204 sy dwtask
-                if(json.has("title"))
-                    title = json.getString("title");
+                for (int j = 0; j < jsonarray.length(); j++) {
+
+
+                    JSONObject json = jsonarray.getJSONObject(j);
+
+
+                    if (json.has("ID"))
+                        id = json.getString("ID");
+                    if (json.has("PW"))
+                        name = json.getString("PW");
+                    if (json.has("Name"))
+                        quantity = json.getString("Name");
+                    if (json.has("no"))
+                        no = json.getInt("no");
+                    if (json.has("area"))
+                        area = json.getString("area");
+
+                    //171204 sy dwtask
+                    if (json.has("title"))
+                        title = json.getString("title");
 //                if(json.has("date"))
 //                    date = json.get("date");
-                if(json.has("content"))
-                    content = json.getString("content");
+                    if (json.has("content"))
+                        content = json.getString("content");
 //                if(json.has("writer"))
 //                    name = json.getString("writer");
 
 
-                //171206 sy findMentoringInfo
-                if(json.has("MTitle"))
-                    title = json.getString("MTitle");
+                    //171206 sy findMentoringInfo
+                    if (json.has("MTitle"))
+                        title = json.getString("MTitle");
 //                if(json.has("date"))
 //                    date = json.get("date");
-                if(json.has("content"))
-                    content = json.getString("content");
-                if(json.has("MNum"))
-                    content = json.getString("MNum");
-                if(json.has("content"))
-                    content = json.getString("content");
+                    if (json.has("content"))
+                        content = json.getString("content");
+                    if (json.has("MNum"))
+                        content = json.getString("MNum");
+                    if (json.has("content"))
+                        content = json.getString("content");
 //                if(json.has("writer"))
 //                    name = json.getString("writer");
 
 
-                if(json.has("CNum"))
-                    content = json.getString("CNum");
-                ////////////////////////////////////////////////////////////
-                Log.i("jsonParsing:",no+area);
+                    if (json.has("CNum"))
+                        content = json.getString("CNum");
+                    ////////////////////////////////////////////////////////////
+                    Log.i("jsonParsing:", no + area);
+                }
             }
-
         }catch (Exception e) {
             Log.i("err :", e.getMessage());
         }
