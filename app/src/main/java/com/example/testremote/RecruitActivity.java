@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebStorage;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -110,7 +111,9 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
                 }
             }
 
-            OriginItems = items;
+            OriginItems.clear();
+            OriginItems.addAll(items);
+            Log.e("originItems size", ""+OriginItems.size());
 
             RecruitAdapter.notifyDataSetChanged();
             dataAdapter.notifyDataSetChanged();
@@ -131,6 +134,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         tv_location = (TextView)findViewById(R.id.tv_location);
 
         items = new ArrayList<>();
+        OriginItems = new ArrayList<>();
         tmpItems = new ArrayList<>();
 
         RecruitAdapter = new RecruitAdapter(getApplicationContext(),R.layout.row_recruit,items);
@@ -165,6 +169,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 
         spinner = (Spinner)findViewById(R.id.spinner);
         list = new ArrayList<String>();
+        list.add("All");
         //dataAdapter = new ArrayAdapter<String>(getActivity(),
         //        android.R.layout.simple_spinner_item, list);
         dataAdapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.row_spinner, list);
@@ -177,6 +182,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
                 Toast.makeText(getApplicationContext(), "aaaaa"+position, Toast.LENGTH_SHORT).show();
                 selectedArea = list.get(position).toString();
 
+                Toast.makeText(getApplicationContext(),"fuck",Toast.LENGTH_SHORT).show();
                showInterestedItems();
             }
 
@@ -380,22 +386,32 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     void showInterestedItems(){
 
 
+        if(selectedArea.equals("All")){
 
-        for(int i = 0 ; i < OriginItems.size() ; i ++){
+            items.clear();
+            items.addAll(OriginItems);
+            RecruitAdapter.notifyDataSetChanged();
 
-            if(OriginItems.get(i).getnoticeInterest().equals(selectedArea)){
+        }else {
 
-                tmpItems.add(OriginItems.get(i));
-                Log.e("interested",OriginItems.get(i).getnoticeRecruitTitle());
+            tmpItems.clear();
+
+            for (int i = 0; i < OriginItems.size(); i++) {
+
+                if (OriginItems.get(i).getnoticeInterest().equals(selectedArea)) {
+
+                    tmpItems.add(OriginItems.get(i));
+                    Log.e("interested", OriginItems.get(i).getnoticeRecruitTitle());
+
+                }
 
             }
-
+            // OriginItems = items;
+            //   items = new ArrayList<>();
+            //  RecruitAdapter.updateData(tmpItems);
+            items.clear();
+            items.addAll(tmpItems);
+            RecruitAdapter.notifyDataSetChanged();
         }
-       // OriginItems = items;
-     //   items = new ArrayList<>();
-      //  RecruitAdapter.updateData(tmpItems);
-
-        RecruitAdapter.notifyDataSetChanged();
-
     }
 }
