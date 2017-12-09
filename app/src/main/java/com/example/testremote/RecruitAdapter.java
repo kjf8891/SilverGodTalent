@@ -52,4 +52,10 @@ public class RecruitAdapter extends ArrayAdapter<Recruit> {
         }
         return v;
     }
+
+    public void updateData(ArrayList<Recruit> newList){
+
+        this.items = newList;
+
+    }
 }

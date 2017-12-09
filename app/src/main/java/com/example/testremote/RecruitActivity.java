@@ -109,6 +109,9 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
                     //   Toast.makeText(getApplicationContext(),"되나:"+area,Toast.LENGTH_SHORT).show();
                 }
             }
+
+            OriginItems = items;
+
             RecruitAdapter.notifyDataSetChanged();
             dataAdapter.notifyDataSetChanged();
         }
@@ -128,6 +131,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         tv_location = (TextView)findViewById(R.id.tv_location);
 
         items = new ArrayList<>();
+        tmpItems = new ArrayList<>();
 
         RecruitAdapter = new RecruitAdapter(getApplicationContext(),R.layout.row_recruit,items);
         listView.setAdapter(RecruitAdapter);
@@ -173,7 +177,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
                 Toast.makeText(getApplicationContext(), "aaaaa"+position, Toast.LENGTH_SHORT).show();
                 selectedArea = list.get(position).toString();
 
-               // showInterestedItems();
+               showInterestedItems();
             }
 
             @Override
@@ -286,7 +290,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     void sortByDistance(){
 
         sortedItems = new ArrayList<>();
-        sortedItems = items;
+        sortedItems = OriginItems;
 
 
         Log.e("size",items.size()+"");
@@ -323,7 +327,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         }
 
 
-        tmpItems = items;
+        //tmpItems = items;
         items = sortedItems;
 
 
@@ -375,19 +379,21 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 
     void showInterestedItems(){
 
-        tmpItems = new ArrayList<>();
 
-        for(int i = 0 ; i < items.size() ; i ++){
 
-            if(items.get(i).getnoticeInterest().equals(selectedArea)){
+        for(int i = 0 ; i < OriginItems.size() ; i ++){
 
-                tmpItems.add(items.get(i));
+            if(OriginItems.get(i).getnoticeInterest().equals(selectedArea)){
+
+                tmpItems.add(OriginItems.get(i));
+                Log.e("interested",OriginItems.get(i).getnoticeRecruitTitle());
 
             }
 
         }
-        OriginItems = items;
-        items = tmpItems;
+       // OriginItems = items;
+     //   items = new ArrayList<>();
+      //  RecruitAdapter.updateData(tmpItems);
 
         RecruitAdapter.notifyDataSetChanged();
 
