@@ -75,7 +75,38 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
 
 
+    @Override
+    public void onBackPressed() {
 
+        Log.d("LoginActivity2", "Backkkkkk");
+
+        if(prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")){
+            new LoginActivity2.ActivityChangeSend().execute("back");
+        }else{
+            super.onBackPressed();
+        }
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode){
+
+            case 8:     //회원가입 완료 응답
+                if(resultCode == RESULT_OK){
+                    finish();
+                    startActivity(new Intent(getApplicationContext(),StartActivity.class));
+                }
+                break;
+            default:
+                Log.d("Signin","default");
+                finish();
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +195,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                 Log.d("signinBtn", "signinBtn");
                 Log.d("fdfdfdfdfdf",prefs.getString("HELP_FLAG",""));
                 if(prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")){
+
                     new LoginActivity2.ActivityChangeSend().execute("signin");
                 }else{
                     startActivity(new Intent(getApplicationContext(),SignInActivity.class));
@@ -576,8 +608,25 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
             if(args[0].equals("login")){
                 //이건 로그인 성공하고 수행해야하는 것?
             }else if(args[0].equals("signin")){
-                params.add(new BasicNameValuePair("activity_change", "signin")); //어떤 화면으로 전환할 버튼을 눌렀는지
+                Log.d("LoginActivity2","classSignin");
+
+                params.add(new BasicNameValuePair("now_activity", "LoginActivity2"));    //현재 액티비티
+                params.add(new BasicNameValuePair("activity_change", "signin")); //어떤 화면으로 전활할 버튼을 눌렀는지
                 params.add((new BasicNameValuePair("sender_id", prefs.getString("REG_ID",""))));    //보내는 사람의 토큰
+
+                if(prefs.getString("HELP_FLAG","").equals("1")){    //어르신, 헬버의 폰번호 입력
+                    params.add((new BasicNameValuePair("to_id", prefs.getString("helper_id",""))));
+                }else if(prefs.getString("HELP_FLAG","").equals("2")){      //젊은이, needer의 토큰을 입력
+                    params.add((new BasicNameValuePair("to_id", prefs.getString("needer_id",""))));
+                }
+
+            }else if(args[0].equals("back")){
+
+                Log.d("LoginActivity2","classBack");
+                params.add(new BasicNameValuePair("now_activity", "LoginActivity2"));    //현재 액티비티
+                params.add(new BasicNameValuePair("activity_change", "back")); //어떤 화면으로 전환할 버튼을 눌렀는지
+                params.add((new BasicNameValuePair("sender_id", prefs.getString("REG_ID",""))));    //보내는 사람의 토큰
+
 
                 if(prefs.getString("HELP_FLAG","").equals("1")){    //어르신, 헬버의 폰번호 입력
                     params.add((new BasicNameValuePair("to_id", prefs.getString("helper_id",""))));
@@ -595,8 +644,27 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
             //progress.dismiss();
             try {
                 String res = json.getString("response");
+                String activity = json.getString("activity_change");
+
                 if(res.equals("Success")) {
-                    startActivity(new Intent(getApplicationContext(),SignInActivity.class));
+
+                    if(activity.equals("signin")){
+                        Log.d("login","start_signin");
+
+                        Intent mIntent = new Intent(getApplicationContext(), SignInActivity.class);
+                        //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+                        //8번 받으면 로그인 완료. 종료시키면 된다.
+                        startActivityForResult(mIntent, 8);
+                        //Intent mIntent = new Intent(getApplicationContext(),SignInActivity.class);
+                       //
+                        // mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        //startActivity(mIntent);
+                    }
+                    else if(activity.equals("cancel") || activity.equals("back")){
+                        finish();
+                    }
+
                 }else{
                     Toast.makeText(getApplicationContext(),res,Toast.LENGTH_SHORT).show();
                 }
@@ -638,17 +706,41 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
 
                 mobno.setText(mobno_edittext);
                 pw.setText(pw_edittext);
-            }else if(name.equals("activity_change")){  //어르신이 보낸 정보로 화면 셋팅하기. 로그인화면
+            }else if(name.equals("activity_change")){  //화면 바뀔때
                 Log.d("Login: BroadCast", "activity_change"); // putExtra를 이용한 String전달 }
+
 
                 String activity_change = intent.getStringExtra("activity_change");
                 String sender_id = intent.getStringExtra("sender_id");
+                String now_activity = intent.getStringExtra("now_activity");
                 //String pw_edittext = intent.getStringExtra("pw_edittext");
 
                 //mobno.setText(mobno_edittext);
                 //pw.setText(pw_edittext);
-                if(activity_change.equals("signin")){
-                    startActivity(new Intent(getApplicationContext(),SignInActivity.class));
+                if(now_activity.equals("LoginActivity2")){
+                    if(activity_change.equals("signin")){
+                        Intent mIntent = new Intent(getApplicationContext(), SignInActivity.class);
+                        //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+                        //8번 받으면 로그인 완료. 종료시키면 된다.
+                        startActivityForResult(mIntent, 8);
+
+                       // Intent mIntent = new Intent(getApplicationContext(),SignInActivity.class);
+                       // mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+                       // startActivity(mIntent);
+
+                    }else if(activity_change.equals("back")){
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
+//                                new Instrumentation().sendKeySync(event);
+//                            }
+//                        });
+                        Log.d("login","back");
+                        finish();
+                    }
+
                 }
 
             }

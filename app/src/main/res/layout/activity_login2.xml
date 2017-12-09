@@ -130,6 +130,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Helper Mobile Number"
                     android:id="@+id/help_mobno"
+                    android:text="+821033463671"
                     android:layout_gravity="center"
 
                      />

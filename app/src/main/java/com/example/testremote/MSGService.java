@@ -175,7 +175,11 @@ public class MSGService extends IntentService {
         args.putString("random_number", random_number);
         args.putString("needer_id", needer_id);
         Intent login = new Intent(this, StartActivity.class);
+
         login.putExtra("random_number",args);
+//        login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         notification = new NotificationCompat.Builder(this);
         notification.setContentTitle("인증번호를 입력하세요.");

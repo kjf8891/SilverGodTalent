@@ -44,6 +44,7 @@ public class MyPage_BucketAdapter extends RecyclerView.Adapter<MyPage_BucketAdap
         });
         holder.title.setText(item.getTitle());
         holder.date.setText(item.getDate());
+        holder.content.setText(item.content);
     }
 
     @Override
@@ -56,12 +57,14 @@ public class MyPage_BucketAdapter extends RecyclerView.Adapter<MyPage_BucketAdap
         LinearLayout bucketItemLayout;
         TextView title;
         TextView date;
+        TextView content;
 
         public ViewHolder(View itemView) {
             super(itemView);
             bucketItemLayout = (LinearLayout)itemView.findViewById(R.id.mypage_bucket);
             title = (TextView)itemView.findViewById(R.id.bucket_title);
             date = (TextView)itemView.findViewById(R.id.bucket_date);
+            content = (TextView)itemView.findViewById(R.id.bucket_content);
         }
     }
 }

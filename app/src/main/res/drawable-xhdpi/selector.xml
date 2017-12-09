@@ -1,25 +1,16 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:drawable="@drawable/clicked"
-
         android:state_checked="true">
         <shape>
             <solid android:color="#3163C9"/>
-
-
         </shape>
-
-
     </item>
     <item
         android:drawable="@drawable/unclicked"
         android:state_checked="false">
         <shape>
             <solid android:color="#79abff"/>
-
-
         </shape>
-
-
     </item>
 </selector>

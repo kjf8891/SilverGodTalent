@@ -46,8 +46,8 @@ public class MyFragment extends Fragment {
         MyPage_BucketItem[] bucketItem = new MyPage_BucketItem[5];
 
         for(int i = 0; i<5; i++){
-            bucketItem[i] = new MyPage_BucketItem("완료", "2017-00-00");
-            bucketItems.add(bucketItem[i]);
+           // bucketItem[i] = new MyPage_BucketItem("완료", "2017-00-00");
+           // bucketItems.add(bucketItem[i]);
         }
 
         frag1List.setAdapter(new MyPage_BucketAdapter(getActivity(),bucketItems));

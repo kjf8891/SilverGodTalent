@@ -48,6 +48,7 @@
         <activity android:name=".STTActivity"></activity>
         <activity android:name=".InterestActivity"></activity>
         <activity android:name=".SecondActivity"></activity>
+        <activity android:name=".BulletinWriteActivity"></activity>
 
         <activity
             android:name=".MainMenuActivity"

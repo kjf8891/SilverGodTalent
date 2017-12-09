@@ -60,12 +60,58 @@ public class MSGReceiver  extends WakefulBroadcastReceiver {
 
             Intent msgrcv = new Intent("activity_change");
 
+            msgrcv.putExtra("now_activity",extras.getString("now_activity"));
             msgrcv.putExtra("activity_change", extras.getString("activity_change"));
             msgrcv.putExtra("sender_id", extras.getString("sender_id"));
             //msgrcv.putExtra("pw_edittext", extras.getString("pw_edittext"));
             //msgrcv.putExtra("fromname", extras.getString("pw_edittext"));
 
 
+
+            LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+            setResultCode(Activity.RESULT_OK);
+        }else if(extras.getString("mypagelistclick") != null){
+            Log.d("mypagelistclick", "mypagelistclick");
+
+            Intent msgrcv = new Intent("mypagelistclick");
+
+            msgrcv.putExtra("now_activity",extras.getString("now_activity"));
+            msgrcv.putExtra("activity_change", extras.getString("activity_change"));
+            msgrcv.putExtra("sender_id", extras.getString("sender_id"));
+
+            msgrcv.putExtra("position", extras.getString("position"));
+            msgrcv.putExtra("mypage_type", extras.getString("mypage_type"));
+
+
+
+            LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+            setResultCode(Activity.RESULT_OK);
+        }else if(extras.getString("nickname") != null){     //SignInEditSend
+            Log.d("SignInEditSend", "SignInEditSend");
+
+            Intent msgrcv = new Intent("SignInEditSend");
+
+            msgrcv.putExtra("now_activity",extras.getString("now_activity"));
+            msgrcv.putExtra("nickname", extras.getString("nickname"));
+            msgrcv.putExtra("pw", extras.getString("pw"));
+            msgrcv.putExtra("name", extras.getString("name"));
+            msgrcv.putExtra("sender_id", extras.getString("sender_id"));
+            //msgrcv.putExtra("pw_edittext", extras.getString("pw_edittext"));
+            //msgrcv.putExtra("fromname", extras.getString("pw_edittext"));
+
+
+
+            LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+            setResultCode(Activity.RESULT_OK);
+        }else if(extras.getString("interest_position") != null){
+            Log.d("InterestCheckSend", "InterestCheckSend");
+
+            Intent msgrcv = new Intent("InterestCheckSend");
+
+            msgrcv.putExtra("now_activity",extras.getString("now_activity"));
+            msgrcv.putExtra("interest_position", extras.getString("interest_position")); //포지션
+            msgrcv.putExtra("interest_clicked", extras.getString("interest_clicked")); //포지션
+            msgrcv.putExtra("sender_id", extras.getString("sender_id"));
 
             LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
             setResultCode(Activity.RESULT_OK);
