@@ -41,16 +41,19 @@
                 android:text="[ My Activity ]"
                 android:textSize="30dp" />
 
-            <ImageButton
-                android:visibility="invisible"
-                android:background="@color/red"
-                android:onClick="addRecruitNoticeBtn"
+            <ToggleButton
+                android:visibility="visible"
+                android:background="@drawable/toggle_selector"
+                android:id="@+id/recog_start"
                 android:layout_width="50dp"
-                android:layout_height="match_parent"
+                android:layout_height="30dp"
                 android:scaleType="fitXY"
                 android:layout_weight="1"
                 android:layout_gravity="center"
-                android:src="@drawable/add"/>
+                android:textOn=""
+                android:textOff=""
+
+                />
         </LinearLayout>
 
         <ScrollView

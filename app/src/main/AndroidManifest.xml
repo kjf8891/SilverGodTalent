@@ -29,7 +29,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDpmRgoF4hxOBWxYqD6yhaqA0BypKj6MwI"
+            android:value="AIzaSyB_LN34PpNSTfFDmCXklF_j6wLy76CP3z0"
             ></meta-data>
 
         <activity android:name=".MainActivity"></activity>
@@ -69,6 +69,8 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".MyPageListActivity"></activity>
+
+        <service android:name=".MyService"></service>
 
         <service
             android:name=".MSGService">

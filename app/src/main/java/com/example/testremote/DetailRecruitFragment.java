@@ -3,7 +3,9 @@ package com.example.testremote;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +30,7 @@ import org.json.JSONObject;
  * Created by seyeon on 2017-11-17.
  */
 
-public class DetailRecruitFragment extends Fragment {
+public class DetailRecruitFragment extends Fragment implements OnMapReadyCallback {
     View syView;
     Button applyBtn;
 
@@ -52,8 +62,12 @@ public class DetailRecruitFragment extends Fragment {
     //String location;
     //String leader;
     String institution;
+    String latitude ;
+    String longitude;
 
+    private GoogleMap mMap; // 구글맵
 
+    private MapView mapView = null;
 
     JSONObject jsonObject;
 
@@ -77,6 +91,9 @@ public class DetailRecruitFragment extends Fragment {
                 content = json.getString("content");
                 //location = json.getString("location");
                 institution = json.getString("institution");
+                latitude = json.getString("latitude");
+                longitude = json.getString("longitude");
+
                 //leader = json.getString("leader");
                 //Log.d("gffgggggg",title);
                 Toast.makeText(getActivity(),"되나:"+title,Toast.LENGTH_SHORT).show();
@@ -96,6 +113,10 @@ public class DetailRecruitFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         syView = inflater.inflate(R.layout.layout_detail_recruit,container,false);
+
+        mapView = (MapView)syView.findViewById(R.id.map);
+        mapView.getMapAsync(this);
+
         init();
         return syView;
     }
@@ -170,5 +191,81 @@ public class DetailRecruitFragment extends Fragment {
         isTask = new InsertDataTask(jsonObject);
         RequestForm req = new RequestForm(url);
         isTask.execute(req);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+        mMap.setTrafficEnabled(true);
+        mMap.setIndoorEnabled(true);
+        mMap.setBuildingsEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(true);
+
+        LatLng latLng = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title(institution);
+        markerOptions.snippet(institution);
+        googleMap.addMarker(markerOptions);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(50));
+
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(mapView != null){
+
+            mapView.onCreate(savedInstanceState);
+        }
     }
 }

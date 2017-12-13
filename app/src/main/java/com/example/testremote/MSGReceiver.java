@@ -13,6 +13,32 @@ public class MSGReceiver  extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+
+        Log.i("000 RestartService" , "RestartService called : " + intent.getAction());
+
+        /**
+         * 서비스 죽일때 알람으로 다시 서비스 등록
+         */
+        if(intent.getAction().equals("ACTION.RESTART.MyService")){
+
+            Log.i("000 RestartService" ,"ACTION.RESTART.MyService " );
+
+            Intent i = new Intent(context,MyService.class);
+            context.startService(i);
+        }
+
+        /**
+         * 폰 재시작 할때 서비스 등록
+         */
+//        if(intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
+//
+//            Log.i("MsgReceiver" , "ACTION_BOOT_COMPLETED" );
+//            Intent i = new Intent(context,MyService.class);
+//            context.startService(i);
+//
+//        }
+
+
         Log.d("helper_random_recive2", "helper_random_reiceve");
         Bundle extras = intent.getExtras();
         if(extras.getString("type") != null){       //젊은이가 인증번호 받는 곳

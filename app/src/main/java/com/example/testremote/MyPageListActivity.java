@@ -1,13 +1,20 @@
 package com.example.testremote;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,10 +22,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -30,14 +39,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.testremote.BuildConfig.DEBUG;
 import static com.example.testremote.JSONParser.jObj;
 
 public class MyPageListActivity extends AppCompatActivity {
 
 
+    private int mBindFlag;
+    private Messenger mServiceMessenger;
+    private MSGReceiver msgReceiver;
+
+
     ListView listview_club, listview_mentoring, listview_lec, listview_wait ;
     ListViewMyClassAdapter adapter_club, adapter_mentoring, adapter_lec, adapter_wait;
     TextView club_txt, mentoring_txt, lec_txt, wait_txt;
+
+    ToggleButton recogStart;
+    boolean isRecogChecked = false;
+    boolean isRegistered = false;
+    SharedPreferences settings;
 
     SharedPreferences prefs;
     List<NameValuePair> params;
@@ -49,15 +69,152 @@ public class MyPageListActivity extends AppCompatActivity {
     int select_position = 0;
     Bundle bundle;
 
+
+
+    private final ServiceConnection mServiceConnection = new ServiceConnection()
+    {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service)
+        {
+            if (DEBUG) {Log.e("TAG", "onServiceConnected");} //$NON-NLS-1$
+
+            mServiceMessenger = new Messenger(service);
+            Message msg = new Message();
+            msg.what = MyService.MSG_RECOGNIZER_START_LISTENING;
+
+            try
+            {
+                mServiceMessenger.send(msg);
+            }
+            catch (RemoteException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name)
+        {
+            if (DEBUG) {Log.e("TAG", "onServiceDisconnected");} //$NON-NLS-1$
+            mServiceMessenger = null;
+        }
+
+    }; // mServiceConnection
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putBoolean("isRecogChecked",isRecogChecked);
+
+        super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        settings = getApplicationContext().getSharedPreferences("settings", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("isRecogChecked", isRecogChecked);
+        editor.putBoolean("isRegistered",isRegistered);
+        editor.commit();
+
+
+        unbindService(mServiceConnection);
+
+        if(msgReceiver != null)
+        unregisterReceiver(msgReceiver);
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+//        bindService(new Intent(this, MyService.class), mServiceConnection, mBindFlag);
+        //startService(new Intent(this,MyService.class));
+
+    }
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage_list);
+
+        if(savedInstanceState != null){
+
+            isRecogChecked = savedInstanceState.getBoolean("isRecogChecked");
+
+        }
+
+
+
+
         init();
     }
     public void init(){
         prefs = getApplicationContext().getSharedPreferences("Chat", 0);
+        settings = getApplicationContext().getSharedPreferences("settings",0);
+        isRecogChecked = settings.getBoolean("isRecogChecked",false);
+        isRegistered = settings.getBoolean("isRegistered",false);
+
+        if(isRegistered) {
+            msgReceiver = new MSGReceiver();
+            Intent service = new Intent(getApplicationContext(), MyService.class);
+
+            IntentFilter intentFilter = new IntentFilter("com.example.testremote.MyService");
+            registerReceiver(msgReceiver,intentFilter);
+            //startService(service);
+            //mBindFlag = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ? 0 : Context.BIND_ABOVE_CLIENT;
+
+            bindService(new Intent(getApplicationContext(), MyService.class), mServiceConnection, mBindFlag);
+        }
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
+
+        recogStart = (ToggleButton)findViewById(R.id.recog_start);
+        recogStart.setChecked(isRecogChecked);
+
+        //Toast.makeText(getApplicationContext(),String.valueOf(settings.getBoolean("isRecogChecked",false)),Toast.LENGTH_SHORT).show();
+
+        recogStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == false){
+                    if(mServiceConnection!= null && isRegistered) {
+
+                        isRecogChecked = false;
+                        isRegistered = false;
+
+
+
+
+                            Intent service = new Intent(getApplicationContext(), MyService.class);
+                            stopService(service);
+
+                    }
+                }
+                else{
+                    isRecogChecked = true;
+                    isRegistered = true;
+
+                    msgReceiver = new MSGReceiver();
+                    Intent service = new Intent(getApplicationContext(), MyService.class);
+
+                    IntentFilter intentFilter = new IntentFilter("com.example.testremote.MyService");
+                    registerReceiver(msgReceiver,intentFilter);
+                    startService(service);
+                    mBindFlag = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ? 0 : Context.BIND_ABOVE_CLIENT;
+
+                    bindService(new Intent(getApplicationContext(), MyService.class), mServiceConnection, mBindFlag);
+                }
+            }
+        });
 
         club_txt = (TextView) findViewById(R.id.mypagelist_club_txt);
         mentoring_txt = (TextView) findViewById(R.id.mypagelist_mentoring_txt);
@@ -259,6 +416,8 @@ public class MyPageListActivity extends AppCompatActivity {
             }
         }
     };
+
+
 
     private class ActivityChangeSend extends AsyncTask<String, String, JSONObject> {
         @Override
