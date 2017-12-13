@@ -52,6 +52,7 @@
         <activity android:name=".SignInTypeActivity"></activity>
         <activity android:name=".CompanySignInActivity"></activity>
         <activity android:name=".BulletinWriteActivity"></activity>
+        <activity android:name=".TutorialActivity"></activity>
 
         <activity
             android:name=".MainMenuActivity"

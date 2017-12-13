@@ -38,7 +38,7 @@ public class MainMenuActivity extends AppCompatActivity {
     SharedPreferences prefs;
     List<NameValuePair> params;
 
-    Button gotoMyPageMenuBtn,gotoRecruitMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn;
+    Button gotoMyPageMenuBtn,gotoRecruitMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn,gotoHelpMenuBtn;
 
 
 
@@ -72,6 +72,7 @@ public class MainMenuActivity extends AppCompatActivity {
     public void init(){
 
         gotoMyPageMenuBtn = (Button) findViewById(R.id.gotoMyPageMenuBtn);
+        gotoHelpMenuBtn = (Button) findViewById(R.id.gotoHelpMenuBtn);
         gotoRecruitMenuBtn = (Button) findViewById(R.id.gotoRecruitMenuBtn);
         gotoMentoringMenuBtn = (Button) findViewById(R.id.gotoMentoringMenuBtn);
         gotoClubMenuBtn = (Button) findViewById(R.id.gotoClubMenuBtn);
@@ -154,7 +155,19 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     };
 
+    public void gotoHelpMenu(View v){
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.frameLayout,new Fragment_mypage())
+//                .commit();
 
+        if(prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")){
+            new MainMenuActivity.ActivityChangeSend().execute("TutorialActivity");
+        }else {
+            Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
+            startActivity(intent);
+        }
+    }
     public void gotoMyPageMenuBtn(View v){
 //        FragmentManager fragmentManager = getFragmentManager();
 //        fragmentManager.beginTransaction()
