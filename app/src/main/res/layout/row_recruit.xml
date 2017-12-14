@@ -15,6 +15,7 @@
         android:layout_width="match_parent">
 
         <TextView
+            android:visibility="invisible"
             android:id="@+id/recruit_num"
             android:textSize="25dp"
             android:layout_width="40dp"
@@ -27,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical">
-            <TextView
+            <com.example.testremote.ZoomText
                 android:id="@+id/recruit_title"
                 android:textSize="30dp"
                 android:textStyle="bold"
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:text="글 제목"/>
-            <TextView
+            <com.example.testremote.ZoomText
                 android:id="@+id/recruit_date"
                 android:textSize="30dp"
                 android:textStyle="bold"
@@ -51,7 +52,7 @@
                 <!--android:layout_height="wrap_content"-->
                 <!--android:textColor="@android:color/black"-->
                 <!--android:text="기관"/>-->
-            <TextView
+            <com.example.testremote.ZoomText
                 android:id="@+id/recruit_city"
                 android:textSize="25dp"
                 android:layout_width="wrap_content"
