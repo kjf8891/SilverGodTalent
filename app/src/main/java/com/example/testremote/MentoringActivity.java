@@ -2,6 +2,7 @@ package com.example.testremote;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static android.text.TextUtils.isEmpty;
 import static android.view.MotionEvent.ACTION_UP;
 
 /**
@@ -36,6 +38,7 @@ public class MentoringActivity extends AppCompatActivity {
     TextView title;
     JSONArray retJson;
 
+    SharedPreferences Mentoring_pref;
 
     DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
         @Override
@@ -70,6 +73,21 @@ public class MentoringActivity extends AppCompatActivity {
     }
 
     void init(){
+
+
+        Mentoring_pref = getSharedPreferences("Chat2",0);
+
+        if(isEmpty(Mentoring_pref.getString("Mentoring_first",""))){
+            Toast.makeText(this, "처음이야", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(),MentoringTutoActivity.class);
+            startActivity(intent);
+            SharedPreferences.Editor editor = Mentoring_pref.edit();
+            editor.putString("Mentoring_first","1");
+            editor.commit();
+        }else{
+            Toast.makeText(getApplicationContext(), "처음아니야", Toast.LENGTH_SHORT).show();
+        }
+
         textView = (TextView)findViewById(R.id.textView);
         //title = (TextView)findViewById(R.id.title);
         //title.setText("[ LECTURE LIST ]");

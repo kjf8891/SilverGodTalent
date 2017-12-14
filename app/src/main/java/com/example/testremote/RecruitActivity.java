@@ -3,6 +3,7 @@ package com.example.testremote;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -36,6 +37,7 @@ import java.util.Locale;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.location.LocationManager.NETWORK_PROVIDER;
+import static android.text.TextUtils.isEmpty;
 
 /**
  * Created by seyeon on 2017-10-30.
@@ -71,6 +73,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     ArrayAdapter<String> dataAdapter;
     //CustomAdapter dataAdapter;
     ArrayList<String> list;
+    SharedPreferences recruit_pref;
 
 
     //디비에서 데이터 불러오기, 구인 공고 목록
@@ -130,8 +133,20 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         setContentView(R.layout.activity_recruit);
         init();
     }
-
     void init(){
+        recruit_pref = getSharedPreferences("Chat2",0);
+
+        if(isEmpty(recruit_pref.getString("recruit_first",""))){
+            Toast.makeText(this, "처음이야", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(),RecruitTutoActivity.class);
+            startActivity(intent);
+            SharedPreferences.Editor editor = recruit_pref.edit();
+            editor.putString("recruit_first","1");
+            editor.commit();
+        }else{
+            Toast.makeText(getApplicationContext(), "처음아니야", Toast.LENGTH_SHORT).show();
+        }
+
         textView = (TextView)findViewById(R.id.textView);
         listView = (ListView)findViewById(R.id.listview);
         tv_location = (TextView)findViewById(R.id.tv_location);
@@ -196,7 +211,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 view.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), "aaaaa"+position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "aaaaa"+position, Toast.LENGTH_SHORT).show();
                 selectedArea = list.get(position).toString();
 
                 //Toast.makeText(getApplicationContext(),"fuck",Toast.LENGTH_SHORT).show();

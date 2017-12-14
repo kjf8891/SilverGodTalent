@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class MyPageActivity extends AppCompatActivity {
     String mypage_type;
     String number, title;
     String leader;
+    Button applicantBtn;
 
 
     MyPage_TabPagerAdapter fragmentPagerAdapter;
@@ -46,6 +48,7 @@ public class MyPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_page);
 
+        applicantBtn = (Button)findViewById(R.id.applicantBtn);
         class_info_txt = (TextView)findViewById(R.id.class_info_txt);
         class_num_txt = (TextView)findViewById(R.id.class_num_txt);
 
@@ -101,6 +104,10 @@ public class MyPageActivity extends AppCompatActivity {
         Toast.makeText(this,"oncreate",Toast.LENGTH_SHORT).show();
     }
 
+    public void applicantList(View v){
+        Intent intent = new Intent(getApplicationContext(), ApplicantStateActivity.class);
+        startActivity(intent);
+    }
 
     public void loadPage(){
 

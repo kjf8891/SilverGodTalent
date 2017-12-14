@@ -9,6 +9,7 @@
     tools:context="com.example.testremote.MainActivity">
 
 
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -23,6 +24,7 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
 
 
          <LinearLayout
@@ -45,6 +47,13 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/applicantBtn"
+                android:onClick="applicantList"
+                android:text="applicant list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <ImageView
                 android:paddingLeft="10dp"

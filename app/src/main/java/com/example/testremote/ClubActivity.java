@@ -2,6 +2,7 @@ package com.example.testremote;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static android.text.TextUtils.isEmpty;
+
 /**
  * Created by seyeon on 2017-10-30.
  */
@@ -31,6 +34,8 @@ public class ClubActivity extends AppCompatActivity {
     ClubAdapter ClubAdapter;
     Button createbtn;
     JSONArray retJson;
+
+    SharedPreferences club_pref;
 
     DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
         @Override
@@ -67,6 +72,20 @@ public class ClubActivity extends AppCompatActivity {
     }
 
     void init(){
+        club_pref = getSharedPreferences("Chat2",0);
+
+        if(isEmpty(club_pref.getString("club_first",""))){
+            Toast.makeText(this, "처음이야", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(),ClubTutoActivity.class);
+            startActivity(intent);
+            SharedPreferences.Editor editor = club_pref.edit();
+            editor.putString("club_first","1");
+            editor.commit();
+        }else{
+            Toast.makeText(getApplicationContext(), "처음아니야", Toast.LENGTH_SHORT).show();
+        }
+
+
         items = new ArrayList<Club>();
         listView = (ListView)findViewById(R.id.listview_club);
         //createbtn = (Button)findViewById(R.id.createbtn);

@@ -53,6 +53,10 @@
         <activity android:name=".CompanySignInActivity"></activity>
         <activity android:name=".BulletinWriteActivity"></activity>
         <activity android:name=".TutorialActivity"></activity>
+        <activity android:name=".ApplicantStateActivity"></activity>
+        <activity android:name=".RecruitTutoActivity"></activity>
+        <activity android:name=".ClubTutoActivity"></activity>
+        <activity android:name=".MentoringTutoActivity"></activity>
 
         <activity
             android:name=".MainMenuActivity"
