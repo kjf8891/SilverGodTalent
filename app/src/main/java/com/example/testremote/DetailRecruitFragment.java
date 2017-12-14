@@ -223,7 +223,7 @@ public class DetailRecruitFragment extends Fragment implements OnMapReadyCallbac
         markerOptions.snippet(institution);
         googleMap.addMarker(markerOptions);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(50));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(25));
 
 
 

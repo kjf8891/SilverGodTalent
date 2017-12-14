@@ -2,7 +2,7 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
+    android:background="@drawable/customborder"
     android:orientation="vertical"
     android:paddingLeft="7dip"
     android:paddingTop="7dip"

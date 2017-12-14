@@ -57,7 +57,10 @@ public class MyPageListActivity extends AppCompatActivity {
     ToggleButton recogStart;
     boolean isRecogChecked = false;
     boolean isRegistered = false;
+    boolean isBind = false;
+
     SharedPreferences settings;
+    SharedPreferences.Editor editor;
 
     SharedPreferences prefs;
     List<NameValuePair> params;
@@ -115,15 +118,18 @@ public class MyPageListActivity extends AppCompatActivity {
         super.onDestroy();
 
         settings = getApplicationContext().getSharedPreferences("settings", 0);
-        SharedPreferences.Editor editor = settings.edit();
+
         editor.putBoolean("isRecogChecked", isRecogChecked);
         editor.putBoolean("isRegistered",isRegistered);
+        editor.putBoolean("isBind",isBind);
         editor.commit();
 
+        if(isBind && msgReceiver != null) {
 
-        unbindService(mServiceConnection);
+            unbindService(mServiceConnection);
 
-        if(msgReceiver != null)
+        }
+        if(msgReceiver != null || isRegistered == true)
         unregisterReceiver(msgReceiver);
 
 
@@ -159,22 +165,30 @@ public class MyPageListActivity extends AppCompatActivity {
         init();
     }
     public void init(){
+
         prefs = getApplicationContext().getSharedPreferences("Chat", 0);
         settings = getApplicationContext().getSharedPreferences("settings",0);
+
+        editor = settings.edit();
+
+
         isRecogChecked = settings.getBoolean("isRecogChecked",false);
         isRegistered = settings.getBoolean("isRegistered",false);
+        isBind = settings.getBoolean("isBind",false);
 
-        if(isRegistered) {
-            msgReceiver = new MSGReceiver();
-            Intent service = new Intent(getApplicationContext(), MyService.class);
-
-            IntentFilter intentFilter = new IntentFilter("com.example.testremote.MyService");
-            registerReceiver(msgReceiver,intentFilter);
-            //startService(service);
-            //mBindFlag = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ? 0 : Context.BIND_ABOVE_CLIENT;
-
-            bindService(new Intent(getApplicationContext(), MyService.class), mServiceConnection, mBindFlag);
-        }
+//        if(isRegistered && msgReceiver == null) {
+//            msgReceiver = new MSGReceiver();
+//            Intent service = new Intent(getApplicationContext(), MyService.class);
+//
+//            IntentFilter intentFilter = new IntentFilter("com.example.testremote.MyService");
+//            intentFilter.addAction("android.intent.action.SCREEN_ON");
+//            intentFilter.addAction("android.intent.action.SCREEN_OFF");
+//            registerReceiver(msgReceiver,intentFilter);
+//            //startService(service);
+//            //mBindFlag = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ? 0 : Context.BIND_ABOVE_CLIENT;
+//
+//            bindService(new Intent(getApplicationContext(), MyService.class), mServiceConnection, mBindFlag);
+//        }
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
 
         recogStart = (ToggleButton)findViewById(R.id.recog_start);
@@ -191,8 +205,15 @@ public class MyPageListActivity extends AppCompatActivity {
                         isRecogChecked = false;
                         isRegistered = false;
 
+                        editor.putBoolean("isRecogChecked",isRecogChecked);
+                        editor.commit();
 
 
+                            if(isBind==true && msgReceiver != null){
+
+                                unbindService(mServiceConnection);
+                                isBind = false;
+                            }
 
                             Intent service = new Intent(getApplicationContext(), MyService.class);
                             stopService(service);
@@ -201,15 +222,31 @@ public class MyPageListActivity extends AppCompatActivity {
                 }
                 else{
                     isRecogChecked = true;
-                    isRegistered = true;
+                    editor.putBoolean("isRecogChecked",isRecogChecked);
+                    editor.commit();
+
 
                     msgReceiver = new MSGReceiver();
                     Intent service = new Intent(getApplicationContext(), MyService.class);
 
                     IntentFilter intentFilter = new IntentFilter("com.example.testremote.MyService");
-                    registerReceiver(msgReceiver,intentFilter);
-                    startService(service);
-                    mBindFlag = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ? 0 : Context.BIND_ABOVE_CLIENT;
+                    intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+                    intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+
+                    if(isRegistered == false) {
+
+                        registerReceiver(msgReceiver, intentFilter);
+                        startService(service);
+                        mBindFlag = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ? 0 : Context.BIND_ABOVE_CLIENT;
+
+                        isRegistered = true;
+
+
+                    }
+
+
+                    isBind = true;
+
 
                     bindService(new Intent(getApplicationContext(), MyService.class), mServiceConnection, mBindFlag);
                 }

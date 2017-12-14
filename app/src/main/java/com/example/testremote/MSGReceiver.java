@@ -4,27 +4,124 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+import static com.example.testremote.BuildConfig.DEBUG;
+
 public class MSGReceiver  extends WakefulBroadcastReceiver {
+
+    private int mBindFlag;
+
+    private Messenger mServiceMessenger;
+
+    boolean isCreatedOnReceiver = false;
+
+   // private MSGReceiver msgReceiver;
+
+
+    private final ServiceConnection mServiceConnection = new ServiceConnection()
+    {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service)
+        {
+            if (DEBUG) {Log.e("TAG", "onServiceConnected");} //$NON-NLS-1$
+
+            mServiceMessenger = new Messenger(service);
+            Message msg = new Message();
+            msg.what = MyService.MSG_RECOGNIZER_START_LISTENING;
+
+            try
+            {
+                mServiceMessenger.send(msg);
+            }
+            catch (RemoteException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name)
+        {
+            if (DEBUG) {Log.e("TAG", "onServiceDisconnected");} //$NON-NLS-1$
+            mServiceMessenger = null;
+        }
+
+    }; // mServiceConnection
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
 
-        Log.i("000 RestartService" , "RestartService called : " + intent.getAction());
+
+        SharedPreferences settings = context.getSharedPreferences("settings",0);
+        boolean isRecogChecked = settings.getBoolean("isRecogChecked",false);
+
+
+        Log.e("000 RestartService" , "RestartService called : " + intent.getAction());
 
         /**
          * 서비스 죽일때 알람으로 다시 서비스 등록
          */
         if(intent.getAction().equals("ACTION.RESTART.MyService")){
 
-            Log.i("000 RestartService" ,"ACTION.RESTART.MyService " );
+            Log.i("000 RestartService" ,"ACTION.RESTART.MyService " + String.valueOf(isRecogChecked) );
 
             Intent i = new Intent(context,MyService.class);
             context.startService(i);
+        }
+        if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)&&isRecogChecked){
+
+            Log.e("000 RestartService" ,"ON ACTION.RESTART.MyService " + String.valueOf(isRecogChecked));
+
+            // = new MSGReceiver();
+            Intent service = new Intent(context, MyService.class);
+
+
+            IntentFilter intentFilter = new IntentFilter("com.example.testremote.MyService");
+            intentFilter.addAction("android.intent.action.SCREEN_ON");
+            intentFilter.addAction("android.intent.action.SCREEN_OFF");
+            context.registerReceiver(this,intentFilter);
+
+            isCreatedOnReceiver = true;
+
+            Intent i = new Intent(context,MyService.class);
+
+            context.startService(i);
+
+
+            mBindFlag = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ? 0 : Context.BIND_ABOVE_CLIENT;
+            context.bindService(new Intent(context, MyService.class), mServiceConnection, mBindFlag);
+
+
+        }
+        if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)&&isRecogChecked){
+
+            Log.e("000 RestartService" ,"OFF ACTION.END.MyService " );
+
+            Intent i = new Intent(context,MyService.class);
+
+            if(isCreatedOnReceiver) {
+                context.unbindService(mServiceConnection);
+                isCreatedOnReceiver = false;
+                context.unregisterReceiver(this);
+
+            }
+
+            context.stopService(i);
+
         }
 
         /**
@@ -142,7 +239,7 @@ public class MSGReceiver  extends WakefulBroadcastReceiver {
             LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
             setResultCode(Activity.RESULT_OK);
         }
-        else{   //채팅
+        else if(extras.getString("fromu") != null){   //채팅
             Intent msgrcv = new Intent("Msg");
             msgrcv.putExtra("msg", extras.getString("msg"));
             msgrcv.putExtra("fromu", extras.getString("fromu"));
