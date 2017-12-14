@@ -39,10 +39,12 @@ public class MGroupAdapter extends ArrayAdapter<MGroup>{
         MGroup getItem = items.get(position);
         if (getItem != null) {
             TextView lec_num = (TextView) v.findViewById(R.id.lec_num);
+            lec_num.setVisibility(View.INVISIBLE);
             ZoomText lec_title = (ZoomText) v.findViewById(R.id.lec_title);
             ZoomText lec_city = (ZoomText) v.findViewById(R.id.lec_city);
             ZoomText lec_date = (ZoomText) v.findViewById(R.id.lec_date);
             ImageView lec_btn = (ImageView)v.findViewById(R.id.lec_btn);
+            lec_btn.setVisibility(View.VISIBLE);
 //            final View finalV = v;
 //            lec_title.setOnClickListener(new View.OnClickListener() {
 //                @Override

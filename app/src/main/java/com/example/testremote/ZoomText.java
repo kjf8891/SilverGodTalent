@@ -35,6 +35,7 @@ public class ZoomText extends TextView {
         tvOrigin = this;
         this.setClickable(true);
         this.setLongClickable(true);
+       // this.setBackground(R.drawable.customborder);
         //this.setSelected(true);
     }
 

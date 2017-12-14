@@ -26,7 +26,7 @@
             android:textColor="@android:color/black" />
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical">
             <com.example.testremote.ZoomText
@@ -44,14 +44,14 @@
             <com.example.testremote.ZoomText
                 android:id="@+id/lec_date"
                 android:textSize="25dp"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:text="시도/구"/>
             <com.example.testremote.ZoomText
                 android:id="@+id/lec_city"
                 android:textSize="25dp"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:clickable="false"
@@ -63,11 +63,14 @@
             android:id="@+id/lec_btn"
             android:clickable="false"
             android:focusable="false"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="신청"
-            android:background="@drawable/bg_gradient"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="right"
+            android:layout_gravity="center_vertical"
+
+            android:background="@drawable/infobutton"
+
+            android:text="more info"
             android:textColor="@android:color/black" />
         </LinearLayout>
     </LinearLayout>

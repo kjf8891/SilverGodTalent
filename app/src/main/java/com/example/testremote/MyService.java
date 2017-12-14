@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,6 +41,8 @@ public class MyService extends Service
 
     protected SpeechRecognitionListener mListener;
 
+    private MSGReceiver msgReceiver;
+
     protected boolean mIsListening;
     protected volatile boolean mIsCountDownOn;
     private static boolean mIsStreamSolo;
@@ -47,11 +50,12 @@ public class MyService extends Service
     static final int MSG_RECOGNIZER_START_LISTENING = 1;
     static final int MSG_RECOGNIZER_CANCEL = 2;
     private boolean mBoolVoiceRecoStarted;
+    boolean isRunning = false;
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startForeground(1,new Notification());
+
 
         /**
          * startForeground 를 사용하면 notification 을 보여주어야 하는데 없애기 위한 코드
@@ -76,6 +80,13 @@ public class MyService extends Service
         notificationManager.notify(startId, n);
         notificationManager.cancel(startId);
 
+        msgReceiver = new MSGReceiver();
+
+        IntentFilter intentFilter = new IntentFilter("com.example.testremote.MyService");
+        intentFilter.addAction("android.intent.action.SCREEN_ON");
+        intentFilter.addAction("android.intent.action.SCREEN_OFF");
+        registerReceiver(msgReceiver,intentFilter);
+
 
 //        NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 //        Notification notification;
@@ -99,7 +110,9 @@ public class MyService extends Service
 //        nm.notify(startId, notification);
 //        nm.cancel(startId);
 
-        return super.onStartCommand(intent, flags, startId);
+        startForeground(1,new Notification());
+
+        return START_STICKY;
 
 
 
@@ -112,6 +125,7 @@ public class MyService extends Service
         mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,
                 this.getPackageName());
 
@@ -191,7 +205,7 @@ public class MyService extends Service
     }
 
     // Count down timer for Jelly Bean work around
-    protected CountDownTimer mNoSpeechCountDown = new CountDownTimer(5000, 5000)
+    protected CountDownTimer mNoSpeechCountDown = new CountDownTimer(5000, 7000)
     {
 
         @Override
@@ -239,6 +253,10 @@ public class MyService extends Service
             mSpeechRecognizer.destroy();
             mAudioManager.adjustStreamVolume(AudioManager.STREAM_NOTIFICATION,AudioManager.ADJUST_UNMUTE,0);
         }
+
+        unregisterReceiver(msgReceiver);
+
+        startService(new Intent(this,this.getClass()));
     }
 
     @Nullable
@@ -345,12 +363,29 @@ Log.e("onBuffer","onBuffer");
 
             Log.e("onResult",res.get(0));
 
-            if(res.get(0).equals("실행")){
+            if(res.get(0).toLowerCase().equals("silver got talent")){
 
 
+                startActivity(new Intent(getApplicationContext(),MainMenuActivity.class));
+
+            }else if(res.get(0).toLowerCase().equals("mentoring")){
+
+                startActivity(new Intent(getApplicationContext(),MentoringActivity.class));
+
+
+            }else if(res.get(0).toLowerCase().equals("club")){
+
+                startActivity(new Intent(getApplicationContext(),ClubActivity.class));
+
+
+            }else if(res.get(0).toLowerCase().equals("my page")){
                 startActivity(new Intent(getApplicationContext(),MyPageListActivity.class));
 
+            }else if(res.get(0).toLowerCase().equals("recruit")){
+                startActivity(new Intent(getApplicationContext(),RecruitActivity.class));
+
             }
+
             mIsListening = false;
             Message message = Message.obtain(null, MSG_RECOGNIZER_START_LISTENING);
             try
