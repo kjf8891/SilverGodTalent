@@ -68,7 +68,7 @@
             android:gravity="right"
             android:layout_gravity="center_vertical"
 
-            android:background="@drawable/moreinfo"
+            android:background="@drawable/infobutton"
 
             android:text="more info"
             android:textColor="@android:color/black" />

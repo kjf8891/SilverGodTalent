@@ -129,7 +129,7 @@ public class MyPageListActivity extends AppCompatActivity {
             unbindService(mServiceConnection);
 
         }
-        if(msgReceiver != null || isRegistered == true)
+        if(msgReceiver != null && isRegistered == true)
         unregisterReceiver(msgReceiver);
 
 

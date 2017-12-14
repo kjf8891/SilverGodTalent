@@ -238,6 +238,8 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                         @Override
                         public void processFinish(JSONArray ret) throws JSONException {
 
+                            String member_type = "";
+
                             Log.e("err", "processFinish");
                             Toast.makeText(getApplicationContext(), "processFinish:", Toast.LENGTH_SHORT).show();
                             retJson = ret;
@@ -262,10 +264,19 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                                     JSONObject json = jsonarray.getJSONObject(j);
 
                                     String id = json.getString("ID");
-                                    String pw = json.getString("PW");
-                                    tpw = pw;
-                                    //  String quantity = json.getString("Name");
 
+                                    if(json.has("PW")) {
+                                        if(i == 0){
+                                            member_type = "0";
+                                        }else{
+                                            member_type ="1";
+                                        }
+
+
+                                        String pw = json.getString("PW");
+                                        tpw = pw;
+                                        //  String quantity = json.getString("Name");
+                                    }
 
                                     Toast.makeText(getApplicationContext(), "되나:" + id + pw, Toast.LENGTH_SHORT).show();
                                 }
@@ -276,7 +287,10 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                                     SharedPreferences.Editor edit = prefs.edit();
                                     edit.putString("REG_FROM", mobno.getText().toString());
                                     edit.putString("FROM_NAME", pw.getText().toString());
+                                    edit.putString("member_type",member_type);
+
                                     edit.commit();
+
 
                                     Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
                                     startActivity(intent);
