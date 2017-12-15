@@ -6,19 +6,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MentoringTutoActivity extends AppCompatActivity {
+public class MainTutoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_mentoring_tuto);
+        setContentView(R.layout.activity_main_tuto);
 
         Button btn = (Button) findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MentoringTutoActivity.this, "dddddd", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainTutoActivity.this, "dddddd", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

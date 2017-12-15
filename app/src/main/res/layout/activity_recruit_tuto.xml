@@ -7,21 +7,21 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Hello World!"/>-->
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
-            android:src="@drawable/ex_zoom" />
+            android:src="@drawable/white" />
         <Button
             android:layout_margin="15dp"
-            android:background="@color/red"
+            android:background="@color/pink"
             android:textSize="25dp"
-            android:text="Main menu"
+            android:text="Back"
             android:textColor="@color/white"
             android:id="@+id/btn"
             android:layout_gravity="bottom|center"

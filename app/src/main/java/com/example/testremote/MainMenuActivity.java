@@ -23,12 +23,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.text.TextUtils.isEmpty;
+
 public class MainMenuActivity extends AppCompatActivity {
 
 
     //Button gotoMyPageMenuBtn, gotoRecruitMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn;
     SharedPreferences prefs;
     List<NameValuePair> params;
+    SharedPreferences main_pref;
 
     Button gotoMyPageMenuBtn,gotoRecruitMenuBtn, gotoMentoringMenuBtn, gotoClubMenuBtn,gotoHelpMenuBtn;
 
@@ -42,10 +45,6 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-
-
-
-
         init();
     }
 
@@ -62,6 +61,18 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     public void init(){
+        main_pref = getSharedPreferences("Chat2",0);
+
+        if(isEmpty(main_pref.getString("club_first",""))){
+            Toast.makeText(this, "처음이야", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(),MainTutoActivity.class);
+            startActivity(intent);
+            SharedPreferences.Editor editor = main_pref.edit();
+            editor.putString("main_first","1");
+            editor.commit();
+        }else{
+            Toast.makeText(getApplicationContext(), "처음아니야", Toast.LENGTH_SHORT).show();
+        }
 
         gotoMyPageMenuBtn = (Button) findViewById(R.id.gotoMyPageMenuBtn);
         gotoHelpMenuBtn = (Button) findViewById(R.id.gotoHelpMenuBtn);

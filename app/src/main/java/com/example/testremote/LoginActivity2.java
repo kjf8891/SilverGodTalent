@@ -48,6 +48,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import static android.text.TextUtils.isEmpty;
+
 public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallback {
 
     Button btn_login;
@@ -80,6 +82,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
     Bundle bundle;
 
     public static Context loginContext;
+    SharedPreferences login_pref;
 
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
     private static final int RECORD_AUDIO_PERMISSIONS_REQUEST = 1;
@@ -148,6 +151,18 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_login2);
 
 
+        login_pref = getSharedPreferences("Chat2",0);
+
+        if(isEmpty(login_pref.getString("club_first",""))){
+            Toast.makeText(this, "처음이야", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(),LoginTutoActivity.class);
+            startActivity(intent);
+            SharedPreferences.Editor editor = login_pref.edit();
+            editor.putString("login_first","1");
+            editor.commit();
+        }else{
+            Toast.makeText(getApplicationContext(), "처음아니야", Toast.LENGTH_SHORT).show();
+        }
 
 
         loginContext = this;
