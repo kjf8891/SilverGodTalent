@@ -1,5 +1,6 @@
 package com.example.testremote;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -150,6 +151,17 @@ public class SignInTypeActivity extends AppCompatActivity {
                 if(resultCode == RESULT_OK) {
                     finish();
                 }
+            case 8:     //회원가입 완료 응답
+                if(resultCode == RESULT_OK){
+                    Log.d("회원가입 원격 완료", "가입시키기성공");
+
+                    //로그인 안되어있으면 로그인 시켜야 함.
+                    Intent returnIntent = new Intent();
+                    // returnIntent.putExtra("result",result);
+                    setResult(Activity.RESULT_OK,returnIntent);
+                    finish();
+                }
+                break;
 
         }
 

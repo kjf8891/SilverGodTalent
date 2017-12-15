@@ -72,7 +72,7 @@ public class StartActivity extends AppCompatActivity {
                 //startActivity(intent);
 
                 Log.d("Main_IF:REG_FROM",prefs.getString("REG_FROM", ""));
-                startActivity(new Intent(this,UserActivity.class));
+                //startActivity(new Intent(this,UserActivity.class));
             } else if (!prefs.getString("REG_ID", "").isEmpty()) {
 //            Fragment reg = new LoginFragment();
 //            FragmentTransaction ft = getFragmentManager().beginTransaction();
