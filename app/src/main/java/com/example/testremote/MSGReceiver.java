@@ -178,21 +178,6 @@ public class MSGReceiver  extends WakefulBroadcastReceiver {
 
             LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
             setResultCode(Activity.RESULT_OK);
-        }else if(extras.getString("activity_change") != null){
-            Log.d("activity_changeeeeeee", "activity_change");
-
-            Intent msgrcv = new Intent("activity_change");
-
-            msgrcv.putExtra("now_activity",extras.getString("now_activity"));
-            msgrcv.putExtra("activity_change", extras.getString("activity_change"));
-            msgrcv.putExtra("sender_id", extras.getString("sender_id"));
-            //msgrcv.putExtra("pw_edittext", extras.getString("pw_edittext"));
-            //msgrcv.putExtra("fromname", extras.getString("pw_edittext"));
-
-
-
-            LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
-            setResultCode(Activity.RESULT_OK);
         }else if(extras.getString("mypagelistclick") != null){
             Log.d("mypagelistclick", "mypagelistclick");
 
@@ -208,6 +193,36 @@ public class MSGReceiver  extends WakefulBroadcastReceiver {
 
 
             LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+            setResultCode(Activity.RESULT_OK);
+        }else if(extras.getString("activity_change") != null){
+            Log.d("activity_changeeeeeee", "activity_change");
+
+            Intent msgrcv = new Intent("activity_change");
+
+            msgrcv.putExtra("now_activity",extras.getString("now_activity"));
+            msgrcv.putExtra("activity_change", extras.getString("activity_change"));
+            msgrcv.putExtra("sender_id", extras.getString("sender_id"));
+            //msgrcv.putExtra("pw_edittext", extras.getString("pw_edittext"));
+            //msgrcv.putExtra("fromname", extras.getString("pw_edittext"));
+
+
+
+            LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+            setResultCode(Activity.RESULT_OK);
+        }else if(extras.getString("RApplyReq") != null){   //채팅
+            Intent msgrcv = new Intent("RApplyReq");
+            msgrcv.putExtra("RApplyReq", extras.getString("RApplyReq"));
+            msgrcv.putExtra("id", extras.getString("id"));
+            msgrcv.putExtra("Num", extras.getString("Num"));
+            msgrcv.putExtra("title", extras.getString("title"));
+
+            Log.d("reme1" , extras.getString("Num"));
+
+
+            LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+
+            ComponentName comp = new ComponentName(context.getPackageName(),MSGService.class.getName());
+            startWakefulService(context, (intent.setComponent(comp)));
             setResultCode(Activity.RESULT_OK);
         }else if(extras.getString("nickname") != null){     //SignInEditSend
             Log.d("SignInEditSend", "SignInEditSend");
@@ -238,6 +253,50 @@ public class MSGReceiver  extends WakefulBroadcastReceiver {
 
             LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
             setResultCode(Activity.RESULT_OK);
+        }else if(extras.getString("mypage_type") != null){
+            if(extras.getString("mypage_type").equals("Club")){
+
+                Intent msgrcv = new Intent("Notice_Club");
+                msgrcv.putExtra("content", extras.getString("content"));
+                msgrcv.putExtra("from_sender_Nickname", extras.getString("from_sender_Nickname"));
+                msgrcv.putExtra("from_sender_id", extras.getString("from_sender_id"));
+                msgrcv.putExtra("date", extras.getString("date"));
+                msgrcv.putExtra("Num", extras.getString("Num"));
+                msgrcv.putExtra("mypage_type", extras.getString("mypage_type"));
+
+                Log.d("reme1" ,  extras.getString("from_sender_Nickname"));
+
+
+                LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+
+                ComponentName comp = new ComponentName(context.getPackageName(),MSGService.class.getName());
+                startWakefulService(context, (intent.setComponent(comp)));
+                setResultCode(Activity.RESULT_OK);
+
+
+
+            }else  if(extras.getString("mypage_type").equals("Recruit")){
+
+                Intent msgrcv = new Intent("Notice_Recruit");
+                msgrcv.putExtra("content", extras.getString("content"));
+                msgrcv.putExtra("from_sender_Nickname", extras.getString("from_sender_Nickname"));
+                msgrcv.putExtra("from_sender_id", extras.getString("from_sender_id"));
+                msgrcv.putExtra("date", extras.getString("date"));
+                msgrcv.putExtra("Num", extras.getString("Num"));
+                msgrcv.putExtra("mypage_type", extras.getString("mypage_type"));
+
+                Log.d("reme1" ,  extras.getString("from_sender_Nickname"));
+
+
+                LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+
+                ComponentName comp = new ComponentName(context.getPackageName(),MSGService.class.getName());
+                startWakefulService(context, (intent.setComponent(comp)));
+                setResultCode(Activity.RESULT_OK);
+
+
+
+            }
         }
         else if(extras.getString("fromu") != null){   //채팅
             Intent msgrcv = new Intent("Msg");

@@ -1,6 +1,7 @@
 package com.example.testremote;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -47,6 +48,27 @@ public class SignInActivity extends AppCompatActivity {
     boolean flag2 = true;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("SignInEditSend"));
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("remote_noti");
+        registerReceiver(onNotice, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("remote_noti");
+        unregisterReceiver(onNotice);
+
+    }
+
+    @Override
     public void onBackPressed() {
         Log.d("SignInActivity", "Backkkkkk");
 
@@ -74,8 +96,7 @@ public class SignInActivity extends AppCompatActivity {
         btn_cancel = (Button)findViewById(R.id.btn_cancel);
 
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
-        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("SignInEditSend"));
+
 
 
         nickname.addTextChangedListener(new TextWatcher() {
@@ -130,7 +151,9 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Log.d("onpw", s.toString());
+                Log.d("pw", prefs.getString("HELP_FLAG","") + flag);
                 if((prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")) && flag) {
+                    Log.d("잘","좀해");
                     new SignInActivity.SignInEditSend().execute(nickname.getText().toString(), s.toString(), name.getText().toString());
                 }
             }
@@ -235,6 +258,8 @@ public class SignInActivity extends AppCompatActivity {
                     nickname.setText(snickname);
                     pw.setText(spw);
                     name.setText(sname);
+
+                    flag = true;
                     //flag2 = false;
                 }
 
@@ -270,6 +295,17 @@ public class SignInActivity extends AppCompatActivity {
 
                 }
 
+
+            }else if(name.equals("remote_noti")){
+                Toast.makeText(getApplicationContext(),"The connection is aborted.",Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.remove("HELP_FLAG");
+                edit.remove("Helper_authorization");
+                edit.remove("needer_id");
+                edit.commit();
+
+                NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.cancel(1);
 
             }
         }
@@ -460,6 +496,7 @@ public class SignInActivity extends AppCompatActivity {
             //GetClassName(getApplicationContext());
             //params.add(new BasicNameValuePair("type", "helper_request"));
 
+            Log.d("잘","좀해");
             params.add(new BasicNameValuePair("now_activity", "SignInActivity"));    //현재 액티비티
             params.add(new BasicNameValuePair("nickname",args[0])); //어떤 화면으로 전환할 버튼을 눌렀는지
             params.add(new BasicNameValuePair("pw",args[1]));

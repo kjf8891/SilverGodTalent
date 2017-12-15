@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -44,10 +43,10 @@ public class BulletinWriteActivity extends Activity {
         content = (EditText)findViewById(R.id.bulletin_content);
 
         prefs = getApplicationContext().getSharedPreferences("Chat", 0);
-        SharedPreferences.Editor edit = prefs.edit();
-        edit.putString("Nickname", "jjong");
-        //edit.putString("FROM_NAME", pw.getText().toString());
-        edit.commit();
+//        SharedPreferences.Editor edit = prefs.edit();
+//        edit.putString("Nickname", "jjong");
+//        //edit.putString("FROM_NAME", pw.getText().toString());
+//        edit.commit();
 
         bundle = getIntent().getBundleExtra("userinfo");
         userinfo_type = bundle.getString("type");
@@ -86,7 +85,11 @@ public class BulletinWriteActivity extends Activity {
         //type을 구분 CNum, CTitle은 번들로 넘어온거 받기
         //컨텐트는 에디트 텍스트에서 받기
 
+        //여기서 기업은 다른 클래스 호출해서 작성하자.
+
         if(userinfo_type.equals("Club")){
+            new BulletinWriteActivity.InsertBulletin().execute(prefs.getString("REG_FROM",""),userinfo_num,date.getText().toString(), content.getText().toString(),prefs.getString("Nickname",""));
+        }else  if(userinfo_type.equals("Recruit")){
             new BulletinWriteActivity.InsertBulletin().execute(prefs.getString("REG_FROM",""),userinfo_num,date.getText().toString(), content.getText().toString(),prefs.getString("Nickname",""));
         }
     }
@@ -98,11 +101,24 @@ public class BulletinWriteActivity extends Activity {
             params = new ArrayList<NameValuePair>();
             Log.d("loglogloglog",args[0]);
 
-            params.add(new BasicNameValuePair("id", args[0]));
-            params.add(new BasicNameValuePair("Num", args[1]));
-            params.add((new BasicNameValuePair("date",args[2])));
-            params.add(new BasicNameValuePair("content", args[3]));
-            params.add(new BasicNameValuePair("Nickname", args[4]));
+            if(userinfo_type.equals("Club")){
+                params.add(new BasicNameValuePair("id", args[0]));
+                params.add(new BasicNameValuePair("Num", args[1]));
+                params.add((new BasicNameValuePair("date",args[2])));
+                params.add(new BasicNameValuePair("content", args[3]));
+                params.add(new BasicNameValuePair("Nickname", args[4]));
+                params.add(new BasicNameValuePair("mypage_type", userinfo_type));
+
+            }else if(userinfo_type.equals("Recruit")){
+
+                params.add(new BasicNameValuePair("id", args[0]));
+                params.add(new BasicNameValuePair("Num", args[1]));
+                params.add((new BasicNameValuePair("date",args[2])));
+                params.add(new BasicNameValuePair("content", args[3]));
+                params.add(new BasicNameValuePair("Nickname", args[4]));
+                params.add(new BasicNameValuePair("mypage_type", userinfo_type));
+            }
+
 
             JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/InsertBulletin",params);
             return jObj;
@@ -113,11 +129,11 @@ public class BulletinWriteActivity extends Activity {
             // progress.dismiss();
             try {
                 String res = json.getString("response");
-                if(res.equals("Sucessfully Registered")) {
+                if(res.equals("Success")) {
                     finish();
                    // startActivity(new Intent(getApplicationContext(),UserActivity.class));
                 }else{
-                    Toast.makeText(getApplicationContext(),res,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),res,Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {

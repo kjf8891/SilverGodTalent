@@ -1,19 +1,13 @@
 package com.example.testremote;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,8 +22,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.testremote.BuildConfig.DEBUG;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -79,8 +71,33 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
         prefs = getApplicationContext().getSharedPreferences("Chat", 0);
-        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
+//        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction("remote_noti");
+//        registerReceiver(onNotice, intentFilter);
 
+
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("remote_noti");
+        registerReceiver(onNotice, intentFilter);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("remote_noti");
+        unregisterReceiver(onNotice);
     }
 
     private BroadcastReceiver onNotice= new BroadcastReceiver() {
@@ -104,9 +121,6 @@ public class MainMenuActivity extends AppCompatActivity {
                 if(now_activity.equals("MainMenuActivity")){
                     if(activity_change.equals("MyPageListActivity")){
 
-
-
-
                       //  if(prefs.getString("HELP_FLAG","").equals("1") ){
                             Intent mIntent = new Intent(getApplicationContext(), MyPageListActivity.class);
                             startActivityForResult(mIntent, 8);
@@ -129,7 +143,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         //8번 받으면 로그인 완료. 종료시키면 된다.
                         startActivityForResult(mIntent, 8);
                         Log.d("MainMenuActivity","WantedActivity");
-                        finish();
+                        //finish();
                     }else if(activity_change.equals("MentoringActivity")){
                         Intent mIntent = new Intent(getApplicationContext(), MentoringActivity.class);
                         //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -137,7 +151,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         //8번 받으면 로그인 완료. 종료시키면 된다.
                         startActivityForResult(mIntent, 8);
                         Log.d("MainMenuActivity","MentoringActivity");
-                        finish();
+                        //finish();
                     }else if(activity_change.equals("ClubActivity")){
                         Intent mIntent = new Intent(getApplicationContext(), ClubActivity.class);
                         //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -145,13 +159,24 @@ public class MainMenuActivity extends AppCompatActivity {
                         //8번 받으면 로그인 완료. 종료시키면 된다.
                         startActivityForResult(mIntent, 8);
                         Log.d("MainMenuActivity","ClubActivity");
-                        finish();
+                        //finish();
                     }else if(activity_change.equals("back")){
                         Log.d("MainMenuActivity","back");
                         finish();
                     }
                 }
-            }
+            }else if(name.equals("remote_noti")){
+              Toast.makeText(getApplicationContext(),"The connection is aborted.",Toast.LENGTH_SHORT).show();
+              SharedPreferences.Editor edit = prefs.edit();
+              edit.remove("HELP_FLAG");
+              edit.remove("Helper_authorization");
+              edit.remove("needer_id");
+              edit.commit();
+
+              NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+              nm.cancel(1);
+
+          }
         }
     };
 

@@ -147,6 +147,7 @@ public class AddRecruitFragment extends Fragment {
             jsonObject.put("total_num",total_num.getText().toString());
             jsonObject.put("city",city.getText().toString());
             jsonObject.put("ins_name",ins_name.getText().toString());
+            jsonObject.put("ins_id",prefs.getString("REG_FROM",""));
             //Toast.makeText(getActivity(), "date" + date, Toast.LENGTH_SHORT).show();
             //jsonObject.put("id",tmp_id);
             //도시(무슨구,무슨주인지), 위도, 경도, 건물이름(자치센터,주민회관)는 어떻게 넣지?

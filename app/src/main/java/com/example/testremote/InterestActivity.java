@@ -1,6 +1,7 @@
 package com.example.testremote;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -50,6 +51,25 @@ public class InterestActivity extends AppCompatActivity {
     private ArrayList<InterestData> myDataset;
     boolean flag = true;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("SignInEditSend"));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("remote_noti");
+        registerReceiver(onNotice, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("remote_noti");
+        unregisterReceiver(onNotice);
+
+    }
 
     DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
         @Override
@@ -86,6 +106,9 @@ public class InterestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_interest);
         prefs = getApplicationContext().getSharedPreferences("Chat", 0);
 
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction("remote_noti");
+//        registerReceiver(onNotice, intentFilter);
 
         try {
             userinfo = new JSONObject(getIntent().getStringExtra("userinfo")); //signin 액티비티에서 데이터 받아옴
@@ -178,6 +201,7 @@ public class InterestActivity extends AppCompatActivity {
 //                    ft.commit();
 
                     SharedPreferences.Editor edit = prefs.edit();
+                    edit.putString("member_type", "0");
                     edit.putString("REG_FROM", userinfo.getString("ID"));
                     edit.putString("FROM_NAME", userinfo.getString("PW"));
                     edit.putString("Nickname", userinfo_Nickname);
@@ -349,6 +373,13 @@ public class InterestActivity extends AppCompatActivity {
                         if(prefs.getString("HELP_FLAG","").equals("1")){
                             btn_complete_Click();
                         }else if(prefs.getString("HELP_FLAG","").equals("2")){
+
+
+                            //니더(어르신의 폰번호도 저장해두자
+                            SharedPreferences.Editor edit = prefs.edit();
+                            edit.putString("needer_mobno", userinf_id);
+                            edit.commit();
+
                             Log.d("interest","complete");
                             Intent returnIntent = new Intent();
                             // returnIntent.putExtra("result",result);
@@ -474,6 +505,17 @@ public class InterestActivity extends AppCompatActivity {
 
 
                 mAdapter.notifyDataSetChanged();
+
+            }else if(name.equals("remote_noti")){
+                Toast.makeText(getApplicationContext(),"The connection is aborted.",Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.remove("HELP_FLAG");
+                edit.remove("Helper_authorization");
+                edit.remove("needer_id");
+                edit.commit();
+
+                NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.cancel(1);
 
             }
         }

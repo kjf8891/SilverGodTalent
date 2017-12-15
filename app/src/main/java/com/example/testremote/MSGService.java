@@ -3,6 +3,7 @@ package com.example.testremote;
 
 import android.app.ActivityManager;
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -81,10 +83,55 @@ public class MSGService extends IntentService {
                     edit.putString("helper_id", extras.getString("helper_id"));
                     edit.commit();
 
+
                     ((LoginActivity2)LoginActivity2.loginContext).NeederScreenInfoSend();
                     Log.d("getclassname",GetClassName(getApplicationContext()));
                     Log.d("helper_id",extras.getString("helper_id"));
 
+                    NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                    Notification.Builder builder = new Notification.Builder(getApplicationContext()).setOngoing(true);
+                    builder.setSmallIcon(R.drawable.cast_ic_notification_play);
+                    builder.setTicker("Sample");
+                    builder.setNumber(10);
+                    builder.setContentTitle("Title");
+                    builder.setContentText("");
+
+                    Notification noti = builder.build();
+                    Intent intent2 = new Intent("remote_noti");
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent2,PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    RemoteViews contentview = new RemoteViews(getPackageName(),R.layout.notification_activity);
+                    contentview.setOnClickPendingIntent(R.id.button,pendingIntent);
+                    noti.contentView = contentview;
+                    nm.notify(1,noti);
+
+                }else if(extras.getString("from_sender_Nickname") != null){
+                    Log.d("MSGServif Nickname",extras.getString("from_sender_Nickname"));
+                    sendNotification(extras.getString("content"),extras.getString("mypage_type"),extras.getString("from_sender_Nickname") ,extras.getString("date"),extras.getString("Num")); //인증번호와 어르신 토큰
+
+                }else if(extras.getString("RApplyReq") != null){
+                    Log.d("MSGServif Nickname",extras.getString("title"));
+                    sendNotification(extras.getString("id"),extras.getString("mypage_type"),extras.getString("from_sender_Nickname") ,extras.getString("date"),extras.getString("Num")); //인증번호와 어르신 토큰
+                    Bundle args = new Bundle();
+                    args.putString("id", extras.getString("id"));
+                    args.putString("Num", extras.getString("Num"));
+                    args.putString("title", extras.getString("title"));
+
+                    Intent chat = new Intent(this, ApplicantStateActivity.class);
+                    chat.putExtra("RApplyReq", args);
+
+                    notification = new NotificationCompat.Builder(this);
+                    notification.setContentTitle(extras.getString("title"));
+                    notification.setContentText(extras.getString("id"));
+                    notification.setTicker("New Apply!");
+                    notification.setSmallIcon(R.mipmap.ic_launcher);
+
+                    PendingIntent contentIntent = PendingIntent.getActivity(this, 1000,
+                            chat, PendingIntent.FLAG_CANCEL_CURRENT);
+                    notification.setContentIntent(contentIntent);
+                    notification.setAutoCancel(true);
+                    manager =(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    manager.notify(0, notification.build());
                 }
                 else{
                     if(!prefs.getString("CURRENT_ACTIVE","").equals(extras.getString("fromu"))) {   //채팅메시지 받는곳
@@ -145,6 +192,29 @@ public class MSGService extends IntentService {
         ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> runningTaskInfos = activityManager.getRunningTasks(1);
         return runningTaskInfos.get(0).topActivity.getClassName();
+    }
+    private void sendNotification(String content, String mypage_type,String nickname, String date, String Num) {
+
+        Log.d("Numumum", Num);
+        Bundle args = new Bundle();
+        args.putString("Num", Num);
+        args.putString("mypage_type", mypage_type);
+
+        Intent chat = new Intent(this, MyPageActivity.class);
+        chat.putExtra("PushStart", args);
+
+        notification = new NotificationCompat.Builder(this);
+        notification.setContentTitle(nickname);
+        notification.setContentText(content);
+        notification.setTicker("New Message !");
+        notification.setSmallIcon(R.mipmap.ic_launcher);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 1000,
+                chat, PendingIntent.FLAG_CANCEL_CURRENT);
+        notification.setContentIntent(contentIntent);
+        notification.setAutoCancel(true);
+        manager =(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, notification.build());
     }
 
     private void sendNotification(String msg,String mobno,String name) {

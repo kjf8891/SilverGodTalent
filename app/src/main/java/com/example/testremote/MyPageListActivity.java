@@ -1,5 +1,6 @@
 package com.example.testremote;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -164,6 +165,28 @@ public class MyPageListActivity extends AppCompatActivity {
 
         init();
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("mypagelistclick"));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("remote_noti");
+        registerReceiver(onNotice, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("remote_noti");
+        unregisterReceiver(onNotice);
+
+    }
+
     public void init(){
 
         prefs = getApplicationContext().getSharedPreferences("Chat", 0);
@@ -189,7 +212,7 @@ public class MyPageListActivity extends AppCompatActivity {
 //
 //            bindService(new Intent(getApplicationContext(), MyService.class), mServiceConnection, mBindFlag);
 //        }
-        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
+
 
         recogStart = (ToggleButton)findViewById(R.id.recog_start);
         recogStart.setChecked(isRecogChecked);
@@ -318,7 +341,32 @@ public class MyPageListActivity extends AppCompatActivity {
             }
         }) ;
 
+        listview_lec.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                // get item
+                ListViewMyClass item = (ListViewMyClass) parent.getItemAtPosition(position) ;
+                select_position = position;
 
+                String titleStr = item.getTitle() ;
+                String descStr = item.getDesc() ;
+                Drawable iconDrawable = item.getIcon();
+
+
+                if(prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")){
+                    new MyPageListActivity.ActivityChangeSend().execute("MyPageActivity",String.valueOf(position), "Recruit");
+
+                }else {
+                    //마이페이지 로딩 액티비티 전환
+                    Toast.makeText(getApplicationContext(), titleStr, Toast.LENGTH_LONG).show();
+
+                    BundleSend("Recruit");
+//                    Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+//                    startActivity(intent);
+
+                }
+            }
+        }) ;
 
         //
         //new InsertDataTask().execute("http://sanhyup.c4hbycfv6pky.ap-northeast-2.rds.amazonaws.com:5306/pushData");
@@ -327,6 +375,19 @@ public class MyPageListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+        Log.d("LoginActivity2", "Backkkkkk");
+
+        if(prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")){
+            new MyPageListActivity.ActivityChangeSend().execute("back");
+        }else{
+            super.onBackPressed();
+        }
+
+
+    }
 
     private BroadcastReceiver onNotice= new BroadcastReceiver() {
 
@@ -361,11 +422,15 @@ public class MyPageListActivity extends AppCompatActivity {
 
                     //myPageActivity의 경우
                     //몇번째 리스트를 선택했는지 position 정보가 필요하다.
-                    int position = Integer.parseInt(intent.getStringExtra("position"));
+                    int position = Integer.parseInt(intent.getStringExtra("position")) - 1;
                     String mypage_type = intent.getStringExtra("mypage_type");
+
 
                     if(mypage_type.equals("Club")){
                         //bundle = getIntent().getBundleExtra("Club");
+
+                        Log.d("Broad","Club");
+                        Log.d("Broad",String.valueOf(position));
 
                         Intent mIntent = new Intent(getApplicationContext(), MyPageActivity.class);
                         //번들로 넘겨줘야한다.
@@ -386,6 +451,7 @@ public class MyPageListActivity extends AppCompatActivity {
                         //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
                         //8번 받으면 로그인 완료. 종료시키면 된다.
                         startActivityForResult(mIntent, 8);
+
                         //Intent mIntent = new Intent(getApplicationContext(),SignInActivity.class);
                         //
                         // mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -441,15 +507,24 @@ public class MyPageListActivity extends AppCompatActivity {
                         //startActivity(mIntent);
                     }
 
-
-
-                    Intent mIntent = new Intent(getApplicationContext(), MyPageListActivity.class);
-                    startActivityForResult(mIntent, 9);
+//                    Intent mIntent = new Intent(getApplicationContext(), MyPageListActivity.class);
+//                    startActivityForResult(mIntent, 9);
 
                     // Intent mIntent = new Intent(getApplicationContext(),SignInActivity.class);
                     // mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
                     // startActivity(mIntent);
                 }
+            }
+            else if(name.equals("remote_noti")){
+                Toast.makeText(getApplicationContext(),"The connection is aborted.",Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.remove("HELP_FLAG");
+                edit.remove("Helper_authorization");
+                edit.remove("needer_id");
+                edit.commit();
+
+                NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.cancel(1);
             }
         }
     };
@@ -784,6 +859,14 @@ public class MyPageListActivity extends AppCompatActivity {
         protected JSONObject doInBackground(String... args) {
             JSONParser json = new JSONParser();
             params = new ArrayList<NameValuePair>();
+
+            if(prefs.getString("member_type","").equals("1")) {
+                params.add(new BasicNameValuePair("user_type", "1"));
+                Log.d("Mento_user_type", "1");
+            }else{
+                params.add(new BasicNameValuePair("user_type", "0"));
+                Log.d("Mento_user_type", "0");
+            }
             params.add(new BasicNameValuePair("mobno", args[1]));
             params.add(new BasicNameValuePair("type", args[0]));
             JSONObject jAry = json.getJSONFromUrl("http://13.124.85.122:8080/getActivity",params);
@@ -998,38 +1081,53 @@ public class MyPageListActivity extends AppCompatActivity {
 
         }
     }
+
+
     public void showClassList(){
 
         //내 디비 정보 받아와서
         // 첫 번째 아이템 추가.
-
         //이것도 원격제어해야한다.
+        Log.d("member_typea", prefs.getString("member_type",""));
+        if(prefs.getString("member_type","").equals("1")){ //기업
+            Log.d("member_typeb", prefs.getString("member_type",""));
 
-        if(prefs.getString("HELP_FLAG","").equals("1") ){   //어르신이 원격제어중이면
-            new MyPageListActivity.MemtoringLoad().execute("Club",prefs.getString("REG_FROM",""));
-            new MyPageListActivity.MemtoringLoad().execute("Mentoring",prefs.getString("REG_FROM",""));
+            new MyPageListActivity.MemtoringLoad().execute("Club", prefs.getString("REG_FROM", ""), prefs.getString("member_type",""));
+            new MyPageListActivity.MemtoringLoad().execute("Mentoring", prefs.getString("REG_FROM", ""), prefs.getString("member_type",""));
             // new MyPageListActivity.MemtoringLoad().execute("Wait");
-            new MyPageListActivity.MemtoringLoad().execute("Recruit",prefs.getString("REG_FROM",""));
-            new MyPageListActivity.MemtoringLoad().execute("Wait",prefs.getString("REG_FROM",""));
-
-        }else if( prefs.getString("HELP_FLAG","").equals("2")) {    //젊은이가 원격제어중이면
+            new MyPageListActivity.MemtoringLoad().execute("Recruit", prefs.getString("REG_FROM", ""), prefs.getString("member_type",""));
+            new MyPageListActivity.MemtoringLoad().execute("Wait", prefs.getString("REG_FROM", ""), prefs.getString("member_type",""));
 
 
-            new MyPageListActivity.MemtoringLoad().execute("Club", prefs.getString("needer_id", ""));
-            new MyPageListActivity.MemtoringLoad().execute("Mentoring", prefs.getString("needer_id", ""));
-            // new MyPageListActivity.MemtoringLoad().execute("Wait");
-            new MyPageListActivity.MemtoringLoad().execute("Recruit", prefs.getString("needer_id", ""));
-            new MyPageListActivity.MemtoringLoad().execute("Wait", prefs.getString("needer_id", ""));
+        }else {
 
-        }else{
-            new MyPageListActivity.MemtoringLoad().execute("Club",prefs.getString("REG_FROM",""));
-            new MyPageListActivity.MemtoringLoad().execute("Mentoring",prefs.getString("REG_FROM",""));
-            // new MyPageListActivity.MemtoringLoad().execute("Wait");
-            new MyPageListActivity.MemtoringLoad().execute("Recruit",prefs.getString("REG_FROM",""));
-            new MyPageListActivity.MemtoringLoad().execute("Wait",prefs.getString("REG_FROM",""));
+            if (prefs.getString("HELP_FLAG", "").equals("1")) {   //어르신이 원격제어중이면
+                Log.d("reg_from", prefs.getString("REG_FROM", ""));
+
+                new MyPageListActivity.MemtoringLoad().execute("Club", prefs.getString("REG_FROM", ""));
+                new MyPageListActivity.MemtoringLoad().execute("Mentoring", prefs.getString("REG_FROM", ""));
+                // new MyPageListActivity.MemtoringLoad().execute("Wait");
+                new MyPageListActivity.MemtoringLoad().execute("Recruit", prefs.getString("REG_FROM", ""));
+                new MyPageListActivity.MemtoringLoad().execute("Wait", prefs.getString("REG_FROM", ""));
+
+            } else if (prefs.getString("HELP_FLAG", "").equals("2")) {    //젊은이가 원격제어중이면
+                Log.d("needer_id", prefs.getString("needer_mobno", ""));
+
+                new MyPageListActivity.MemtoringLoad().execute("Club", prefs.getString("needer_mobno", ""));
+                new MyPageListActivity.MemtoringLoad().execute("Mentoring", prefs.getString("needer_mobno", ""));
+                // new MyPageListActivity.MemtoringLoad().execute("Wait");
+                new MyPageListActivity.MemtoringLoad().execute("Recruit", prefs.getString("needer_mobno", ""));
+                new MyPageListActivity.MemtoringLoad().execute("Wait", prefs.getString("needer_mobno", ""));
+
+            } else {
+                new MyPageListActivity.MemtoringLoad().execute("Club", prefs.getString("REG_FROM", ""));
+                new MyPageListActivity.MemtoringLoad().execute("Mentoring", prefs.getString("REG_FROM", ""));
+                // new MyPageListActivity.MemtoringLoad().execute("Wait");
+                new MyPageListActivity.MemtoringLoad().execute("Recruit", prefs.getString("REG_FROM", ""));
+                new MyPageListActivity.MemtoringLoad().execute("Wait", prefs.getString("REG_FROM", ""));
+            }
+
         }
-
-
         setListViewHeightBasedOnChildren(listview_club);
         setListViewHeightBasedOnChildren(listview_mentoring);
         setListViewHeightBasedOnChildren(listview_lec);

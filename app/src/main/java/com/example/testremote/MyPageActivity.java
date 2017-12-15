@@ -1,6 +1,10 @@
 package com.example.testremote;
 
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,17 +35,19 @@ public class MyPageActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     Bundle bundle;
-    TextView class_info_txt, class_num_txt;
+    TextView class_info_txt, class_num_txt,member_type_txt;
     String mypage_type;
     String number, title;
     String leader;
     Button applicantBtn;
+    String mapplicationNum;
 
 
     MyPage_TabPagerAdapter fragmentPagerAdapter;
     List<MyPage_CompletedFragment> listFragments;
 
     List<NameValuePair> params;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,20 +57,9 @@ public class MyPageActivity extends AppCompatActivity {
         applicantBtn = (Button)findViewById(R.id.applicantBtn);
         class_info_txt = (TextView)findViewById(R.id.class_info_txt);
         class_num_txt = (TextView)findViewById(R.id.class_num_txt);
+        member_type_txt = (TextView)findViewById(R.id.member_type_txt);
 
-//        View v = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.my_page, null, false);
-//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//
-//        ZoomView zoomView = new ZoomView(this);
-//        zoomView.addView(v);
-//        zoomView.setLayoutParams(layoutParams);
-//        //zoomView.setMiniMapEnabled(true); // 좌측 상단 검은색 미니맵 설정
-//        zoomView.setMaxZoom(4f); // 줌 Max 배율 설정  1f 로 설정하면 줌 안됩니다.
-//        //zoomView.setMiniMapCaption("Mini Map Test"); //미니 맵 내용
-//        //zoomView.setMiniMapCaptionSize(20); // 미니 맵 내용 글씨 크기 설정
-//
-//        CoordinatorLayout container = (CoordinatorLayout) findViewById(R.id.activity_mypage);
-//        container.addView(zoomView);
+        prefs = getApplicationContext().getSharedPreferences("Chat", 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,6 +70,9 @@ public class MyPageActivity extends AppCompatActivity {
 
 
         // bundle = getIntent().getBundleExtra("random_number");   //인증번호 번들
+
+        if(prefs.getString("member_type","").equals("1"))
+            member_type_txt.setText("Institution Member");
 
         if(getIntent().getBundleExtra("Club") != null) {
             bundle = getIntent().getBundleExtra("Club");
@@ -92,7 +90,24 @@ public class MyPageActivity extends AppCompatActivity {
 
         }else if(getIntent().getBundleExtra("Recruit")!=null){
             bundle = getIntent().getBundleExtra("Recruit");
+            mypage_type = "Recruit";
+            number = bundle.getString("RNum");
+            title = bundle.getString("RTitle");
+            leader = bundle.getString("institution");
 
+            setTitle(bundle.getString("RTitle"));
+            class_num_txt.setText("Club Member :  " + bundle.getString("applicationNum"));
+
+        }else if(getIntent().getBundleExtra("PushStart") != null){
+            Log.d("ggg","pushstart");
+
+            bundle = getIntent().getBundleExtra("PushStart");
+            mypage_type = bundle.getString("mypage_type");
+            number = bundle.getString("Num");
+
+            Log.d("ggggg",number);
+
+            new MyPageActivity.MypageLoad().execute(mypage_type,number);
         }
 
         //게시판이랑 공지글 업데이트하기
@@ -105,7 +120,14 @@ public class MyPageActivity extends AppCompatActivity {
     }
 
     public void applicantList(View v){
+        Bundle args = new Bundle();
+
+        args.putString("id", prefs.getString("REG_FROM",""));
+        args.putString("Num", number);
+        args.putString("title", title);
+
         Intent intent = new Intent(getApplicationContext(), ApplicantStateActivity.class);
+        intent.putExtra("RApplyReq",args);
         startActivity(intent);
     }
 
@@ -207,6 +229,22 @@ public class MyPageActivity extends AppCompatActivity {
 
                     mIntent.putExtra("userinfo",args);
                     startActivityForResult(mIntent, 8);
+                }else  if(mypage_type.equals("Recruit")){
+
+                    //기업인지아닌지 member_type
+                    Intent mIntent = new Intent(getApplicationContext(), BulletinWriteActivity.class);
+                    //번들로 넘겨줘야한다.
+                    Bundle args = new Bundle();
+                    args.putString("type", mypage_type);
+                    args.putString("Num", number);
+                    args.putString("Title",title);
+
+                    mIntent.putExtra("userinfo",args);
+                    startActivityForResult(mIntent, 8);
+
+
+                    //기업이면 Notice에 올려야한다.
+
                 }
             }
         });
@@ -285,53 +323,162 @@ public class MyPageActivity extends AppCompatActivity {
             listFragments.get(1).adapter.notifyDataSetChanged();
             fragmentPagerAdapter.notifyDataSetChanged();
 
-            for(int i = 0; i < json.length(); i++){
-                JSONObject c = null;
-                Log.d("MyPageLoad",String.valueOf(json.length()));
-                try {
-                    c = json.getJSONObject(i);
-                    String sid = c.getString("id");
-                    String sNum = "";
-                    String sBNum = "";
-                    if(mypage_type.equals("Club")){
-                        sNum = c.getString("CNum");
-                        sBNum = c.getString("CBNum");
+            if(json != null) {
+
+
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject c = null;
+                    Log.d("MyPageLoad", String.valueOf(json.length()));
+                    try {
+                        c = json.getJSONObject(i);
+                        String sid = c.getString("id");
+                        String sNum = "";
+                        String sBNum = "";
+                        //String applicationNum = c.getString("applicationNum");
+                        //class_num_txt.setText(applicationNum);
+
+                        if (mypage_type.equals("Club")) {
+                            sNum = c.getString("CNum");
+                            sBNum = c.getString("CBNum");
+                        } else if (mypage_type.equals("Mentroing")) {
+                            sNum = c.getString("MNum");
+                            sBNum = c.getString("MBNum");
+                        } else if (mypage_type.equals("Recruit")) {
+                            sNum = c.getString("RNum");
+                            sBNum = c.getString("RBNum");
+                        }
+
+                        String sNickname = c.getString("Nickname");
+                        String sdate = c.getString("date");
+                        String scontent = c.getString("content");
+
+                        Log.d("leader", leader);
+                        Log.d("ggg", sNickname + sdate + scontent);
+
+                        if (!sid.equals(leader)) {
+                            Log.d("tttt", sid);
+                            Log.d("tttt2", leader);
+                            listFragments.get(0).bucketItems.add(new MyPage_BucketItem(sNickname, sdate, scontent));
+                        } else {
+                            Log.d("tttt3", sid);
+                            Log.d("tttt4", leader);
+                            listFragments.get(1).bucketItems.add(new MyPage_BucketItem(sNickname, sdate, scontent));
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    else if(mypage_type.equals("Mentroing")) {
-                        sNum = c.getString("MNum");
-                        sBNum = c.getString("MBNum");
-                    }
-                    else if(mypage_type.equals("Recruit")){
-                        sNum = c.getString("RNum");
-                        sBNum = c.getString("RBNum");
-                    }
 
-                    String sNickname = c.getString("Nickname");
-                    String sdate = c.getString("date");
-                    String scontent = c.getString("content");
-
-                    Log.d("leader",leader);
-                    Log.d("ggg",sNickname+sdate+scontent);
-
-                    if(sid.equals(leader)){
-                        Log.d("tttt","tttt");
-                        listFragments.get(0).bucketItems.add(new MyPage_BucketItem(sNickname, sdate, scontent));
-                    }else {
-                        Log.d("gdgdg","gdgdg");
-                        listFragments.get(1).bucketItems.add(new MyPage_BucketItem(sNickname, sdate, scontent));
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
             }
             listFragments.get(0).adapter.notifyDataSetChanged();
             listFragments.get(1).adapter.notifyDataSetChanged();
             fragmentPagerAdapter.notifyDataSetChanged();
         }
     }
+
+
+    private class MypageLoad extends AsyncTask<String, String, JSONObject> {
+        @Override
+        protected JSONObject doInBackground(String... args) {
+            JSONParser json = new JSONParser();
+
+            params = new ArrayList<NameValuePair>();
+
+
+                if(args[0].equals("Club")){
+                    //CNum만 넘겨서 받은사람이 브로드캐스트 리시버에서 받은게 Club에 CNum이면 쿼리를 수행해서 자기꺼 액티비티 넘길때 번들로 설정해서
+                    //보내도록 하자.
+                    params.add((new BasicNameValuePair("mypage_type","Club")));
+                    params.add((new BasicNameValuePair("Num", number)));
+
+                }else if(args[0].equals("Mentoring")){
+                    params.add((new BasicNameValuePair("mypage_type","Mentoring")));
+                    params.add((new BasicNameValuePair("Num",number)));
+
+                }else if(args[0].equals("Recruit")){
+                    params.add((new BasicNameValuePair("mypage_type","Recruit")));
+                    params.add((new BasicNameValuePair("Num", number)));
+                }
+
+                JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/MyPageLoad",params);
+
+            return jObj;
+        }
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            //progress.dismiss();
+            try {
+
+                if(mypage_type.equals("Club")) {
+
+                    String Num = json.getString("CNum");
+                    title = json.getString("CTitle");
+                    String city = json.getString("city");
+                    String location = json.getString("location");
+                    leader = json.getString("leader");
+                    String date = json.getString("date");
+                    String content = json.getString("content");
+                    String total_num = json.getString("total_num");
+                    mapplicationNum = json.getString("applicationNum");
+
+                    setTitle(bundle.getString("CTitle"));
+                    class_num_txt.setText("Club Member :  " + mapplicationNum);
+
+                }else if(mypage_type.equals("Mentoring")){
+
+                }else if(mypage_type.equals("Recruit")) {
+
+
+                    String Num = json.getString("RNum");
+                    title = json.getString("RTitle");
+                    String city = json.getString("city");
+                    //String location = json.getString("location");
+                    leader = json.getString("institution");
+                    String date = json.getString("date");
+                    String content = json.getString("content");
+                    String total_num = json.getString("total_num");
+                    mapplicationNum = json.getString("applicationNum");
+
+
+                    Log.d("Recruit",leader);
+
+                    setTitle(bundle.getString("RTitle"));
+                    class_num_txt.setText("Club Member :  " + mapplicationNum);
+
+                }
+
+
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+    private BroadcastReceiver onNotice= new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String name = intent.getAction();
+            // Intent SendBroadCast로 보낸 action TAG 이름으로 필요한 방송을 찾는다.
+
+            if(name.equals("remote_noti")){
+                Toast.makeText(getApplicationContext(),"The connection is aborted.",Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.remove("HELP_FLAG");
+                edit.remove("Helper_authorization");
+                edit.remove("needer_id");
+                edit.commit();
+
+                NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.cancel(1);
+
+            }
+        }
+    };
 }
 
 

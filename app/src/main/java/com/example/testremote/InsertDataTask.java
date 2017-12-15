@@ -71,7 +71,7 @@ public class InsertDataTask extends AsyncTask<RequestForm,Integer,String> {
 //            job.put("PW", "1127");
 //            job.put("Name", "안동현");
 
-            Log.e("job 내용",job.toString());
+           // Log.e("job 내용",job.toString());
 
             OutputStream os  = conn.getOutputStream();
             os.write(job.toString().getBytes());

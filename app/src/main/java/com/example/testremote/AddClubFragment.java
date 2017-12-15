@@ -154,5 +154,10 @@ public class AddClubFragment extends Fragment {
         isTask.execute(req); // 이렇게실행하면 웹서버에 보내져
 
         //
+
+
+
     }
+
+
 }

@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebStorage;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -106,6 +105,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
                         //items.add(new MGroup(title,date,location));
 
                         items.add(new Recruit(num, title, date, city, latitude, longitude, area));
+                        Log.d("RecruitA",title);
 
                     } else {
                         String area = json.getString("area");
@@ -120,6 +120,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
             OriginItems.clear();
             OriginItems.addAll(items);
             Log.e("originItems size", ""+OriginItems.size());
+            Log.e("originItems size", ""+items.size());
 
             RecruitAdapter.notifyDataSetChanged();
             dataAdapter.notifyDataSetChanged();
@@ -151,7 +152,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         listView = (ListView)findViewById(R.id.listview);
         tv_location = (TextView)findViewById(R.id.tv_location);
 
-        items = new ArrayList<>();
+        items = new ArrayList<Recruit>();
         OriginItems = new ArrayList<>();
         tmpItems = new ArrayList<>();
 
@@ -185,6 +186,10 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
         dwTask.execute(req);
 
 
+        RecruitAdapter.notifyDataSetChanged();
+        Log.e("itemsitems size", ""+items.size());
+
+
 
         //Image spinner
 //        searchBtn = (ImageButton)findViewById(R.id.searchBtn);
@@ -196,7 +201,7 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 //        });
         spinner = (Spinner)findViewById(R.id.spinner);
         list = new ArrayList<String>();
-        list.add("     ");
+        //list.add("     ");
         list.add("All");
         int hidingItemIndex = 0;
         //dataAdapter = new ArrayAdapter<String>(getActivity(),
@@ -273,7 +278,8 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
     }
 
     public void getLocation(View view) {
-
+        RecruitAdapter.notifyDataSetChanged();
+        Log.e("getLocation size", ""+items.size());
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -417,6 +423,8 @@ public class RecruitActivity extends AppCompatActivity implements android.locati
 
     void showInterestedItems(){
 
+        RecruitAdapter.notifyDataSetChanged();
+        Log.e("showInterested", ""+items.size());
 
         items.addAll(OriginItems);
         RecruitAdapter.notifyDataSetChanged();

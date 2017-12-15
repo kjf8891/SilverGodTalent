@@ -84,7 +84,13 @@ public class CompanySignInActivity extends AppCompatActivity {
                     SharedPreferences.Editor edit = prefs.edit();
                     edit.putString("REG_FROM", id.getText().toString());
                     edit.putString("FROM_NAME", pw.getText().toString());
+                    edit.putString("Nickname", nickname.getText().toString());
                     edit.commit();
+
+
+
+
+
 
                     String smobno = id.getText().toString();
                     String spw = pw.getText().toString();
@@ -297,6 +303,14 @@ public class CompanySignInActivity extends AppCompatActivity {
 //                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 //                    ft.addToBackStack(null);
 //                    ft.commit();
+
+                    SharedPreferences.Editor edit = prefs.edit();
+                    edit.putString("member_type", "1");
+                    edit.putString("REG_FROM", id.getText().toString());
+                    edit.putString("FROM_NAME", pw.getText().toString());
+                    edit.putString("Nickname", nickname.getText().toString());
+                    edit.commit();
+
                     startActivity(new Intent(getApplicationContext(),UserActivity.class));
                 }else{
                     Toast.makeText(getApplicationContext(),res,Toast.LENGTH_SHORT).show();

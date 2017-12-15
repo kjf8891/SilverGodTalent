@@ -1,12 +1,8 @@
 package com.example.testremote;
 
-import android.app.FragmentManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -29,6 +25,7 @@ public class ApplicantStateActivity extends AppCompatActivity {
     Button apprvBtn;
     JSONArray retJson;
     String passedRNum="1";
+    Bundle bundle;
 
     DownloadWebPageTask dwTask = new DownloadWebPageTask(new DownloadWebPageTask.AsyncResponse() {
         @Override
@@ -57,6 +54,7 @@ public class ApplicantStateActivity extends AppCompatActivity {
         }
     });
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,17 +68,30 @@ public class ApplicantStateActivity extends AppCompatActivity {
         apprvBtn = (Button)findViewById(R.id.apprvBtn);
         UserAdapter = new UserAdapter(getApplicationContext(),R.layout.row_user,items);
         listView.setAdapter(UserAdapter);
-        String url = "http://13.124.85.122:52273/findRMInfo";
-        //초기화
-        JSONObject jsonObject =new JSONObject();
-        int tmptmp = Integer.parseInt(passedRNum);
-        try {
-            jsonObject.put("num",tmptmp);
-            RequestForm req = new RequestForm(url,jsonObject);
-            dwTask.execute(req);
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        if(getIntent().getBundleExtra("RApplyReq") != null){
+            Log.d("ggg","RApplyReq");
+
+            bundle = getIntent().getBundleExtra("RApplyReq");
+            passedRNum = bundle.getString("Num");
+            String title = bundle.getString("title");
+
+            Log.d("ggggg",passedRNum);
+
+            String url = "http://13.124.85.122:52273/findRMInfo";
+            //초기화
+            JSONObject jsonObject =new JSONObject();
+            int tmptmp = Integer.parseInt(passedRNum);
+            try {
+                jsonObject.put("num",tmptmp);
+                RequestForm req = new RequestForm(url,jsonObject);
+                dwTask.execute(req);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
+
     }
 //    public void onBackPressed() {
 //        //super.onBackPressed();

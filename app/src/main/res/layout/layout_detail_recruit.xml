@@ -26,6 +26,7 @@
             android:textSize="30dp" />
 
     </LinearLayout>
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -36,222 +37,222 @@
         <!--android:text="test_here is detailWanted//"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content" />-->
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="Recruit Notice Num"
-                android:paddingTop="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:textColor="@android:color/black"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:textSize="25dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/Rnum"
-                android:textColor="@android:color/black"
-                android:text="000"
-                android:textSize="20dp"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="Recruit Notice Num"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:textColor="@android:color/black"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/Rnum"
+                        android:textColor="@android:color/black"
+                        android:text="000"
+                        android:textSize="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <TextView
+                    android:text="Recruit Area"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:textColor="@android:color/black"
+                    android:gravity="left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/RArea"
+                    android:backgroundTint="@android:color/transparent"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Enter"/>
+
+                <TextView
+                    android:text="Recruit Notice Title"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:textColor="@android:color/black"
+                    android:gravity="left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/Rtitle"
+                    android:backgroundTint="@android:color/transparent"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Enter"/>
+
+                <TextView
+                    android:text="City"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:textColor="@android:color/black"
+                    android:gravity="left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/RWorkingCity"
+                    android:text="city"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"/>
+
+                <TextView
+                    android:text="Working Date"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:textColor="@android:color/black"
+                    android:gravity="left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/RWorkingDate"
+                    android:backgroundTint="@android:color/transparent"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Enter"/>
+
+                <TextView
+                    android:text="Recruit Total Num"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:textColor="@android:color/black"
+                    android:gravity="left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/RTotalNum"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Enter"/>
+
+                <TextView
+                    android:text="ID/Writer(institution)"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:gravity="left"
+                    android:textColor="@android:color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/recruit_writer_id"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="writerID_test"/>
+                <TextView
+                    android:text="Content"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:textColor="@android:color/black"
+                    android:gravity="left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/Rcontent"
+                    android:backgroundTint="@android:color/transparent"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Enter\n\n\n\n"/>
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:name="com.google.android.gms.maps.MapFragment"
+                    />
+
+                <Button
+                    android:id="@+id/applyBtn"
+                    android:onClick="applyBtn"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="20dp"
+                    android:textColor="@android:color/white"
+                    android:background="@color/pink"
+                    android:text="APPLY"/>
+
+            </LinearLayout>
+
+
+
         </LinearLayout>
-        <TextView
-            android:text="Recruit Area"
-            android:paddingTop="10dp"
-            android:paddingLeft="15dp"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:textColor="@android:color/black"
-            android:gravity="left"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/RArea"
-            android:backgroundTint="@android:color/transparent"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:textColor="@android:color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Enter"/>
-
-        <TextView
-            android:text="Recruit Notice Title"
-            android:paddingTop="10dp"
-            android:paddingLeft="15dp"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:textColor="@android:color/black"
-            android:gravity="left"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/Rtitle"
-            android:backgroundTint="@android:color/transparent"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:textColor="@android:color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Enter"/>
-
-        <TextView
-            android:text="City"
-            android:paddingTop="10dp"
-            android:paddingLeft="15dp"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:textColor="@android:color/black"
-            android:gravity="left"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/RWorkingCity"
-            android:text="city"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:textColor="@android:color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"/>
-
-        <TextView
-            android:text="Working Date"
-            android:paddingTop="10dp"
-            android:paddingLeft="15dp"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:textColor="@android:color/black"
-            android:gravity="left"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/RWorkingDate"
-            android:backgroundTint="@android:color/transparent"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:textColor="@android:color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Enter"/>
-
-        <TextView
-            android:text="Recruit Total Num"
-            android:paddingTop="10dp"
-            android:paddingLeft="15dp"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:textColor="@android:color/black"
-            android:gravity="left"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/RTotalNum"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:textColor="@android:color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Enter"/>
-
-        <TextView
-            android:text="ID/Writer(institution)"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:paddingTop="10dp"
-            android:paddingLeft="15dp"
-            android:gravity="left"
-            android:textColor="@android:color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/recruit_writer_id"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:textSize="20dp"
-            android:textColor="@android:color/black"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="writerID_test"/>
-    <TextView
-        android:text="Content"
-        android:textStyle="bold"
-        android:textSize="25dp"
-        android:paddingTop="10dp"
-        android:paddingLeft="15dp"
-        android:textColor="@android:color/black"
-        android:gravity="left"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/Rcontent"
-        android:backgroundTint="@android:color/transparent"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@android:color/black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="Enter\n\n\n\n"/>
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:name="com.google.android.gms.maps.MapFragment"
-            />
 
 
-
-    </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/applyBtn"
-            android:onClick="applyBtn"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:background="@color/pink"
-            android:text="APPLY"/>
-    </LinearLayout>
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -18,13 +19,17 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by seyeon on 2017-11-17.
@@ -64,6 +69,8 @@ public class DetailRecruitFragment extends Fragment implements OnMapReadyCallbac
     String institution;
     String latitude ;
     String longitude;
+    String institution_id;
+    List<NameValuePair> params;
 
     private GoogleMap mMap; // 구글맵
 
@@ -93,6 +100,7 @@ public class DetailRecruitFragment extends Fragment implements OnMapReadyCallbac
                 institution = json.getString("institution");
                 latitude = json.getString("latitude");
                 longitude = json.getString("longitude");
+                institution_id = json.getString("institution_id");
 
                 //leader = json.getString("leader");
                 //Log.d("gffgggggg",title);
@@ -191,6 +199,43 @@ public class DetailRecruitFragment extends Fragment implements OnMapReadyCallbac
         isTask = new InsertDataTask(jsonObject);
         RequestForm req = new RequestForm(url);
         isTask.execute(req);
+
+        new DetailRecruitFragment.RApplyReq().execute(prefs.getString("REG_FROM",""),Bundle_num,title);
+
+    }
+
+    private class RApplyReq extends AsyncTask<String, String, JSONObject> {
+        @Override
+        protected JSONObject doInBackground(String... args) {
+            JSONParser json = new JSONParser();
+            params = new ArrayList<NameValuePair>();
+            Log.d("loglogloglog",args[0]);
+
+                params.add(new BasicNameValuePair("id", args[0]));
+                params.add(new BasicNameValuePair("Num", args[1]));
+            params.add(new BasicNameValuePair("title", args[2]));
+
+            JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/RApplyReq",params);
+            return jObj;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            // progress.dismiss();
+//            try {
+//                String res = json.getString("response");
+//                if(res.equals("Success")) {
+//
+//                    // startActivity(new Intent(getApplicationContext(),UserActivity.class));
+//                }else{
+//
+//                }
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+
+        }
     }
 
     @Override

@@ -2,13 +2,14 @@ package com.example.testremote;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -16,10 +17,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -33,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RemoteViews;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -49,8 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-
-import static com.example.testremote.BuildConfig.DEBUG;
 
 public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -72,7 +68,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
 
     SharedPreferences prefs;
     EditText pw, mobno, helper_mobno;
-    Button login, help_btn, signin;
+    Button login,help_btn, signin;
     List<NameValuePair> params;
     ProgressDialog progress;
 
@@ -89,14 +85,38 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
     private static final int RECORD_AUDIO_PERMISSIONS_REQUEST = 1;
 
 
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("screeninfo"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
+        // LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("remote_noti"));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("remote_noti");
+        registerReceiver(onNotice, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("remote_noti");
+        unregisterReceiver(onNotice);
+
+    }
+
     @Override
     public void onBackPressed() {
 
         Log.d("LoginActivity2", "Backkkkkk");
 
-        if (prefs.getString("HELP_FLAG", "").equals("1") || prefs.getString("HELP_FLAG", "").equals("2")) {
+        if(prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")){
             new LoginActivity2.ActivityChangeSend().execute("back");
-        } else {
+        }else{
             super.onBackPressed();
         }
 
@@ -107,16 +127,16 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
+        switch(requestCode){
 
             case 8:     //회원가입 완료 응답
-                if (resultCode == RESULT_OK) {
+                if(resultCode == RESULT_OK){
                     finish();
-                    startActivity(new Intent(getApplicationContext(), StartActivity.class));
+                    startActivity(new Intent(getApplicationContext(),StartActivity.class));
                 }
                 break;
             default:
-                Log.d("Signin", "default");
+                Log.d("Signin","default");
                 finish();
                 break;
         }
@@ -128,40 +148,41 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_login2);
 
 
+
+
         loginContext = this;
 
         prefs = getApplicationContext().getSharedPreferences("Chat", 0);
 
-        pw = (EditText) findViewById(R.id.epw);
-        mobno = (EditText) findViewById(R.id.eid);
-        login = (Button) findViewById(R.id.login);
-        signin = (Button) findViewById(R.id.signin);
+        pw = (EditText)findViewById(R.id.epw);
+        mobno = (EditText)findViewById(R.id.eid);
+        login = (Button)findViewById(R.id.login);
+        signin = (Button)findViewById(R.id.signin);
 
         progress = new ProgressDialog(getApplicationContext());
         progress.setMessage("Registering ...");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
 
-        help_btn = (Button) findViewById(R.id.help_btn);
-        helper_mobno = (EditText) findViewById(R.id.help_mobno);
-        authorization_btn = (Button) findViewById(R.id.authorization_ok_btn);
-        authorization_edit = (EditText) findViewById(R.id.authorization_number);
-        authorization_switch = (Switch) findViewById(R.id.helping_switch);
+        help_btn = (Button)findViewById(R.id.help_btn);
+        helper_mobno = (EditText)findViewById(R.id.help_mobno);
+        authorization_btn = (Button)findViewById(R.id.authorization_ok_btn);
+        authorization_edit = (EditText)findViewById(R.id.authorization_number);
+        authorization_switch = (Switch)findViewById(R.id.helping_switch);
 
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("screeninfo"));
-        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("activity_change"));
+
 
 
         authorization_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+                if(isChecked){
                     help_btn.setVisibility(View.GONE);
                     helper_mobno.setVisibility(View.GONE);
                     authorization_btn.setVisibility(View.VISIBLE);
                     authorization_edit.setVisibility(View.VISIBLE);
-                } else {
+                }else{
                     help_btn.setVisibility(View.VISIBLE);
                     helper_mobno.setVisibility(View.VISIBLE);
                     authorization_btn.setVisibility(View.GONE);
@@ -174,13 +195,13 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View v) {
                 bundle = getIntent().getBundleExtra("random_number");   //인증번호 번들
-                if (bundle != null) {
-                    if (bundle.getString("random_number") != null) {
-                        if (authorization_edit.getText().toString().equals(bundle.getString("random_number"))) {
-                            Toast.makeText(getApplicationContext(), "인증에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
+                if(bundle!= null){
+                    if(bundle.getString("random_number") != null){
+                        if(authorization_edit.getText().toString().equals(bundle.getString("random_number"))){
+                            Toast.makeText(getApplicationContext(),"인증에 성공하셨습니다.",Toast.LENGTH_SHORT).show();
                             SharedPreferences.Editor edit = prefs.edit();
-                            edit.putString("Helper_authorization", "OK");
-                            edit.putString("needer_id", bundle.getString("needer_id"));
+                            edit.putString("Helper_authorization","OK");
+                            edit.putString("needer_id",bundle.getString("needer_id"));
                             edit.commit();
 
                             authorization_edit.setText("인증성공");
@@ -188,13 +209,36 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
 
                             edit.commit();
 
-                            Log.d("인증 성공", prefs.getString("needer_id", ""));
+                            Log.d("인증 성공",prefs.getString("needer_id",""));
 //                            edit.putString("REG_FROM", mobno.getText().toString()); //비밀번호
 //                            edit.putString("FROM_NAME", name.getText().toString()); //핸드폰번호
 //                            edit.commit();
 
                             //인증이 성공하면 needer에게 원격조정이 시작된다고 알려준다.
                             //그리고 needer가 자신의 화면정보를 전달한다.
+                            //notification 계속 띄워준다.
+
+                            NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                            Notification.Builder builder = new Notification.Builder(getApplicationContext()).setOngoing(true);
+                            builder.setSmallIcon(R.drawable.cast_ic_notification_play);
+                            builder.setTicker("Sample");
+                            builder.setNumber(10);
+                            builder.setContentTitle("Title");
+                            builder.setContentText("");
+
+                            Notification noti = builder.build();
+                            Intent intent = new Intent("remote_noti");
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+                            RemoteViews contentview = new RemoteViews(getPackageName(),R.layout.notification_activity);
+                            contentview.setOnClickPendingIntent(R.id.button,pendingIntent);
+                            noti.contentView = contentview;
+                            nm.notify(1,noti);
+
+//                            IntentFilter intentFilter = new IntentFilter();
+//                            intentFilter.addAction("remote_noti");
+//                            registerReceiver(onNotice, intentFilter);
+
                             new LoginActivity2.AuthorizationResult().execute();
 
                         }
@@ -203,16 +247,18 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
-        signin.setOnClickListener(new View.OnClickListener() {
+        signin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Log.d("signinBtn", "signinBtn");
-                Log.d("fdfdfdfdfdf", prefs.getString("HELP_FLAG", ""));
-                if (prefs.getString("HELP_FLAG", "").equals("1") || prefs.getString("HELP_FLAG", "").equals("2")) {
+                Log.d("fdfdfdfdfdf",prefs.getString("HELP_FLAG",""));
+                if(prefs.getString("HELP_FLAG","").equals("1") || prefs.getString("HELP_FLAG","").equals("2")){
+                    new LoginActivity2.ActivityChangeSend().execute("SignInType");
+                    //new LoginActivity2.ActivityChangeSend().execute("signin");
+                }else{
+                    startActivity(new Intent(getApplicationContext(),SignInTypeActivity.class));
 
-                    new LoginActivity2.ActivityChangeSend().execute("signin");
-                } else {
-                    startActivity(new Intent(getApplicationContext(), SignInTypeActivity.class));
+                    //startActivity(new Intent(getApplicationContext(),SignInTypeActivity.class));
                 }
             }
         });
@@ -359,6 +405,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
         epw = (EditText) findViewById(R.id.epw);
 
 
+
         tpw = "";
 
 
@@ -371,6 +418,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
         //메인메뉴 가는 코드
 //        Toast.makeText(getApplicationContext(), "dd", Toast.LENGTH_LONG);
 //        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+
 
 
         //startActivity(intent);
@@ -467,7 +515,6 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
         getPermissionToReadUserContacts();
 
     }
-
     private class AuthorizationResult extends AsyncTask<String, String, JSONObject> {
         @Override
         protected JSONObject doInBackground(String... args) {
@@ -485,7 +532,6 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
             JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/authorizationResult", params);
             return jObj;
         }
-
         @Override
         protected void onPostExecute(JSONObject json) {
             //progress.dismiss();
@@ -524,16 +570,15 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
             JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/help", params);
             return jObj;
         }
-
         @Override
         protected void onPostExecute(JSONObject json) {
             //progress.dismiss();
             try {
                 String res = json.getString("response");
-                if (res.equals("Success")) {
+                if(res.equals("Success")) {
 
-                } else {
-                    Toast.makeText(getApplicationContext(), res, Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),res,Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {
@@ -548,33 +593,32 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
         protected JSONObject doInBackground(String... args) {
             JSONParser json = new JSONParser();
             params = new ArrayList<NameValuePair>();
-            Log.d("loglogloglog", args[0]);
+            Log.d("loglogloglog",args[0]);
 
             params.add(new BasicNameValuePair("name", args[0]));
             params.add(new BasicNameValuePair("mobno", args[1]));
-            params.add((new BasicNameValuePair("reg_id", prefs.getString("REG_ID", ""))));
+            params.add((new BasicNameValuePair("reg_id",prefs.getString("REG_ID",""))));
 
-            JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/login", params);
+            JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/login",params);
             return jObj;
 
 
         }
-
         @Override
         protected void onPostExecute(JSONObject json) {
             // progress.dismiss();
             try {
                 String res = json.getString("response");
-                if (res.equals("Sucessfully Registered")) {
+                if(res.equals("Sucessfully Registered")) {
 //                    Fragment reg = new UserFragment();
 //                    FragmentTransaction ft = getFragmentManager().beginTransaction();
 //                    ft.replace(R.id.content_frame, reg);
 //                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 //                    ft.addToBackStack(null);
 //                    ft.commit();
-                    startActivity(new Intent(getApplicationContext(), UserActivity.class));
-                } else {
-                    Toast.makeText(getApplicationContext(), res, Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(),UserActivity.class));
+                }else{
+                    Toast.makeText(getApplicationContext(),res,Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {
@@ -597,23 +641,22 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
             params.add(new BasicNameValuePair("screen_info", GetClassName(getApplicationContext())));   //어르신 화면정보
             params.add((new BasicNameValuePair("mobno_edittext", args[0])));    //화면에 있는 mobno
             params.add((new BasicNameValuePair("pw_edittext", args[1])));   //화면에 있는 pw
-            params.add((new BasicNameValuePair("helper_mobno", args[2])));   //화면에 있는 helper번호
-            params.add((new BasicNameValuePair("needer_id", prefs.getString("REG_ID", ""))));    //어르신토큰
+            params.add((new BasicNameValuePair("helper_mobno",args[2])));   //화면에 있는 helper번호
+            params.add((new BasicNameValuePair("needer_id", prefs.getString("REG_ID",""))));    //어르신토큰
 
 
-            JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/NeederScreenInfoSend", params);
+            JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/NeederScreenInfoSend",params);
             return jObj;
         }
-
         @Override
         protected void onPostExecute(JSONObject json) {
             //progress.dismiss();
             try {
                 String res = json.getString("response");
-                if (res.equals("Success")) {
+                if(res.equals("Success")) {
 
-                } else {
-                    Toast.makeText(getApplicationContext(), res, Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),res,Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {
@@ -624,8 +667,8 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-    public String GetClassName(Context context) {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+    public String GetClassName(Context context){
+        ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> runningTaskInfos = activityManager.getRunningTasks(1);
         return runningTaskInfos.get(0).topActivity.getClassName();
     }
@@ -640,41 +683,53 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
             //GetClassName(getApplicationContext());
 
             //params.add(new BasicNameValuePair("type", "helper_request"));
-            if (args[0].equals("login")) {
+            if(args[0].equals("login")){
                 //이건 로그인 성공하고 수행해야하는 것?
-            } else if (args[0].equals("signin")) {
-                Log.d("LoginActivity2", "classSignin");
+            }else if(args[0].equals("signin")){
+                Log.d("LoginActivity2","classSignin");
 
                 params.add(new BasicNameValuePair("now_activity", "LoginActivity2"));    //현재 액티비티
                 params.add(new BasicNameValuePair("activity_change", "signin")); //어떤 화면으로 전활할 버튼을 눌렀는지
-                params.add((new BasicNameValuePair("sender_id", prefs.getString("REG_ID", ""))));    //보내는 사람의 토큰
+                params.add((new BasicNameValuePair("sender_id", prefs.getString("REG_ID",""))));    //보내는 사람의 토큰
 
-                if (prefs.getString("HELP_FLAG", "").equals("1")) {    //어르신, 헬버의 폰번호 입력
-                    params.add((new BasicNameValuePair("to_id", prefs.getString("helper_id", ""))));
-                } else if (prefs.getString("HELP_FLAG", "").equals("2")) {      //젊은이, needer의 토큰을 입력
-                    params.add((new BasicNameValuePair("to_id", prefs.getString("needer_id", ""))));
+                if(prefs.getString("HELP_FLAG","").equals("1")){    //어르신, 헬버의 폰번호 입력
+                    params.add((new BasicNameValuePair("to_id", prefs.getString("helper_id",""))));
+                }else if(prefs.getString("HELP_FLAG","").equals("2")){      //젊은이, needer의 토큰을 입력
+                    params.add((new BasicNameValuePair("to_id", prefs.getString("needer_id",""))));
                 }
 
-            } else if (args[0].equals("back")) {
+            }else if(args[0].equals("SignInType")){
+                Log.d("LoginActivity2","SignInType");
 
-                Log.d("LoginActivity2", "classBack");
+                params.add(new BasicNameValuePair("now_activity", "LoginActivity2"));    //현재 액티비티
+                params.add(new BasicNameValuePair("activity_change", "SignInType")); //어떤 화면으로 전활할 버튼을 눌렀는지
+                params.add((new BasicNameValuePair("sender_id", prefs.getString("REG_ID",""))));    //보내는 사람의 토큰
+
+                if(prefs.getString("HELP_FLAG","").equals("1")){    //어르신, 헬버의 폰번호 입력
+                    params.add((new BasicNameValuePair("to_id", prefs.getString("helper_id",""))));
+                }else if(prefs.getString("HELP_FLAG","").equals("2")){      //젊은이, needer의 토큰을 입력
+                    params.add((new BasicNameValuePair("to_id", prefs.getString("needer_id",""))));
+                }
+
+            }else if(args[0].equals("back")){
+
+                Log.d("LoginActivity2","classBack");
                 params.add(new BasicNameValuePair("now_activity", "LoginActivity2"));    //현재 액티비티
                 params.add(new BasicNameValuePair("activity_change", "back")); //어떤 화면으로 전환할 버튼을 눌렀는지
-                params.add((new BasicNameValuePair("sender_id", prefs.getString("REG_ID", ""))));    //보내는 사람의 토큰
+                params.add((new BasicNameValuePair("sender_id", prefs.getString("REG_ID",""))));    //보내는 사람의 토큰
 
 
-                if (prefs.getString("HELP_FLAG", "").equals("1")) {    //어르신, 헬버의 폰번호 입력
-                    params.add((new BasicNameValuePair("to_id", prefs.getString("helper_id", ""))));
-                } else if (prefs.getString("HELP_FLAG", "").equals("2")) {      //젊은이, needer의 토큰을 입력
-                    params.add((new BasicNameValuePair("to_id", prefs.getString("needer_id", ""))));
+                if(prefs.getString("HELP_FLAG","").equals("1")){    //어르신, 헬버의 폰번호 입력
+                    params.add((new BasicNameValuePair("to_id", prefs.getString("helper_id",""))));
+                }else if(prefs.getString("HELP_FLAG","").equals("2")){      //젊은이, needer의 토큰을 입력
+                    params.add((new BasicNameValuePair("to_id", prefs.getString("needer_id",""))));
                 }
 
             }
 
-            JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/ActivityChangeSend", params);
+            JSONObject jObj = json.getJSONFromUrl("http://13.124.85.122:8080/ActivityChangeSend",params);
             return jObj;
         }
-
         @Override
         protected void onPostExecute(JSONObject json) {
             //progress.dismiss();
@@ -682,10 +737,10 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                 String res = json.getString("response");
                 String activity = json.getString("activity_change");
 
-                if (res.equals("Success")) {
+                if(res.equals("Success")) {
 
-                    if (activity.equals("signin")) {
-                        Log.d("login", "start_signin");
+                    if(activity.equals("signin")){
+                        Log.d("login","start_signin");
 
                         Intent mIntent = new Intent(getApplicationContext(), SignInActivity.class);
                         //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -693,15 +748,22 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                         //8번 받으면 로그인 완료. 종료시키면 된다.
                         startActivityForResult(mIntent, 8);
                         //Intent mIntent = new Intent(getApplicationContext(),SignInActivity.class);
-                        //
+                       //
                         // mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
                         //startActivity(mIntent);
-                    } else if (activity.equals("cancel") || activity.equals("back")) {
+                    }else if(activity.equals("SignInType")){
+                        Intent mIntent = new Intent(getApplicationContext(), SignInTypeActivity.class);
+                        //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+                        //8번 받으면 로그인 완료. 종료시키면 된다.
+                        startActivityForResult(mIntent, 8);
+                    }
+                    else if(activity.equals("cancel") || activity.equals("back")){
                         finish();
                     }
 
-                } else {
-                    Toast.makeText(getApplicationContext(), res, Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),res,Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {
@@ -711,27 +773,28 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    public void NeederScreenInfoSend() {
+    public void NeederScreenInfoSend(){
 
-        Log.d("NeederScreenInfoSend", "LoginActivity");
+        Log.d("NeederScreenInfoSend","LoginActivity");
         //연결이 되어있다면 HELP_FLAG가 1이라면 어르신이 자신의 화면을 helper에게 보낸다.
         String spw = pw.getText().toString();
         String smobno = mobno.getText().toString();
         String shelpermobno = helper_mobno.getText().toString();
 
-        new LoginActivity2.NeederScreenInfoSend().execute(smobno, spw, shelpermobno);
+        new LoginActivity2.NeederScreenInfoSend().execute(smobno,spw,shelpermobno);
 
     }
 
 
-    private BroadcastReceiver onNotice = new BroadcastReceiver() {
+
+    private BroadcastReceiver onNotice= new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String name = intent.getAction();
             // Intent SendBroadCast로 보낸 action TAG 이름으로 필요한 방송을 찾는다.
 
-            if (name.equals("screeninfo")) {  //어르신이 보낸 정보로 화면 셋팅하기. 로그인화면
+            if(name.equals("screeninfo")){  //어르신이 보낸 정보로 화면 셋팅하기. 로그인화면
                 Log.d("Login: BroadCast", "BroadcastReceiver :: com.dwfox.myapplication.SEND_BROAD_CAST :: "); // putExtra를 이용한 String전달 }
 
                 String screeninfo = intent.getStringExtra("screeninfo");
@@ -740,7 +803,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
 
                 mobno.setText(mobno_edittext);
                 pw.setText(pw_edittext);
-            } else if (name.equals("activity_change")) {  //화면 바뀔때
+            }else if(name.equals("activity_change")){  //화면 바뀔때
                 Log.d("Login: BroadCast", "activity_change"); // putExtra를 이용한 String전달 }
 
 
@@ -751,19 +814,25 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
 
                 //mobno.setText(mobno_edittext);
                 //pw.setText(pw_edittext);
-                if (now_activity.equals("LoginActivity2")) {
-                    if (activity_change.equals("signin")) {
+                if(now_activity.equals("LoginActivity2")){
+                    if(activity_change.equals("signin")){
                         Intent mIntent = new Intent(getApplicationContext(), SignInActivity.class);
                         //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
 
                         //8번 받으면 로그인 완료. 종료시키면 된다.
                         startActivityForResult(mIntent, 8);
 
-                        // Intent mIntent = new Intent(getApplicationContext(),SignInActivity.class);
-                        // mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        // startActivity(mIntent);
+                       // Intent mIntent = new Intent(getApplicationContext(),SignInActivity.class);
+                       // mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+                       // startActivity(mIntent);
 
-                    } else if (activity_change.equals("back")) {
+                    }else if(activity_change.equals("SignInType")){
+                        Intent mIntent = new Intent(getApplicationContext(), SignInTypeActivity.class);
+                        //mIntent.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+                        //8번 받으면 로그인 완료. 종료시키면 된다.
+                        startActivityForResult(mIntent, 8);
+                    }else if(activity_change.equals("back")){
 //                        new Thread(new Runnable() {
 //                            @Override
 //                            public void run() {
@@ -771,11 +840,23 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
 //                                new Instrumentation().sendKeySync(event);
 //                            }
 //                        });
-                        Log.d("login", "back");
+                        Log.d("login","back");
                         finish();
                     }
 
                 }
+
+            }else if(name.equals("remote_noti")){
+                Toast.makeText(getApplicationContext(),"The connection is aborted.",Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.remove("HELP_FLAG");
+                edit.remove("Helper_authorization");
+                edit.remove("needer_id");
+                edit.commit();
+
+
+                NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.cancel(1);
 
             }
         }
@@ -812,7 +893,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Read Contacts permission granted", Toast.LENGTH_SHORT).show();
 
-                setUserNumber();
+                   setUserNumber();
 
                 getPermissionToRecordVoice();
 
@@ -824,7 +905,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                 closeNow();
 
             }
-        } else if (requestCode == RECORD_AUDIO_PERMISSIONS_REQUEST) {
+        }else if(requestCode == RECORD_AUDIO_PERMISSIONS_REQUEST){
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Record audio permission granted", Toast.LENGTH_SHORT).show();
@@ -839,17 +920,19 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                 closeNow();
 
             }
-        } else {
+        }
+        else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
 
-    }
+}
 
-    public void getPermissionToRecordVoice() {
+    public void getPermissionToRecordVoice(){
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
+
 
 
             // The permission is NOT already granted.
@@ -872,7 +955,6 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
         }
 
     }
-
     public void getPermissionToReadUserContacts() {
         // 1) Use the support library version ContextCompat.checkSelfPermission(...) to avoid
         // checking the build version since Context.checkSelfPermission(...) is only available
@@ -883,6 +965,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
+
 
 
             // The permission is NOT already granted.
@@ -902,7 +985,9 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                 requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
                         READ_CONTACTS_PERMISSIONS_REQUEST);
             }
-        } else {
+        }
+        else
+        {
             setUserNumber();
         }
     }
@@ -920,14 +1005,15 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
         super.onStart();
 
 
+
         // setUserNumber();
 
     }
 
-    void setUserNumber() {  // 번호 읽어서 국제번호로 변환 후 id란에 Setting
+    void setUserNumber(){  // 번호 읽어서 국제번호로 변환 후 id란에 Setting
 
 
-        TelephonyManager t = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager t = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         String phoneNumber = "";
 
         String main_data[] = {"data1", "is_primary", "data3", "data2", "data1", "is_primary", "photo_uri", "mimetype"}; //번호 가져오기
@@ -940,7 +1026,7 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
                 if (!((Cursor) (object)).moveToNext())
                     break;
                 phoneNumber = ((Cursor) (object)).getString(4);
-                Toast.makeText(getApplicationContext(), phoneNumber, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),phoneNumber,Toast.LENGTH_SHORT).show();
 
             } while (true);
             ((Cursor) (object)).close();
@@ -950,11 +1036,13 @@ public class LoginActivity2 extends AppCompatActivity implements OnMapReadyCallb
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             phoneNumber = PhoneNumberUtils.normalizeNumber(phoneNumber);
-            phoneNumber = PhoneNumberUtils.formatNumberToE164(phoneNumber, t.getNetworkCountryIso().toUpperCase());
-            Toast.makeText(getApplicationContext(), phoneNumber, Toast.LENGTH_SHORT).show();
+            phoneNumber= PhoneNumberUtils.formatNumberToE164(phoneNumber,t.getNetworkCountryIso().toUpperCase());
+            Toast.makeText(getApplicationContext(),phoneNumber,Toast.LENGTH_SHORT).show();
             eid.setText(phoneNumber);
             eid.setEnabled(true);
         }
+
+
 
 
     }

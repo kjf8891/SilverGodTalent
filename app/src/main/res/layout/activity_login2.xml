@@ -60,6 +60,7 @@
 
             <EditText
                 android:hint="PHONE NUMBER"
+                android:textSize="30sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/eid" />
@@ -77,10 +78,12 @@
                 android:layout_width="match_parent"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
+                android:textSize="30sp"
                 android:id="@+id/login"
                 android:text="Login"
                 />
             <Button
+                android:textSize="30sp"
                 android:background="@color/pink"
                 android:layout_width="match_parent"
                 android:layout_gravity="center"
@@ -97,6 +100,7 @@
 
                 <TextView
                     android:text="Receiving"
+                    android:textSize="30sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <Switch
@@ -104,11 +108,12 @@
                     android:textOn="Helping"
                     android:textOff="Receiving"
                     android:checked="false"
-                    android:textSize="20dp"
+                    android:textSize="30dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:text="Helping"
+                    android:textSize="30sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -129,6 +134,7 @@
                     android:layout_weight="2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:hint="Helper Mobile Number"
                     android:id="@+id/help_mobno"
                     android:text="+821033463671"
@@ -141,6 +147,7 @@
                     android:background="@color/pink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:text="Help"
                     android:id="@+id/help_btn"
                     android:layout_gravity="center_horizontal" />
@@ -159,6 +166,7 @@
                     android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:hint="Authorization Number"
                     android:id="@+id/authorization_number"
                     android:layout_gravity="center"
@@ -167,8 +175,9 @@
 
                 <Button
                     android:visibility="gone"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="30sp"
                     android:text="Help"
                     android:id="@+id/authorization_ok_btn"
                     android:layout_gravity="center_horizontal" />
