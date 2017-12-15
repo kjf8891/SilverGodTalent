@@ -20,5 +20,7 @@
     <color name="whiteGray">#EBEDED</color>
     <color name="whiteIbory">#FFFAF3</color>
     <color name="whiteINavy">#D7DEE9</color>
+    <color name="company">#FC7070</color>
+
 
 </resources>

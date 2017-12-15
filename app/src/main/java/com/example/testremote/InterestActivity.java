@@ -208,7 +208,7 @@ public class InterestActivity extends AppCompatActivity {
                     Log.d("NickName", userinfo_Nickname);
                     edit.commit();
 
-                    //startActivity(new Intent(getApplicationContext(),UserActivity.class));
+                    startActivity(new Intent(getApplicationContext(),StartActivity.class));
                 }else{
                     Toast.makeText(getApplicationContext(),res,Toast.LENGTH_SHORT).show();
                 }

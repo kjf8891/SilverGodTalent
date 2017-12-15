@@ -9,7 +9,7 @@
 
 
             <ImageButton
-                android:background="@color/red"
+                android:background="@drawable/general"
                 android:id="@+id/btn_general"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -21,10 +21,11 @@
 
             <ImageButton
                 android:id="@+id/btn_company"
-                android:background="@color/blueColor"
+                android:background="@drawable/company"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
+
                 android:layout_weight="1"
                 android:layout_gravity="center"
                />
